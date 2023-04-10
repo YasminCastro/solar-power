@@ -10,7 +10,7 @@ const config = {
   tagline:
     "Um aplicativo móvel  para incentivar a otimização e  economia de energia em sistemas  de energia solar.",
 
-  favicon: "img/favicon.ico",
+  favicon: "img/logo.svg",
 
   // Set the production url of your site here
   url: "https://your-docusaurus-test-site.com",
