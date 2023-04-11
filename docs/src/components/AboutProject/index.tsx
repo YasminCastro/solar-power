@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import styles from "./styles.module.css";
 
 export default function AboutProject(): JSX.Element {
-  const [width, setWidth] = useState(window.innerWidth);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   window.addEventListener("resize", () => {
-    setWidth(window.innerWidth);
+    const width = window.innerWidth;
+    const phone = width < 520;
+
+    setIsPhoneWidth(phone);
   });
 
   return (
@@ -47,7 +50,7 @@ export default function AboutProject(): JSX.Element {
         </div>
 
         <div className={styles.modulo}>
-          {width > 520 && (
+          {!isPhoneWidth && (
             <img
               src={require("@site/static/img/about/bio-energy.png").default}
             />
@@ -69,7 +72,7 @@ export default function AboutProject(): JSX.Element {
             </p>
           </div>
 
-          {width < 520 && (
+          {isPhoneWidth && (
             <img
               src={require("@site/static/img/about/bio-energy.png").default}
             />
