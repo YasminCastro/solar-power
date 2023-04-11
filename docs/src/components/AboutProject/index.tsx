@@ -1,15 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./styles.module.css";
+import { useMediaQuery } from "react-responsive";
 
 export default function AboutProject(): JSX.Element {
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
-
-  if (typeof window !== "undefined") {
-    const width = window.innerWidth;
-    const phone = width < 520;
-    setIsPhoneWidth(phone);
-  }
-
+  const isMobile = useMediaQuery({ query: "(max-width: 520px)" });
   return (
     <section className={styles.features}>
       <div className="container">
@@ -49,7 +43,7 @@ export default function AboutProject(): JSX.Element {
         </div>
 
         <div className={styles.modulo}>
-          {!isPhoneWidth && (
+          {!isMobile && (
             <img
               src={require("@site/static/img/about/bio-energy.png").default}
             />
@@ -71,7 +65,7 @@ export default function AboutProject(): JSX.Element {
             </p>
           </div>
 
-          {isPhoneWidth && (
+          {isMobile && (
             <img
               src={require("@site/static/img/about/bio-energy.png").default}
             />
