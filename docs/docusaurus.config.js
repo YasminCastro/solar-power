@@ -63,12 +63,17 @@ const config = {
         items: [
           {
             type: "docSidebar",
-            sidebarId: "tutorialSidebar",
+            sidebarId: "docsSidebar",
             position: "left",
-            label: "Tutorial",
+            label: "Docs",
           },
           {
-            href: "https://github.com/facebook/docusaurus",
+            position: "left",
+            label: "Sobre",
+            href: "/about",
+          },
+          {
+            href: "https://github.com/YasminCastro/solar-power",
             label: "GitHub",
             position: "right",
           },
