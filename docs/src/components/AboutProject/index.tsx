@@ -4,12 +4,13 @@ import styles from "./styles.module.css";
 export default function AboutProject(): JSX.Element {
   const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
-  window.addEventListener("resize", () => {
+  const isBrowser = () => typeof window !== "undefined";
+
+  if (!isBrowser()) {
     const width = window.innerWidth;
     const phone = width < 520;
-
     setIsPhoneWidth(phone);
-  });
+  }
 
   return (
     <section className={styles.features}>
