@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./styles.module.css";
 
 export default function AboutProject(): JSX.Element {
-  const imageWidth = 420;
+  const [width, setWidth] = useState(window.innerWidth);
+
+  window.addEventListener("resize", () => {
+    setWidth(window.innerWidth);
+  });
+
   return (
     <section className={styles.features}>
       <div className="container">
@@ -38,15 +43,16 @@ export default function AboutProject(): JSX.Element {
           </div>
           <img
             src={require("@site/static/img/about/solar-panel.png").default}
-            width={imageWidth}
           />
         </div>
 
         <div className={styles.modulo}>
-          <img
-            src={require("@site/static/img/about/bio-energy.png").default}
-            width={imageWidth}
-          />
+          {width > 520 && (
+            <img
+              src={require("@site/static/img/about/bio-energy.png").default}
+            />
+          )}
+
           <div>
             <h2>Aplicativo</h2>
             <br />
@@ -62,6 +68,12 @@ export default function AboutProject(): JSX.Element {
               mesmo tempo.
             </p>
           </div>
+
+          {width < 520 && (
+            <img
+              src={require("@site/static/img/about/bio-energy.png").default}
+            />
+          )}
         </div>
 
         <div className={styles.modulo}>
@@ -77,7 +89,6 @@ export default function AboutProject(): JSX.Element {
           </div>
           <img
             src={require("@site/static/img/about/save-the-planet.png").default}
-            width={360}
           />
         </div>
       </div>

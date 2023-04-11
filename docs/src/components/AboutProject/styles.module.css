@@ -10,8 +10,45 @@
   justify-content: space-between;
   margin-top: 56px;
   align-items: center;
+  text-align: justify;
+}
+
+.modulo img {
+  width: 420px;
 }
 
 .modulo h2 {
   font-size: 48px;
+}
+
+@media (max-width: 900px) {
+  .modulo {
+    gap: 20px;
+  }
+  .modulo img {
+    width: 320px;
+  }
+}
+
+@media (max-width: 650px) {
+  .modulo h2 {
+    font-size: 38px;
+  }
+
+  .modulo p {
+    font-size: 14px;
+  }
+
+  .modulo {
+    gap: 10px;
+  }
+  .modulo img {
+    width: 220px;
+  }
+}
+
+@media (max-width: 520px) {
+  .modulo {
+    flex-direction: column;
+  }
 }
