@@ -1,16 +1,17 @@
 .features {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
   width: 100%;
 }
 
-.featureSvg {
-  height: 200px;
-  width: 200px;
+.modulo {
+  display: flex;
+  gap: 54px;
+  justify-content: space-between;
+  margin-top: 56px;
+  align-items: center;
 }
 
-.featureImg {
-  height: 200px;
-  width: 200px;
+.modulo h2 {
+  font-size: 48px;
 }
