@@ -4,9 +4,7 @@ import styles from "./styles.module.css";
 export default function AboutProject(): JSX.Element {
   const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
-  const isBrowser = () => typeof window !== "undefined";
-
-  if (!isBrowser()) {
+  if (typeof window !== "undefined") {
     const width = window.innerWidth;
     const phone = width < 520;
     setIsPhoneWidth(phone);
