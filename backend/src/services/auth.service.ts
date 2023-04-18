@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { Service } from 'typedi';
-import { SECRET_KEY } from '@config';
+import { EXPIRES_IN, SECRET_KEY } from '@config';
 import { CreateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/httpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
@@ -22,17 +22,16 @@ export class AuthService {
     return createUserData;
   }
 
-  public async login(userData: CreateUserDto): Promise<{ cookie: string; findUser: User }> {
+  public async login(userData: CreateUserDto): Promise<{ findUser: User; tokenData: TokenData }> {
     const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
     if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
 
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
-    if (!isPasswordMatching) throw new HttpException(409, "Password is not matching");
+    if (!isPasswordMatching) throw new HttpException(409, 'Password is not matching');
 
     const tokenData = this.createToken(findUser);
-    const cookie = this.createCookie(tokenData);
 
-    return { cookie, findUser };
+    return { findUser, tokenData };
   }
 
   public async logout(userData: User): Promise<User> {
@@ -43,14 +42,14 @@ export class AuthService {
   }
 
   public createToken(user: User): TokenData {
-    const dataStoredInToken: DataStoredInToken = { id: user.id };
-    const secretKey: string = SECRET_KEY;
-    const expiresIn: number = 60 * 60;
+    const payload: DataStoredInToken = {
+      id: user.id,
+    };
 
-    return { expiresIn, token: sign(dataStoredInToken, secretKey, { expiresIn }) };
-  }
+    const token = sign(payload, SECRET_KEY, {
+      expiresIn: EXPIRES_IN,
+    });
 
-  public createCookie(tokenData: TokenData): string {
-    return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
+    return { expiresIn: EXPIRES_IN, token };
   }
 }
