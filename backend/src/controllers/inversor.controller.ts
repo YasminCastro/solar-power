@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
 import { InversorService } from '@/services/inversor.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
