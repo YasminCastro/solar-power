@@ -2,11 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 import { User } from '@interfaces/users.interface';
 import { UserService } from '@services/users.service';
+import { RequestWithUser } from '@/interfaces/auth.interface';
 
 export class UserController {
   public user = Container.get(UserService);
 
-  public getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public getUsers = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const findAllUsersData: User[] = await this.user.findAllUser();
 
@@ -22,17 +23,6 @@ export class UserController {
       const findOneUserData: User = await this.user.findUserById(userId);
 
       res.status(200).json({ data: findOneUserData, message: 'findOne' });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  public createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const userData: User = req.body;
-      const createUserData: User = await this.user.createUser(userData);
-
-      res.status(201).json({ data: createUserData, message: 'created' });
     } catch (error) {
       next(error);
     }
