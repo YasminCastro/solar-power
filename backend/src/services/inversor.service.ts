@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Inversor, PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { HttpException } from '@/exceptions/httpException';
@@ -6,7 +6,7 @@ import { logger } from '@/utils/logger';
 
 @Service()
 export class InversorService {
-  public users = new PrismaClient().user;
+  public inversors = new PrismaClient().inversor;
 
   public async hauwei(page: Page, browser: Browser): Promise<any> {
     const POWER_REAL_TIME_SELECTOR = '.nco-kiosk-overview-data';
@@ -95,5 +95,10 @@ export class InversorService {
     });
 
     return { browser, page };
+  }
+
+  public async saveInversorData(userId: number, inversorData: any): Promise<Inversor> {
+    const createInversorData: Promise<Inversor> = this.inversors.create({ data: { userId, ...inversorData } });
+    return createInversorData;
   }
 }
