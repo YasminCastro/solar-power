@@ -3,7 +3,7 @@ import { Routes } from '@interfaces/routes.interface';
 import { ValidationMiddleware } from '@middlewares/validation.middleware';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { InversorController } from '@/controllers/inversor.controller';
-import { GetInversorDto } from '@/dtos/inversor.dto';
+import { ElginDataDto, HauweiDataDto } from '@/dtos/inversor.dto';
 
 export class InversorRoute implements Routes {
   public path = '/inversor';
@@ -15,6 +15,7 @@ export class InversorRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}/hauwei`, AuthMiddleware, ValidationMiddleware(GetInversorDto), this.inversor.getHauweiData);
+    this.router.post(`${this.path}/hauwei`, AuthMiddleware, ValidationMiddleware(HauweiDataDto), this.inversor.getHauweiData);
+    this.router.post(`${this.path}/elgin`, AuthMiddleware, ValidationMiddleware(ElginDataDto), this.inversor.getElginData);
   }
 }

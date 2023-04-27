@@ -19,16 +19,44 @@ model User {
 }
 
 model Inversor {
+  id             Int              @id @default(autoincrement())
+  createdAt      DateTime         @default(now())
+  user           User             @relation(fields: [userId], references: [id])
+  userId         Int
+  model          String
+  hauwei         Hauwei?
+  elgin          Elgin?
+  powerGenerated PowerGenerated[]
+}
+
+model Hauwei {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  url        String
+  inversor   Inversor? @relation(fields: [inversorId], references: [id])
+  inversorId Int       @unique
+}
+
+model Elgin {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  username   String
+  password   String
+  inversor   Inversor? @relation(fields: [inversorId], references: [id])
+  inversorId Int       @unique
+}
+
+model PowerGenerated {
   id               Int      @id @default(autoincrement())
   createdAt        DateTime @default(now())
-  user             User     @relation(fields: [userId], references: [id])
-  userId           Int
-  powerInRealTime  Float
+  inversor         Inversor @relation(fields: [inversorId], references: [id])
+  inversorId       Int
+  powerInRealTime  Float?
   todayPerformance Float
   monthPerformace  Float
   yearPerformace   Float
   allPerformace    Float
-  co2Value         Float
-  coalValue        Float
-  treeValue        Int
+  co2Value         Float?
+  coalValue        Float?
+  treeValue        Int?
 }

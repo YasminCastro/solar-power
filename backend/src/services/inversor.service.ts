@@ -3,13 +3,14 @@ import { Service } from 'typedi';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { HttpException } from '@/exceptions/httpException';
 import { logger } from '@/utils/logger';
+import { ElginDataDto } from '@/dtos/inversor.dto';
 
 @Service()
 export class InversorService {
   public inversors = new PrismaClient().inversor;
 
   public async hauwei(page: Page, browser: Browser): Promise<any> {
-    const POWER_REAL_TIME_SELECTOR = '.nco-kiosk-overview-data';
+    const POWER_REAL_DATA_SELECTOR = '.nco-kiosk-overview-data';
     const C02_SELECTOR = '.social-co2-item';
     const COAL_SELECTOR = '.social-coal-item';
     const TREE_SELECTOR = '.social-trees-item';
@@ -18,8 +19,8 @@ export class InversorService {
       logger.info(`POWER GENERATION DATA...`);
 
       // POWER GENERATION DATA
-      await page.waitForSelector(POWER_REAL_TIME_SELECTOR, { timeout: 5000 });
-      let powerGenerationDataEval = await page.$$(POWER_REAL_TIME_SELECTOR);
+      await page.waitForSelector(POWER_REAL_DATA_SELECTOR, { timeout: 5000 });
+      let powerGenerationDataEval = await page.$$(POWER_REAL_DATA_SELECTOR);
 
       logger.info(`Creating powerGenerationDataPromise...`);
 
@@ -77,6 +78,71 @@ export class InversorService {
     }
   }
 
+  public async elgin(page: Page, browser: Browser, elginLoginInfo: ElginDataDto): Promise<any> {
+    const USERNAME_INPUT = '#loginusr > input';
+    const PASSWORD_INPUT = '#loginpow > input';
+    const LOGIN_BUTTON = '#loginbtn';
+    const TODAY_ENERGY = '#stats00';
+    const MONTH_ENERGY = '#stats01';
+    const YEAR_ENERGY = '#stats02';
+    const TOTAL_ENERGY = '#stats03';
+    const GAINS = '#stats04';
+    const COAL_SELECTOR = '#stats05';
+    const TEMP_SELECTOR = '#stats06';
+    const SOLAR_IRRADIANCE = '#stats07';
+
+    try {
+      logger.info(`LOGIN ELGIN MONITOR...`);
+
+      // LOGIN
+      await page.waitForSelector(USERNAME_INPUT, { timeout: 5000 });
+      await page.type(USERNAME_INPUT, elginLoginInfo.elginUserName);
+
+      await page.waitForSelector(PASSWORD_INPUT, { timeout: 5000 });
+      await page.type(PASSWORD_INPUT, elginLoginInfo.elginPassword);
+
+      await page.waitForSelector(LOGIN_BUTTON, { timeout: 5000 });
+      await page.click(LOGIN_BUTTON);
+
+      await page.waitForNavigation({ waitUntil: 'networkidle0' });
+
+      // POWER GENERATION DATA
+      logger.info(`GETTING TOTAL_ENERGY...`);
+
+      await page.waitForSelector(TODAY_ENERGY);
+      let todayPerformanceElement = await page.$(TODAY_ENERGY);
+      let todayPerformance = await page.evaluate(el => el.textContent, todayPerformanceElement);
+
+      await page.waitForSelector(MONTH_ENERGY);
+      let monthPerformaceElement = await page.$(MONTH_ENERGY);
+      let monthPerformace = await page.evaluate(el => el.textContent, monthPerformaceElement);
+
+      await page.waitForSelector(YEAR_ENERGY);
+      let yearPerformaceElement = await page.$(YEAR_ENERGY);
+      let yearPerformace = await page.evaluate(el => el.textContent, yearPerformaceElement);
+
+      await page.waitForSelector(TOTAL_ENERGY);
+      let allPerformaceElement = await page.$(TOTAL_ENERGY);
+      let allPerformace = await page.evaluate(el => el.textContent, allPerformaceElement);
+
+      await page.waitForSelector(COAL_SELECTOR);
+      let coalValueElement = await page.$(COAL_SELECTOR);
+      let coalValue = await page.evaluate(el => el.textContent, coalValueElement);
+
+      return {
+        todayPerformance: parseFloat(todayPerformance),
+        monthPerformace: parseFloat(monthPerformace),
+        yearPerformace: parseFloat(yearPerformace),
+        allPerformace: parseFloat(allPerformace),
+        coalValue: parseFloat(coalValue),
+      };
+    } catch (error) {
+      console.log(error);
+    } finally {
+      browser.close();
+    }
+  }
+
   public async goToPage(url: string): Promise<{ browser: Browser; page: Page }> {
     logger.info(`Lauching puppeteer browser...`);
 
@@ -87,6 +153,14 @@ export class InversorService {
     });
 
     let page = (await browser.pages())[0];
+
+    await page.setRequestInterception(true);
+
+    page.on('request', request =>
+      /image/.test(request.resourceType()) && !request.isInterceptResolutionHandled()
+        ? request.respond({ status: 200, body: 'aborted' })
+        : request.continue(),
+    );
 
     logger.info(`Going to page ${url}...`);
 
