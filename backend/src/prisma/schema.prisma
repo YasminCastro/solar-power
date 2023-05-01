@@ -18,8 +18,8 @@ model User {
   createdAt DateTime   @default(now())
   inversors Inversor[]
   cep       String
-  lat       Decimal
-  long      Decimal
+  lat       String
+  long      String
   city      String
   state     String
   country   String
@@ -58,8 +58,8 @@ model Weather {
   createdAt        DateTime       @default(now())
   powerGenerated   PowerGenerated @relation(fields: [powerGeneratedId], references: [id])
   powerGeneratedId Int            @unique
-  lat              Decimal
-  long             Decimal
+  lat              String
+  long             String
   localtime        String
   temp_c           Float
   wind_kph         Float

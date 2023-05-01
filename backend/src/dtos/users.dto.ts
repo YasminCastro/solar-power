@@ -9,6 +9,36 @@ export class CreateUserDto {
   @MinLength(9)
   @MaxLength(32)
   public password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8)
+  @MaxLength(8)
+  public cep: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public lat: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public long: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public city: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public state: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public country: string;
 }
 
 export class UpdateUserDto {
