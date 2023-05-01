@@ -1,6 +1,12 @@
-export interface Inversor {
+import { User } from './users.interface';
+
+export interface InversorInterface {
   id?: number;
-  email: string;
-  password: string;
   createdAt?: Date;
+  user: User;
+  userId: number;
+  model: string;
+  hauwei?: any;
+  elgin?: any;
+  powerGenerated?: any;
 }

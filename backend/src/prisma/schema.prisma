@@ -12,10 +12,17 @@ generator client {
 
 model User {
   id        Int        @id @default(autoincrement())
+  name      String
   email     String     @unique
   password  String
   createdAt DateTime   @default(now())
   inversors Inversor[]
+  cep       String
+  lat       Decimal
+  long      Decimal
+  city      String
+  state     String
+  country   String
 }
 
 model Inversor {
@@ -24,39 +31,40 @@ model Inversor {
   user           User             @relation(fields: [userId], references: [id])
   userId         Int
   model          String
-  hauwei         Hauwei?
-  elgin          Elgin?
+  url            String?
+  username       String?
+  password       String?
   powerGenerated PowerGenerated[]
 }
 
-model Hauwei {
-  id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now())
-  url        String
-  inversor   Inversor? @relation(fields: [inversorId], references: [id])
-  inversorId Int       @unique
-}
-
-model Elgin {
-  id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now())
-  username   String
-  password   String
-  inversor   Inversor? @relation(fields: [inversorId], references: [id])
-  inversorId Int       @unique
-}
-
 model PowerGenerated {
-  id               Int      @id @default(autoincrement())
-  createdAt        DateTime @default(now())
-  inversor         Inversor @relation(fields: [inversorId], references: [id])
-  inversorId       Int
-  powerInRealTime  Float?
-  todayPerformance Float
-  monthPerformace  Float
-  yearPerformace   Float
-  allPerformace    Float
-  co2Value         Float?
-  coalValue        Float?
-  treeValue        Int?
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  inversor        Inversor @relation(fields: [inversorId], references: [id])
+  inversorId      Int
+  powerInRealTime Float?
+  powerToday      Float
+  powerMonth      Float
+  powerYear       Float
+  allPower        Float
+  co2             Float?
+  coal            Float?
+  tree            Int?
+  weather         Weather?
+}
+
+model Weather {
+  id               Int            @id @default(autoincrement())
+  createdAt        DateTime       @default(now())
+  powerGenerated   PowerGenerated @relation(fields: [powerGeneratedId], references: [id])
+  powerGeneratedId Int            @unique
+  lat              Decimal
+  long             Decimal
+  localtime        String
+  temp_c           Float
+  wind_kph         Float
+  pressure_mm      Float
+  humidity         Float
+  cloud            Float
+  uv               Float
 }

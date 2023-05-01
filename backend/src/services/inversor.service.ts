@@ -3,11 +3,19 @@ import { Service } from 'typedi';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { HttpException } from '@/exceptions/httpException';
 import { logger } from '@/utils/logger';
-import { ElginDataDto } from '@/dtos/inversor.dto';
+import { CreateInversorDto } from '@/dtos/inversor.dto';
+import { InversorInterface } from '@/interfaces/inversor.interface';
+import { ElginDataDto } from '@/dtos/powerGenerated.dto';
 
 @Service()
 export class InversorService {
   public inversors = new PrismaClient().inversor;
+
+  public async createInversor(inversorData: CreateInversorDto, userId: number): Promise<any> {
+    try {
+      // const createUserData: Promise<InversorInterface> = this.inversors.create({ data: { userId, ...inversorData } });
+    } catch (error) {}
+  }
 
   public async hauwei(page: Page, browser: Browser): Promise<any> {
     const POWER_REAL_DATA_SELECTOR = '.nco-kiosk-overview-data';

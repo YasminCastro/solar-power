@@ -1,24 +1,23 @@
-import { IsString, IsNotEmpty, IsUrl } from 'class-validator';
+import { IsString, IsNotEmpty, IsUrl, IsOptional } from 'class-validator';
 
-export class HauweiDataDto {
+export class CreateInversorDto {
+  @IsString()
+  @IsNotEmpty()
+  public model: string;
+
   @IsString()
   @IsNotEmpty()
   @IsUrl()
+  @IsOptional()
   public url: string;
-}
-
-export class ElginDataDto {
-  @IsString()
-  @IsNotEmpty()
-  public elginUserName: string;
 
   @IsString()
   @IsNotEmpty()
-  public elginPassword: string;
-}
+  @IsOptional()
+  public inversorUsername: string;
 
-export class UpdateInversorDto {
   @IsString()
   @IsNotEmpty()
-  public url: string;
+  @IsOptional()
+  public inversorPassword: string;
 }

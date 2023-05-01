@@ -2,10 +2,24 @@ import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
 import { InversorService } from '@/services/inversor.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
-import { ElginDataDto } from '@/dtos/inversor.dto';
+import { CreateInversorDto } from '@/dtos/inversor.dto';
+import { ElginDataDto } from '@/dtos/powerGenerated.dto';
 
 export class InversorController {
   public inversor = Container.get(InversorService);
+
+  public createInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const inversorData: CreateInversorDto = req.body;
+      const userId = req.user.id;
+
+      const inversor = await this.inversor.createInversor(inversorData, userId);
+
+      res.status(201).json({});
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public getHauweiData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
