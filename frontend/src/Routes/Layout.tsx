@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuth } from "../context/AuthContext";
 import Home from "../screens/Home";
 import Login from "../screens/Login";
+import Profile from "../screens/Profile";
+import SignUp from "../screens/SignUp";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,8 +26,8 @@ const Layout = () => {
           />
         ) : (
           <Stack.Screen
-            name="Login"
-            component={Login}
+            name="Perfil"
+            component={SignUp}
             options={{ headerShown: false }}
           />
         )}
