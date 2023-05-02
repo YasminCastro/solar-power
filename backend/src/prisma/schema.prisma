@@ -29,6 +29,7 @@ model Inversor {
   id             Int              @id @default(autoincrement())
   createdAt      DateTime         @default(now())
   user           User             @relation(fields: [userId], references: [id])
+  name           String
   userId         Int
   model          String
   url            String?

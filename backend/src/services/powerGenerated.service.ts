@@ -3,15 +3,15 @@ import { Service } from 'typedi';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { HttpException } from '@/exceptions/httpException';
 import { logger } from '@/utils/logger';
-import { CreateInversorDto } from '@/dtos/inversor.dto';
+import { CreateInversorsDto } from '@/dtos/inversors.dto';
 import { InversorInterface } from '@/interfaces/inversor.interface';
 import { ElginDataDto } from '@/dtos/powerGenerated.dto';
 
 @Service()
-export class InversorService {
+export class InversorsService {
   public inversors = new PrismaClient().inversor;
 
-  public async createInversor(inversorData: CreateInversorDto, userId: number): Promise<any> {
+  public async createInversor(inversorData: CreateInversorsDto, userId: number): Promise<any> {
     try {
       // const createUserData: Promise<InversorInterface> = this.inversors.create({ data: { userId, ...inversorData } });
     } catch (error) {}

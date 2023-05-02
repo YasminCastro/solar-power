@@ -1,52 +1,70 @@
 import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
-import { InversorService } from '@/services/inversor.service';
+import { InversorsService } from '@/services/inversors.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
-import { CreateInversorDto } from '@/dtos/inversor.dto';
-import { ElginDataDto } from '@/dtos/powerGenerated.dto';
+import { CreateInversorsDto } from '@/dtos/inversors.dto';
 
 export class InversorController {
-  public inversor = Container.get(InversorService);
+  public inversor = Container.get(InversorsService);
 
   public createInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inversorData: CreateInversorDto = req.body;
+      const inversorData: CreateInversorsDto = req.body;
       const userId = req.user.id;
 
       const inversor = await this.inversor.createInversor(inversorData, userId);
 
-      res.status(201).json({});
+      res.status(201).json({ inversor, message: 'Inversor successfully created' });
     } catch (error) {
       next(error);
     }
   };
 
-  public getHauweiData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public getByUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const url: string = req.body.url;
-      const { page, browser } = await this.inversor.goToPage(url);
+      const userId = req.user.id;
 
-      const hauweiData = await this.inversor.hauwei(page, browser);
+      const inversor = await this.inversor.getInversorsByUser(userId);
 
-      const saveInversorData = await this.inversor.saveInversorData(req.user.id, hauweiData);
-
-      res.status(201).json(saveInversorData);
+      res.status(201).json(inversor);
     } catch (error) {
       next(error);
     }
   };
 
-  public getElginData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public getById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const elginLoginInfo: ElginDataDto = req.body;
-      const url = 'https://elgin.shinemonitor.com';
-      const { page, browser } = await this.inversor.goToPage(url);
+      const inversorId = parseInt(req.params.id);
+      const userId = req.user.id;
 
-      const elginData = await this.inversor.elgin(page, browser, elginLoginInfo);
+      const inversor = await this.inversor.getInversorById(inversorId, userId);
 
-      const saveInversorData = await this.inversor.saveInversorData(req.user.id, elginData);
+      res.status(201).json(inversor);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-      res.status(201).json(saveInversorData);
+  public updateInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const inversorData: CreateInversorsDto = req.body;
+      const inversorId = parseInt(req.params.id);
+
+      const inversor = await this.inversor.updateInversor(inversorData, inversorId);
+
+      res.status(201).json({ inversor, message: 'Inversor successfully updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public deleteInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const inversorId = parseInt(req.params.id);
+
+      await this.inversor.deleteInversor(inversorId);
+
+      res.status(201).json({ message: 'Inversor successfully deleted' });
     } catch (error) {
       next(error);
     }
