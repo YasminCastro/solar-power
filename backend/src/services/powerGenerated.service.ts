@@ -149,7 +149,7 @@ export class PowerGeneratedService {
 
     const browser = await puppeteer.launch({
       headless: 'new',
-      args: ['--window-size=1400,1080', '--disable-setuid-sandbox'],
+      args: ['--window-size=1400,1080', '--disable-setuid-sandbox', '--no-sandbox'],
       ignoreHTTPSErrors: true,
     });
 
