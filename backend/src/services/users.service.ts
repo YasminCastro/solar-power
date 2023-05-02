@@ -10,13 +10,8 @@ const selectQuery = {
   email: true,
   name: true,
   createdAt: true,
-  cep: true,
-  city: true,
-  country: true,
   inversors: true,
-  lat: true,
-  long: true,
-  state: true,
+  powerGenerated: true,
 };
 
 @Service()
