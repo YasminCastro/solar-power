@@ -100,10 +100,10 @@ export class PowerGeneratedService {
 
       // LOGIN
       await page.waitForSelector(USERNAME_INPUT, { timeout: 5000 });
-      await page.type(USERNAME_INPUT, elginLoginInfo.elginUserName);
+      await page.type(USERNAME_INPUT, elginLoginInfo.username);
 
       await page.waitForSelector(PASSWORD_INPUT, { timeout: 5000 });
-      await page.type(PASSWORD_INPUT, elginLoginInfo.elginPassword);
+      await page.type(PASSWORD_INPUT, elginLoginInfo.password);
 
       await page.waitForSelector(LOGIN_BUTTON, { timeout: 5000 });
       await page.click(LOGIN_BUTTON);

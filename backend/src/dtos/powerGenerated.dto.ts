@@ -1,6 +1,14 @@
-import { IsString, IsNotEmpty, IsUrl, IsBoolean, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsUrl, IsBoolean, IsOptional, IsNumber } from 'class-validator';
 
 export class HauweiDataDto {
+  @IsNumber()
+  @IsNotEmpty()
+  public inversorId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  public userId: number;
+
   @IsString()
   @IsNotEmpty()
   @IsUrl()
@@ -16,6 +24,10 @@ export class HauweiDataDto {
 }
 
 export class ElginDataDto {
+  @IsNumber()
+  @IsNotEmpty()
+  public inversorId: number;
+
   @IsString()
   @IsNotEmpty()
   public username: string;
