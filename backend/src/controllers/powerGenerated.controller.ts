@@ -6,6 +6,7 @@ import { InversorsService } from '@/services/inversors.service';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
 import { Inversor } from '@prisma/client';
+import { logger } from '@/utils/logger';
 
 export class PowerGeneratedController {
   public powerGenerated = Container.get(PowerGeneratedService);
@@ -53,10 +54,16 @@ export class PowerGeneratedController {
       for (const inversor of allInversors) {
         switch (inversor.model) {
           case 'hauwei':
+            logger.info('Updating hauwei model ' + inversor.id);
             await getHauweiData(inversor);
+            logger.info('Finish updating hauwei model');
+
             break;
           case 'elgin':
+            logger.info('Updating elgin model  ' + inversor.id);
             await getElginData(inversor);
+            logger.info('Finish updating elgin model');
+
             break;
         }
       }
