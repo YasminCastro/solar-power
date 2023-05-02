@@ -35,9 +35,6 @@ model Inversor {
   cep            String
   lat            String
   long           String
-  city           String
-  state          String
-  country        String
 }
 
 model PowerGenerated {

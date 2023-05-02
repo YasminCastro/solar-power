@@ -12,9 +12,9 @@ export class InversorController {
       const inversorData: CreateInversorsDto = req.body;
       const userId = req.user.id;
 
-      const inversor = await this.inversor.createInversor(inversorData, userId);
+      await this.inversor.createInversor(inversorData, userId);
 
-      res.status(201).json({ inversor, message: 'Inversor successfully created' });
+      res.status(201).json({ message: 'Inversor successfully created' });
     } catch (error) {
       next(error);
     }

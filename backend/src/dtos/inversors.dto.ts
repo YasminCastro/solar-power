@@ -24,4 +24,16 @@ export class CreateInversorsDto {
   @IsNotEmpty()
   @ValidateIf(o => !o.url)
   public password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public cep: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public lat: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public long: string;
 }
