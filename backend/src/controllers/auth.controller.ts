@@ -6,6 +6,14 @@ import { CreateUserDto, LoginUserDto } from '@/dtos/users.dto';
 export class AuthController {
   public auth = Container.get(AuthService);
 
+  public hello = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      res.status(201).json({ message: 'Project running ☀️! ' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: CreateUserDto = req.body;
