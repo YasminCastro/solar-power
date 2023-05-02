@@ -1,54 +1,58 @@
 import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
-import { InversorsService } from '@/services/inversors.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import { CreateInversorsDto } from '@/dtos/inversors.dto';
 import { ElginDataDto } from '@/dtos/powerGenerated.dto';
+import { PowerGeneratedService } from '@/services/powerGenerated.service';
+import { InversorsService } from '@/services/inversors.service';
+import { HttpException } from '@/exceptions/httpException';
 
-export class InversorController {
-  public inversor = Container.get(InversorsService);
-
-  public createInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const inversorData: CreateInversorsDto = req.body;
-      const userId = req.user.id;
-
-      const inversor = await this.inversor.createInversor(inversorData, userId);
-
-      res.status(201).json({});
-    } catch (error) {
-      next(error);
-    }
-  };
+export class PowerGeneratedController {
+  public powerGenerated = Container.get(PowerGeneratedService);
+  public inversors = Container.get(InversorsService);
 
   public getHauweiData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const url: string = req.body.url;
-      const { page, browser } = await this.inversor.goToPage(url);
+      const inversorId = parseInt(req.params.id);
+      const { lat, long, id: userId } = req.user;
 
-      const hauweiData = await this.inversor.hauwei(page, browser);
+      const inversor = await this.inversors.getInversorById(inversorId, userId);
 
-      const saveInversorData = await this.inversor.saveInversorData(req.user.id, hauweiData);
+      if (!inversor.url) throw new HttpException(409, 'Inversor url not found');
 
-      res.status(201).json(saveInversorData);
-    } catch (error) {
-      next(error);
-    }
-  };
+      const { page, browser } = await this.powerGenerated.goToPage(inversor.url);
 
-  public getElginData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const elginLoginInfo: ElginDataDto = req.body;
-      const url = 'https://elgin.shinemonitor.com';
-      const { page, browser } = await this.inversor.goToPage(url);
+      const hauweiData = await this.powerGenerated.hauwei(page, browser);
 
-      const elginData = await this.inversor.elgin(page, browser, elginLoginInfo);
+      const weather = await this.powerGenerated.getWeatherData(lat, long);
 
-      const saveInversorData = await this.inversor.saveInversorData(req.user.id, elginData);
+      const userInfo = {
+        lat,
+        long,
+        userId,
+      };
+
+      const saveInversorData = await this.powerGenerated.saveInversorData(inversorId, hauweiData, weather, userInfo);
 
       res.status(201).json(saveInversorData);
     } catch (error) {
       next(error);
     }
   };
+
+  // public getElginData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  //   try {
+  //     const elginLoginInfo: ElginDataDto = req.body;
+  //     const url = 'https://elgin.shinemonitor.com';
+  //     const { page, browser } = await this.inversor.goToPage(url);
+
+  //     const elginData = await this.inversor.elgin(page, browser, elginLoginInfo);
+
+  //     const saveInversorData = await this.inversor.saveInversorData(req.user.id, elginData);
+
+  //     res.status(201).json(saveInversorData);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 }

@@ -1,16 +1,21 @@
-import { InversorInterface } from './inversor.interface';
+export interface HauweiDataInterface {
+  powerInRealTime: number;
+  powerToday: number;
+  powerMonth: number;
+  powerYear: number;
+  allPower: number;
+  co2: number;
+  coal: number;
+  tree: number;
+}
 
-export interface PowerGeneretedInterface {
-  id?: number;
-  createdAt?: Date;
-  inversor: InversorInterface;
-  inversorId: number;
-  powerInRealTime?: number;
-  todayPerformance: number;
-  monthPerformace: number;
-  yearPerformace: number;
-  allPerformace: number;
-  co2Value?: number;
-  coalValue?: number;
-  treeValue?: number;
+export interface WeatherInterface {
+  localtime: string;
+  tempC: number;
+  windKph: number;
+  pressureIn: number;
+  humidity: number;
+  cloud: number;
+  uv: number;
+  precipMM: number;
 }

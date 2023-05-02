@@ -1,4 +1,4 @@
-import { Inversor, PrismaClient } from '@prisma/client';
+import { Inversor, PowerGenerated, PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { HttpException } from '@/exceptions/httpException';
@@ -6,18 +6,15 @@ import { logger } from '@/utils/logger';
 import { CreateInversorsDto } from '@/dtos/inversors.dto';
 import { InversorInterface } from '@/interfaces/inversor.interface';
 import { ElginDataDto } from '@/dtos/powerGenerated.dto';
+import { HauweiDataInterface, WeatherInterface } from '@/interfaces/powerGenerated.interface';
+import { weatherApi } from '@/config';
+import { Logger } from 'winston';
 
 @Service()
-export class InversorsService {
-  public inversors = new PrismaClient().inversor;
+export class PowerGeneratedService {
+  public powerGenerated = new PrismaClient().powerGenerated;
 
-  public async createInversor(inversorData: CreateInversorsDto, userId: number): Promise<any> {
-    try {
-      // const createUserData: Promise<InversorInterface> = this.inversors.create({ data: { userId, ...inversorData } });
-    } catch (error) {}
-  }
-
-  public async hauwei(page: Page, browser: Browser): Promise<any> {
+  public async hauwei(page: Page, browser: Browser): Promise<HauweiDataInterface> {
     const POWER_REAL_DATA_SELECTOR = '.nco-kiosk-overview-data';
     const C02_SELECTOR = '.social-co2-item';
     const COAL_SELECTOR = '.social-coal-item';
@@ -71,13 +68,13 @@ export class InversorsService {
 
       return {
         powerInRealTime: parseFloat(powerGenerationData[0]),
-        todayPerformance: parseFloat(powerGenerationData[1]),
-        monthPerformace: parseFloat(powerGenerationData[2]),
-        yearPerformace: parseFloat(powerGenerationData[3]),
-        allPerformace: parseFloat(powerGenerationData[4]),
-        co2Value: parseFloat(co2Value),
-        coalValue: parseFloat(coalValue),
-        treeValue: parseInt(treeValue),
+        powerToday: parseFloat(powerGenerationData[1]),
+        powerMonth: parseFloat(powerGenerationData[2]),
+        powerYear: parseFloat(powerGenerationData[3]),
+        allPower: parseFloat(powerGenerationData[4]),
+        co2: parseFloat(co2Value),
+        coal: parseFloat(coalValue),
+        tree: parseInt(treeValue),
       };
     } catch (error) {
       console.log(error);
@@ -179,8 +176,38 @@ export class InversorsService {
     return { browser, page };
   }
 
-  public async saveInversorData(userId: number, inversorData: any): Promise<Inversor> {
-    const createInversorData: Promise<Inversor> = this.inversors.create({ data: { userId, ...inversorData } });
+  public async saveInversorData(
+    inversorId: number,
+    inversorData: HauweiDataInterface,
+    weather: WeatherInterface,
+    userInfo: { lat: string; long: string; userId: number },
+  ): Promise<PowerGenerated> {
+    const createInversorData: Promise<PowerGenerated> = this.powerGenerated.create({
+      data: { inversorId, ...inversorData, ...weather, ...userInfo },
+    });
     return createInversorData;
+  }
+
+  public async getWeatherData(lat: string, long: string): Promise<WeatherInterface> {
+    try {
+      const { data: weather } = await weatherApi.get(``, { params: { q: `${lat},${long}` } });
+
+      return {
+        cloud: weather.current.cloud,
+        humidity: weather.current.humidity,
+        tempC: weather.current.temp_c,
+        localtime: weather.location.localtime,
+        pressureIn: weather.current.pressure_in,
+        uv: weather.current.uv,
+        windKph: weather.current.wind_kph,
+        precipMM: weather.current.precip_mm,
+      };
+    } catch (error: any) {
+      logger.error(`WEATHER API ERROR: ${error.message}`);
+      throw new HttpException(400, error.message);
+    }
+
+    // const createInversorData: Promise<PowerGenerated> = this.powerGenerated.create({ data: { userId, ...inversorData } });
+    // return createInversorData;
   }
 }
