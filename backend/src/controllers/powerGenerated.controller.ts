@@ -4,6 +4,8 @@ import { RequestWithUser } from '@/interfaces/auth.interface';
 import { ElginDataDto, HauweiDataDto } from '@/dtos/powerGenerated.dto';
 import { PowerGeneratedService } from '@/services/powerGenerated.service';
 import { InversorsService } from '@/services/inversors.service';
+import * as Crypto from 'crypto-js';
+import { CRYPTO_KEY } from '@/config';
 
 export class PowerGeneratedController {
   public powerGenerated = Container.get(PowerGeneratedService);
@@ -23,9 +25,10 @@ export class PowerGeneratedController {
         lat,
         long,
         userId,
+        inversorId,
       };
 
-      const saveInversorData = await this.powerGenerated.saveInversorData(inversorId, hauweiData, weather, userInfo);
+      const saveInversorData = await this.powerGenerated.saveInversorData(hauweiData, weather, userInfo);
 
       res.status(201).json(saveInversorData);
     } catch (error) {
@@ -36,15 +39,31 @@ export class PowerGeneratedController {
   public getElginData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const elginLoginInfo: ElginDataDto = req.body;
-      const { id: userId } = req.user;
+      const { inversorId, lat, long, userId, passwordIsEncrypted, password: rawPassword, username } = elginLoginInfo;
+
+      let password = rawPassword;
+
+      if (passwordIsEncrypted) {
+        password = Crypto.AES.decrypt(rawPassword, CRYPTO_KEY);
+      }
+
       const url = 'https://elgin.shinemonitor.com';
       const { page, browser } = await this.powerGenerated.goToPage(url);
 
-      const elginData = await this.powerGenerated.elgin(page, browser, elginLoginInfo);
+      const elginData = await this.powerGenerated.elgin(page, browser, username, password);
 
-      // const saveInversorData = await this.powerGenerated.saveInversorData(req.user.id, elginData);
+      const userInfo = {
+        lat,
+        long,
+        userId,
+        inversorId,
+      };
 
-      res.status(201).json();
+      const weather = await this.powerGenerated.getWeatherData(lat, long);
+
+      const saveInversorData = await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
+
+      res.status(201).json(saveInversorData);
     } catch (error) {
       next(error);
     }
@@ -53,11 +72,10 @@ export class PowerGeneratedController {
   public updateAll = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const elginLoginInfo: ElginDataDto = req.body;
-      const { id: userId } = req.user;
       const url = 'https://elgin.shinemonitor.com';
       const { page, browser } = await this.powerGenerated.goToPage(url);
 
-      const elginData = await this.powerGenerated.elgin(page, browser, elginLoginInfo);
+      // const elginData = await this.powerGenerated.elgin(page, browser, elginLoginInfo);
 
       // const saveInversorData = await this.powerGenerated.saveInversorData(req.user.id, elginData);
 

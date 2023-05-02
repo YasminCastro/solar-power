@@ -82,7 +82,7 @@ export class PowerGeneratedService {
     }
   }
 
-  public async elgin(page: Page, browser: Browser, elginLoginInfo: ElginDataDto): Promise<ElginDataInterface> {
+  public async elgin(page: Page, browser: Browser, username: string, password: string): Promise<ElginDataInterface> {
     const USERNAME_INPUT = '#loginusr > input';
     const PASSWORD_INPUT = '#loginpow > input';
     const LOGIN_BUTTON = '#loginbtn';
@@ -100,10 +100,10 @@ export class PowerGeneratedService {
 
       // LOGIN
       await page.waitForSelector(USERNAME_INPUT, { timeout: 5000 });
-      await page.type(USERNAME_INPUT, elginLoginInfo.username);
+      await page.type(USERNAME_INPUT, username);
 
       await page.waitForSelector(PASSWORD_INPUT, { timeout: 5000 });
-      await page.type(PASSWORD_INPUT, elginLoginInfo.password);
+      await page.type(PASSWORD_INPUT, password);
 
       await page.waitForSelector(LOGIN_BUTTON, { timeout: 5000 });
       await page.click(LOGIN_BUTTON);
@@ -176,13 +176,12 @@ export class PowerGeneratedService {
   }
 
   public async saveInversorData(
-    inversorId: number,
-    inversorData: HauweiDataInterface,
+    inversorData: HauweiDataInterface | ElginDataInterface,
     weather: WeatherInterface,
-    userInfo: { lat: string; long: string; userId: number },
+    userInfo: { lat: string; long: string; userId: number; inversorId: number },
   ): Promise<PowerGenerated> {
     const createInversorData: Promise<PowerGenerated> = this.powerGenerated.create({
-      data: { inversorId, ...inversorData, ...weather, ...userInfo },
+      data: { ...inversorData, ...weather, ...userInfo },
     });
     return createInversorData;
   }

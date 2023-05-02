@@ -2,7 +2,8 @@ import { Inversor, PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
 import { CreateInversorsDto } from '@/dtos/inversors.dto';
 import { HttpException } from '@/exceptions/httpException';
-import { hash } from 'bcrypt';
+import * as Crypto from 'crypto-js';
+import { CRYPTO_KEY } from '@/config';
 
 @Service()
 export class InversorsService {
@@ -11,7 +12,7 @@ export class InversorsService {
   public async createInversor(inversorData: CreateInversorsDto, userId: number): Promise<Inversor> {
     let password = null;
     if (inversorData.password) {
-      password = await hash(inversorData.password, 10);
+      password = Crypto.AES.encrypt(inversorData.password, CRYPTO_KEY).toString();
     }
     const createInversorData: Promise<Inversor> = this.inversors.create({ data: { userId, ...inversorData, password } });
 
@@ -43,7 +44,7 @@ export class InversorsService {
 
     let password = null;
     if (inversorData.password) {
-      password = await hash(inversorData.password, 10);
+      password = Crypto.AES.encrypt(inversorData.password, CRYPTO_KEY).toString();
     }
 
     const updateInversorData = await this.inversors.update({ where: { id: inversorId }, data: { ...inversorData, password } });

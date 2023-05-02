@@ -28,6 +28,10 @@ export class ElginDataDto {
   @IsNotEmpty()
   public inversorId: number;
 
+  @IsNumber()
+  @IsNotEmpty()
+  public userId: number;
+
   @IsString()
   @IsNotEmpty()
   public username: string;
