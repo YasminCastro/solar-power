@@ -55,12 +55,6 @@ export class LoginUserDto {
 export class UpdateUserDto {
   @IsString()
   @IsNotEmpty()
-  @MinLength(9)
-  @MaxLength(32)
-  public password: string;
-
-  @IsString()
-  @IsNotEmpty()
   public name: string;
 
   @IsString()
@@ -88,4 +82,12 @@ export class UpdateUserDto {
   @IsString()
   @IsNotEmpty()
   public country: string;
+}
+
+export class UpdatePasswordDto {
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(9)
+  @MaxLength(32)
+  public password: string;
 }
