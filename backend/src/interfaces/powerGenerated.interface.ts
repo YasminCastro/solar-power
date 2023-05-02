@@ -9,6 +9,14 @@ export interface HauweiDataInterface {
   tree: number;
 }
 
+export interface ElginDataInterface {
+  powerToday: number;
+  powerMonth: number;
+  powerYear: number;
+  allPower: number;
+  co2: number;
+}
+
 export interface WeatherInterface {
   localtime: string;
   tempC: number;

@@ -40,19 +40,37 @@ export class PowerGeneratedController {
     }
   };
 
-  // public getElginData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
-  //   try {
-  //     const elginLoginInfo: ElginDataDto = req.body;
-  //     const url = 'https://elgin.shinemonitor.com';
-  //     const { page, browser } = await this.inversor.goToPage(url);
+  public getElginData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const elginLoginInfo: ElginDataDto = req.body;
+      const { id: userId } = req.user;
+      const url = 'https://elgin.shinemonitor.com';
+      const { page, browser } = await this.powerGenerated.goToPage(url);
 
-  //     const elginData = await this.inversor.elgin(page, browser, elginLoginInfo);
+      const elginData = await this.powerGenerated.elgin(page, browser, elginLoginInfo);
 
-  //     const saveInversorData = await this.inversor.saveInversorData(req.user.id, elginData);
+      // const saveInversorData = await this.powerGenerated.saveInversorData(req.user.id, elginData);
 
-  //     res.status(201).json(saveInversorData);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+      res.status(201).json();
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public updateAll = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const elginLoginInfo: ElginDataDto = req.body;
+      const { id: userId } = req.user;
+      const url = 'https://elgin.shinemonitor.com';
+      const { page, browser } = await this.powerGenerated.goToPage(url);
+
+      const elginData = await this.powerGenerated.elgin(page, browser, elginLoginInfo);
+
+      // const saveInversorData = await this.powerGenerated.saveInversorData(req.user.id, elginData);
+
+      res.status(201).json();
+    } catch (error) {
+      next(error);
+    }
+  };
 }

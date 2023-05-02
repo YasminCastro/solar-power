@@ -6,9 +6,8 @@ import { logger } from '@/utils/logger';
 import { CreateInversorsDto } from '@/dtos/inversors.dto';
 import { InversorInterface } from '@/interfaces/inversor.interface';
 import { ElginDataDto } from '@/dtos/powerGenerated.dto';
-import { HauweiDataInterface, WeatherInterface } from '@/interfaces/powerGenerated.interface';
+import { ElginDataInterface, HauweiDataInterface, WeatherInterface } from '@/interfaces/powerGenerated.interface';
 import { weatherApi } from '@/config';
-import { Logger } from 'winston';
 
 @Service()
 export class PowerGeneratedService {
@@ -83,7 +82,7 @@ export class PowerGeneratedService {
     }
   }
 
-  public async elgin(page: Page, browser: Browser, elginLoginInfo: ElginDataDto): Promise<any> {
+  public async elgin(page: Page, browser: Browser, elginLoginInfo: ElginDataDto): Promise<ElginDataInterface> {
     const USERNAME_INPUT = '#loginusr > input';
     const PASSWORD_INPUT = '#loginpow > input';
     const LOGIN_BUTTON = '#loginbtn';
@@ -135,11 +134,11 @@ export class PowerGeneratedService {
       let coalValue = await page.evaluate(el => el.textContent, coalValueElement);
 
       return {
-        todayPerformance: parseFloat(todayPerformance),
-        monthPerformace: parseFloat(monthPerformace),
-        yearPerformace: parseFloat(yearPerformace),
-        allPerformace: parseFloat(allPerformace),
-        coalValue: parseFloat(coalValue),
+        powerToday: parseFloat(todayPerformance),
+        powerMonth: parseFloat(monthPerformace),
+        powerYear: parseFloat(yearPerformace),
+        allPower: parseFloat(allPerformace),
+        co2: parseFloat(coalValue),
       };
     } catch (error) {
       console.log(error);

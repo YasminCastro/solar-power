@@ -17,12 +17,6 @@ model User {
   password       String
   createdAt      DateTime         @default(now())
   inversors      Inversor[]
-  cep            String
-  lat            String
-  long           String
-  city           String
-  state          String
-  country        String
   PowerGenerated PowerGenerated[]
 }
 
@@ -37,6 +31,13 @@ model Inversor {
   username       String?
   password       String?
   powerGenerated PowerGenerated[]
+  active         Boolean          @default(true)
+  cep            String
+  lat            String
+  long           String
+  city           String
+  state          String
+  country        String
 }
 
 model PowerGenerated {
