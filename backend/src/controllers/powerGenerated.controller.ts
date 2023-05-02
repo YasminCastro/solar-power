@@ -1,15 +1,71 @@
 import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
-import { RequestWithUser } from '@/interfaces/auth.interface';
 import { ElginDataDto, HauweiDataDto } from '@/dtos/powerGenerated.dto';
 import { PowerGeneratedService } from '@/services/powerGenerated.service';
 import { InversorsService } from '@/services/inversors.service';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
+import { Inversor } from '@prisma/client';
 
 export class PowerGeneratedController {
   public powerGenerated = Container.get(PowerGeneratedService);
   public inversors = Container.get(InversorsService);
+
+  public updateAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const getHauweiData = async (inversor: Inversor) => {
+      const { page, browser } = await this.powerGenerated.goToPage(inversor.url);
+      const hauweiData = await this.powerGenerated.hauwei(page, browser);
+      const weather = await this.powerGenerated.getWeatherData(inversor.lat, inversor.long);
+      const userInfo = {
+        lat: inversor.lat,
+        long: inversor.long,
+        userId: inversor.userId,
+        inversorId: inversor.id,
+      };
+
+      await this.powerGenerated.saveInversorData(hauweiData, weather, userInfo);
+    };
+
+    const getElginData = async (inversor: Inversor) => {
+      const password = Crypto.AES.decrypt(inversor.password, CRYPTO_KEY);
+      const username = inversor.username;
+
+      const url = 'https://elgin.shinemonitor.com';
+      const { page, browser } = await this.powerGenerated.goToPage(url);
+
+      const elginData = await this.powerGenerated.elgin(page, browser, username, password);
+
+      const userInfo = {
+        lat: inversor.lat,
+        long: inversor.long,
+        userId: inversor.userId,
+        inversorId: inversor.id,
+      };
+
+      const weather = await this.powerGenerated.getWeatherData(inversor.lat, inversor.long);
+
+      await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
+    };
+
+    try {
+      const allInversors = await this.inversors.getAllInversors();
+
+      for (const inversor of allInversors) {
+        switch (inversor.model) {
+          case 'hauwei':
+            await getHauweiData(inversor);
+            break;
+          case 'elgin':
+            await getElginData(inversor);
+            break;
+        }
+      }
+
+      res.status(201).json();
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public getHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -36,7 +92,7 @@ export class PowerGeneratedController {
     }
   };
 
-  public getElginData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public getElginData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const elginLoginInfo: ElginDataDto = req.body;
       const { inversorId, lat, long, userId, passwordIsEncrypted, password: rawPassword, username } = elginLoginInfo;
@@ -64,22 +120,6 @@ export class PowerGeneratedController {
       const saveInversorData = await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
 
       res.status(201).json(saveInversorData);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  public updateAll = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const elginLoginInfo: ElginDataDto = req.body;
-      const url = 'https://elgin.shinemonitor.com';
-      const { page, browser } = await this.powerGenerated.goToPage(url);
-
-      // const elginData = await this.powerGenerated.elgin(page, browser, elginLoginInfo);
-
-      // const saveInversorData = await this.powerGenerated.saveInversorData(req.user.id, elginData);
-
-      res.status(201).json();
     } catch (error) {
       next(error);
     }

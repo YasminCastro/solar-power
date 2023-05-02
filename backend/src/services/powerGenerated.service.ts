@@ -1,11 +1,8 @@
-import { Inversor, PowerGenerated, PrismaClient } from '@prisma/client';
+import { PowerGenerated, PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { HttpException } from '@/exceptions/httpException';
 import { logger } from '@/utils/logger';
-import { CreateInversorsDto } from '@/dtos/inversors.dto';
-import { InversorInterface } from '@/interfaces/inversor.interface';
-import { ElginDataDto } from '@/dtos/powerGenerated.dto';
 import { ElginDataInterface, HauweiDataInterface, WeatherInterface } from '@/interfaces/powerGenerated.interface';
 import { weatherApi } from '@/config';
 

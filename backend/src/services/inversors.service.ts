@@ -27,6 +27,12 @@ export class InversorsService {
     return findUserInversors;
   }
 
+  public async getAllInversors(): Promise<Inversor[]> {
+    const findUserInversors: Inversor[] = await this.inversors.findMany();
+
+    return findUserInversors;
+  }
+
   public async getInversorById(inversorId: number, userId: number): Promise<Inversor> {
     const findUserInversor: Inversor = await this.inversors.findUnique({
       where: { id: inversorId },

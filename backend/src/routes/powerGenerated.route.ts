@@ -15,7 +15,7 @@ export class PowerGeneratedRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, AuthMiddleware, this.powerGenerated.updateAll);
+    this.router.get(`${this.path}`, this.powerGenerated.updateAll);
     this.router.post(`${this.path}/hauwei`, AuthMiddleware, ValidationMiddleware(HauweiDataDto), this.powerGenerated.getHauweiData);
     this.router.post(`${this.path}/elgin`, AuthMiddleware, ValidationMiddleware(ElginDataDto), this.powerGenerated.getElginData);
   }
