@@ -37,8 +37,7 @@ export class AuthService {
     const payload: DataStoredInToken = {
       id: user.id,
       name: user.name,
-      lat: user.lat,
-      long: user.long,
+
       email: user.email,
     };
 
