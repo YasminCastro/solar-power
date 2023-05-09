@@ -17,13 +17,13 @@ export class PowerGeneratedService {
     const TREE_SELECTOR = '.social-trees-item';
 
     try {
-      logger.info(`POWER GENERATION DATA...`);
+      logger.silly(`POWER GENERATION DATA...`);
 
       // POWER GENERATION DATA
       await page.waitForSelector(POWER_REAL_DATA_SELECTOR, { timeout: 5000 });
       let powerGenerationDataEval = await page.$$(POWER_REAL_DATA_SELECTOR);
 
-      logger.info(`Creating powerGenerationDataPromise...`);
+      logger.silly(`Creating powerGenerationDataPromise...`);
 
       const powerGenerationDataPromise = new Promise<string[]>(async resolve => {
         let data = [];
@@ -42,11 +42,11 @@ export class PowerGeneratedService {
         throw new HttpException(404, 'Power generation data not found');
       }
 
-      logger.info(`Power generation data OK...`);
+      logger.silly(`Power generation data OK...`);
 
       //ENVIRONMENTAL BENEFITS
 
-      logger.info(`ENVIRONMENT BENEFITS...`);
+      logger.silly(`ENVIRONMENT BENEFITS...`);
 
       await page.waitForSelector(C02_SELECTOR, { timeout: 5000 });
       let co2Element = await page.$(C02_SELECTOR);
@@ -60,7 +60,7 @@ export class PowerGeneratedService {
       let treeElement = await page.$(TREE_SELECTOR);
       let treeValue = await page.evaluate(el => el.textContent, treeElement);
 
-      logger.info(`Environmental benefits data OK...`);
+      logger.silly(`Environmental benefits data OK...`);
 
       return {
         powerInRealTime: parseFloat(powerGenerationData[0]),
@@ -93,7 +93,7 @@ export class PowerGeneratedService {
     const SOLAR_IRRADIANCE = '#stats07';
 
     try {
-      logger.info(`LOGIN ELGIN MONITOR...`);
+      logger.silly(`LOGIN ELGIN MONITOR...`);
 
       // LOGIN
       await page.waitForSelector(USERNAME_INPUT, { timeout: 5000 });
@@ -108,7 +108,7 @@ export class PowerGeneratedService {
       await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
       // POWER GENERATION DATA
-      logger.info(`GETTING TOTAL_ENERGY...`);
+      logger.silly(`GETTING TOTAL_ENERGY...`);
 
       await page.waitForSelector(TODAY_ENERGY);
       let todayPerformanceElement = await page.$(TODAY_ENERGY);
@@ -145,7 +145,7 @@ export class PowerGeneratedService {
   }
 
   public async goToPage(url: string): Promise<{ browser: Browser; page: Page }> {
-    logger.info(`Lauching puppeteer browser...`);
+    logger.silly(`Lauching puppeteer browser...`);
 
     const browser = await puppeteer.launch({
       headless: 'new',
@@ -163,7 +163,7 @@ export class PowerGeneratedService {
         : request.continue(),
     );
 
-    logger.info(`Going to page ${url}...`);
+    logger.silly(`Going to page ${url}...`);
 
     await page.goto(url, {
       waitUntil: 'networkidle0',
