@@ -28,6 +28,8 @@ module.exports = {
         CRYPTO_KEY: process.env.CRYPTO_KEY,
         DATABASE_URL: process.env.DATABASE_URL,
         SECRET_KEY: process.env.SECRET_KEY,
+        ELGIN_USER: process.env.ELGIN_USER,
+        ELGIN_PASSWORD: process.env.ELGIN_PASSWORD,
       },
     },
     {
