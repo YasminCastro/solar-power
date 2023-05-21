@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+const CronJob = require('cron').CronJob;
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -6,9 +7,8 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
+import moment from 'moment';
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, cronjobApi, ELGIN_USER, ELGIN_PASSWORD } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
@@ -25,8 +25,47 @@ export class App {
 
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
-    this.initializeSwagger();
     this.initializeErrorHandling();
+
+    let job = new CronJob(
+      '0 */5 6-18 * * *',
+      async function () {
+        logger.info('Runing cronjob:', moment().format('DD-MM-YYYY HH:mm:ss'));
+
+        try {
+          await cronjobApi.post(`/power-generated/hauwei`, {
+            url: 'https://la5.fusionsolar.huawei.com/pvmswebsite/nologin/assets/build/index.html#/kiosk?kk=c8G84jaHlgapefCwiO3spDcixh4dKQeI',
+            lat: '-16.6254331',
+            long: '-49.2475725',
+            inversorId: 2,
+            userId: 1,
+          });
+        } catch (error) {
+          logger.error('Cronjob Error to get hauwei data');
+          logger.error(error);
+        }
+
+        try {
+          await cronjobApi.post(`/power-generated/elgin`, {
+            username: ELGIN_USER,
+            password: ELGIN_PASSWORD,
+            lat: '-16.6254331',
+            long: '-49.2475725',
+            inversorId: 1,
+            userId: 1,
+          });
+        } catch (error) {
+          logger.error('Cronjob Error to get elgin data');
+          logger.error(error);
+        }
+      },
+      null,
+      true,
+      'America/Sao_Paulo',
+    );
+
+    job.start();
+    logger.info(`is job running? ${job.running} `);
   }
 
   public listen() {
@@ -57,22 +96,6 @@ export class App {
     routes.forEach(route => {
       this.app.use('/', route.router);
     });
-  }
-
-  private initializeSwagger() {
-    const options = {
-      swaggerDefinition: {
-        info: {
-          title: 'REST API',
-          version: '1.0.0',
-          description: 'Example docs',
-        },
-      },
-      apis: ['swagger.yaml'],
-    };
-
-    const specs = swaggerJSDoc(options);
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   }
 
   private initializeErrorHandling() {

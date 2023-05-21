@@ -1,5 +1,6 @@
 export interface User {
-    id?: number;
-    email: string;
-    password: string;
-  }
+  email: string;
+  name: string;
+  powerGenerated?: any[];
+  inversors?: any[];
+}

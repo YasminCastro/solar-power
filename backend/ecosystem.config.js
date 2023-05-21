@@ -4,7 +4,7 @@
  *  production mode :: pm2 start ecosystem.config.js --only prod
  *  development mode :: pm2 start ecosystem.config.js --only dev
  */
- module.exports = {
+module.exports = {
   apps: [
     {
       name: 'prod', // pm2 start App name
@@ -19,9 +19,17 @@
       merge_logs: true, // if true, stdout and stderr will be merged and sent to pm2 log
       output: './logs/access.log', // pm2 log file
       error: './logs/error.log', // pm2 error log file
-      env: { // environment variable
-        PORT: 3000,
+      env: {
+        // environment variable
+        PORT: 4000,
         NODE_ENV: 'production',
+        CREDENTIALS: true,
+        WEATHER_API_KEY: process.env.WEATHER_API_KEY,
+        CRYPTO_KEY: process.env.CRYPTO_KEY,
+        DATABASE_URL: process.env.DATABASE_URL,
+        SECRET_KEY: process.env.SECRET_KEY,
+        ELGIN_USER: process.env.ELGIN_USER,
+        ELGIN_PASSWORD: process.env.ELGIN_PASSWORD,
       },
     },
     {
@@ -38,7 +46,8 @@
       merge_logs: true, // if true, stdout and stderr will be merged and sent to pm2 log
       output: './logs/access.log', // pm2 log file
       error: './logs/error.log', // pm2 error log file
-      env: { // environment variable
+      env: {
+        // environment variable
         PORT: 3000,
         NODE_ENV: 'development',
       },

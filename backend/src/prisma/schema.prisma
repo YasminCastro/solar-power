@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -11,7 +11,55 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
+  id             Int              @id @default(autoincrement())
+  name           String
+  email          String           @unique
+  password       String
+  createdAt      DateTime         @default(now())
+  inversors      Inversor[]
+  powerGenerated PowerGenerated[]
+}
+
+model Inversor {
+  id             Int              @id @default(autoincrement())
+  createdAt      DateTime         @default(now())
+  user           User             @relation(fields: [userId], references: [id])
+  userId         Int
+  name           String
+  model          String
+  url            String?
+  username       String?
+  password       String?
+  powerGenerated PowerGenerated[]
+  active         Boolean          @default(true)
+  cep            String
+  lat            String
+  long           String
+}
+
+model PowerGenerated {
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  inversor        Inversor @relation(fields: [inversorId], references: [id])
+  inversorId      Int
+  user            User     @relation(fields: [userId], references: [id])
+  userId          Int
+  powerInRealTime Float?
+  powerToday      Float
+  powerMonth      Float
+  powerYear       Float
+  allPower        Float
+  co2             Float?
+  coal            Float?
+  tree            Int?
+  lat             String
+  long            String
+  localtime       String
+  tempC           Float
+  windKph         Float
+  pressureIn      Float
+  humidity        Float
+  cloud           Float
+  uv              Float
+  precipMM        Float
 }

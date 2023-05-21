@@ -1,18 +1,25 @@
 import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
-import { RequestWithUser } from '@interfaces/auth.interface';
-import { User } from '@interfaces/users.interface';
 import { AuthService } from '@services/auth.service';
+import { CreateUserDto, LoginUserDto } from '@/dtos/users.dto';
 
 export class AuthController {
   public auth = Container.get(AuthService);
 
+  public hello = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      res.status(201).json({ message: 'Project running ☀️! ' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userData: User = req.body;
-      const signUpUserData: User = await this.auth.signup(userData);
+      const userData: CreateUserDto = req.body;
+      await this.auth.signup(userData);
 
-      res.status(201).json({ data: signUpUserData, message: 'signup' });
+      res.status(201).json({ message: 'User successfully created' });
     } catch (error) {
       next(error);
     }
@@ -20,23 +27,10 @@ export class AuthController {
 
   public logIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userData: User = req.body;
-      const { cookie, findUser } = await this.auth.login(userData);
+      const userData: LoginUserDto = req.body;
+      const tokenData = await this.auth.login(userData);
 
-      res.setHeader('Set-Cookie', [cookie]);
-      res.status(200).json({ data: findUser, message: 'login' });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  public logOut = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const userData: User = req.user;
-      const logOutUserData: User = await this.auth.logout(userData);
-
-      res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
-      res.status(200).json({ data: logOutUserData, message: 'logout' });
+      res.status(200).json(tokenData);
     } catch (error) {
       next(error);
     }
