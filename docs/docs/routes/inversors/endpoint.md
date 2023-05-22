@@ -117,6 +117,30 @@ Este endpoint é usado para atualizar um inversor.
 
 ```json
 {
-  "message": "Inversor successfully created"
+  "inversor": {
+    "id": 1,
+    "createdAt": "2023-05-02T00:35:31.218Z",
+    "name": "Casa glaucia",
+    "userId": 2,
+    "model": "elgin",
+    "url": "https://la5.fusionsolar.huawei.com/pvmswebsite/nologin/assets/build/index.html#/kiosk?kk=c8G84jaHlgapefCwiO3spDcixh4dKQeI",
+    "username": "Glaucia ravilla",
+    "password": "menezes123"
+  },
+  "message": "User successfully updated"
+}
+```
+
+## DEL /inversors/:id
+
+Este endpoint é usado para deletar um inversor.
+
+### Response
+
+#### Expected Body
+
+```json
+{
+  "message": "Inversor successfully deleted"
 }
 ```
