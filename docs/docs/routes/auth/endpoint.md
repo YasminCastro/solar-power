@@ -24,12 +24,14 @@ Este endpoint é usado para autenticar um usuário existente.
 
 ### Response
 
-#### Body
+#### Expected Body
 
-| Nome        | Tipo   | Descrição                   |
-| ----------- | ------ | --------------------------- |
-| `token`     | string | Token JWT para autenticação |
-| `expiresIn` | number | Tempo de duração do token   |
+```json
+{
+  "expiresIn": 604800,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+}
+```
 
 ## POST /auth/signup
 
@@ -47,8 +49,10 @@ Este endpoint é usado para criar um novo usuário.
 
 ### Response
 
-#### Body
+#### Expected Body
 
-| Nome      | Tipo   | Descrição                 |
-| --------- | ------ | ------------------------- |
-| `message` | string | User successfully created |
+```json
+{
+  "message": "User successfully created"
+}
+```
