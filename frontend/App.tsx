@@ -10,7 +10,7 @@ import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthStackNavigation from "./src/routes/Auth";
 import Layout from "./src/routes/Layout";
-import Login from './src/screens/Login/index';
+import Login from "./src/screens/Login/index";
 
 export default function App() {
   const [hasLoadedFonts] = useFonts({
@@ -36,8 +36,7 @@ function AppLayout() {
 
   return (
     <NavigationContainer>
-      <Login></Login>
-      {/* {authState.isAuth ? <Layout /> : <AuthStackNavigation />} */}
+      {authState.isAuth ? <Layout /> : <AuthStackNavigation />}
     </NavigationContainer>
   );
 }
