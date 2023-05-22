@@ -14,14 +14,13 @@ export default function Login() {
 
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
-  const { onLogin, authState } = useAuth();
+  const { onLogin } = useAuth();
 
   const login = async () => {
-    console.log("LOGIN");
-    // const result = await onLogin!("yasminsdcastro@gmail.com", "teste1234");
-    // if (result && result.error) {
-    //   alert(result.message);
-    // }
+    const result = await onLogin!("yasmincastro@gmail.com", "teste1234");
+    if (result && result.error) {
+      alert(result.message);
+    }
   };
 
   return (

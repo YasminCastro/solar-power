@@ -19,17 +19,23 @@ export default function App() {
     Poppins_700Bold,
   });
 
-  const { authState } = useAuth();
-
   if (!hasLoadedFonts) {
     return null;
   }
 
   return (
     <AuthProvider>
-      <NavigationContainer>
-        {authState.isAuth ? <Layout /> : <AuthStackNavigation />}
-      </NavigationContainer>
+      <AppLayout />
     </AuthProvider>
+  );
+}
+
+function AppLayout() {
+  const { authState } = useAuth();
+
+  return (
+    <NavigationContainer>
+      {authState.isAuth ? <Layout /> : <AuthStackNavigation />}
+    </NavigationContainer>
   );
 }

@@ -28,7 +28,6 @@ export const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     const loadToken = async () => {
       const token = await SecureStore.getItemAsync(TOKEN_KEY);
-      console.log("loadToken", token);
 
       if (token) {
         setAuthState({ token: token, isAuth: true });
@@ -49,13 +48,10 @@ export const AuthProvider = ({ children }: any) => {
 
   const onLogin = async (email: string, password: string) => {
     try {
-      console.log("login");
       const { data } = await api.post("/login", {
         email,
         password,
       });
-
-      console.log(data);
 
       setAuthState({ token: data.token, isAuth: true });
 
@@ -65,8 +61,10 @@ export const AuthProvider = ({ children }: any) => {
 
       return data;
     } catch (error: any) {
-      console.log(error);
-      return { error: true, message: error.response };
+      return {
+        error: true,
+        message: error.response.data.message || error.message,
+      };
     }
   };
 
