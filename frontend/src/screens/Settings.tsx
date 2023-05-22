@@ -11,7 +11,7 @@ const Settings = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-white">
+    <SafeAreaView className="flex-1 items-center justify-center bg-blueDark-500">
       <TouchableOpacity
         className="flex h-12 flex-row items-center justify-center rounded-full bg-solar-100 px-6"
         onPress={logout}
