@@ -1,9 +1,9 @@
 import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
-import api, { setAuthHeaders } from "../services/api";
+import api, { setAuthHeaders } from "../lib/api";
 
 interface AuthProps {
-  autState?: { token: string | null; isAuth: boolean };
+  authState: { token: string | null; isAuth: boolean };
   onRegister?: (email: string, password: string) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
   onLogout?: () => Promise<any>;
@@ -11,7 +11,9 @@ interface AuthProps {
 
 const TOKEN_KEY = "my-jwt";
 
-const AuthContext = createContext<AuthProps>({});
+const AuthContext = createContext<AuthProps>({
+  authState: { token: null, isAuth: false },
+});
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -47,7 +49,13 @@ export const AuthProvider = ({ children }: any) => {
 
   const onLogin = async (email: string, password: string) => {
     try {
-      const { data } = await api.post("/login", { email, password });
+      console.log("login");
+      const { data } = await api.post("/login", {
+        email,
+        password,
+      });
+
+      console.log(data);
 
       setAuthState({ token: data.token, isAuth: true });
 
@@ -57,6 +65,7 @@ export const AuthProvider = ({ children }: any) => {
 
       return data;
     } catch (error: any) {
+      console.log(error);
       return { error: true, message: error.response };
     }
   };

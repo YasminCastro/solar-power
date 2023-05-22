@@ -1,8 +1,8 @@
-import { Text, SafeAreaView } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 
-const Home = () => {
+const Inversors = () => {
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-white">
       <Text>Open up App.js to start working on your app!</Text>
@@ -11,4 +11,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Inversors;

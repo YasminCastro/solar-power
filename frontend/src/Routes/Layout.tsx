@@ -1,48 +1,36 @@
-import { View, Text, StyleSheet, Button } from "react-native";
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useAuth } from "../context/AuthContext";
-import Home from "../screens/Home";
-import Login from "../screens/Login";
-import Profile from "../screens/Profile";
-import SignUp from "../screens/SignUp";
 
-const Stack = createNativeStackNavigator();
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Home from "../screens/Home";
+import Data from "../screens/Data";
+import Inversors from "../screens/Inversors";
+import Settings from "../screens/Settings";
+
+import { Foundation } from "@expo/vector-icons";
+
+const Tab = createBottomTabNavigator();
 
 const Layout = () => {
-  const { autState, onLogout } = useAuth();
-
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {autState?.isAuth ? (
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              headerRight: () => <Button onPress={onLogout} title="Sair" />,
-            }}
-          />
-        ) : (
-          <Stack.Screen
-            name="Perfil"
-            component={SignUp}
-            options={{ headerShown: false }}
-          />
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => {
+            if (focused) {
+              <Foundation name="home" size={24} color="black" />;
+            }
+            return <Foundation name="home" size={24} color="black" />;
+          },
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen name="Data" component={Data} />
+      <Tab.Screen name="Inversors" component={Inversors} />
+      <Tab.Screen name="Settings" component={Settings} />
+    </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default Layout;

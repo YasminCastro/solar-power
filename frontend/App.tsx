@@ -1,5 +1,3 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import {
   Ubuntu_700Bold,
   Ubuntu_500Medium,
@@ -8,6 +6,10 @@ import {
 } from "@expo-google-fonts/ubuntu";
 
 import { Poppins_700Bold } from "@expo-google-fonts/poppins";
+import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
+import { NavigationContainer } from "@react-navigation/native";
+import AuthStackNavigation from "./src/routes/Auth";
+import Layout from "./src/routes/Layout";
 
 export default function App() {
   const [hasLoadedFonts] = useFonts({
@@ -17,23 +19,17 @@ export default function App() {
     Poppins_700Bold,
   });
 
+  const { authState } = useAuth();
+
   if (!hasLoadedFonts) {
     return null;
   }
 
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AuthProvider>
+      <NavigationContainer>
+        {authState.isAuth ? <Layout /> : <AuthStackNavigation />}
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
