@@ -21,7 +21,7 @@ export class AuthService {
     return createUserData;
   }
 
-  public async login(userData: LoginUserDto): Promise<{tokenData: TokenData, user: DataStoredInToken}> {
+  public async login(userData: LoginUserDto): Promise<TokenData> {
     const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
     if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
 
@@ -30,11 +30,7 @@ export class AuthService {
 
     const tokenData = this.createToken(findUser);
 
-    const user:DataStoredInToken = { id: findUser.id,
-      name: findUser.name,
-      email: findUser.email,}
-
-    return { tokenData , user };
+    return tokenData;
   }
 
   public createToken(user: User): TokenData {
