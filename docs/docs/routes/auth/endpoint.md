@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 id: endpoints
 title: Endpoints
 description: Login e SignUp.
