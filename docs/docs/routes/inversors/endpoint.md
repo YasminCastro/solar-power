@@ -38,7 +38,7 @@ Este endpoint é usado para criar um inversor.
 }
 ```
 
-## GET /inversors/:id
+## GET /inversors/user/:id
 
 Este endpoint é usado para buscar inversores do usuário.
 
@@ -61,20 +61,62 @@ Este endpoint é usado para buscar inversores do usuário.
     "cep": "74663370",
     "lat": "-16.6254331",
     "long": "-49.2475725"
-  },
+  }
+]
+```
+
+## GET /inversors/:id
+
+Este endpoint é usado para buscar um inversor por id.
+
+### Response
+
+#### Expected Body
+
+```json
+[
   {
-    "id": 2,
-    "createdAt": "2023-05-02T19:03:55.426Z",
+    "id": 1,
+    "createdAt": "2023-05-02T19:03:50.787Z",
     "userId": 1,
-    "name": "casa",
-    "model": "hauwei",
-    "url": "https://la5.fusionsolar.huawei.com/pvmswebsite/nologin/assets/build/index.html#/kiosk?kk=c8G84jaHlgapefCwiO3spDcixh4dKQeI",
-    "username": null,
-    "password": null,
+    "name": "teste",
+    "model": "elgin",
+    "url": null,
+    "username": "Glaucia ravilla",
+    "password": "U2FsdGVkX18n7PLDMfn0aiu9i6xzXBy0irTIn/jOBYM=",
     "active": true,
     "cep": "74663370",
     "lat": "-16.6254331",
     "long": "-49.2475725"
   }
 ]
+```
+
+## PUT /inversors/:id
+
+Este endpoint é usado para atualizar um inversor.
+
+### Request
+
+#### Body
+
+| Nome       | Tipo   | Descrição                       | Obrigatório |
+| ---------- | ------ | ------------------------------- | ----------- |
+| `name`     | string | O nome do Inversor              | Sim         |
+| `model`    | string | O modelo do Inversor            | Sim         |
+| `username` | string | O usuário de login do Inversor  | Não         |
+| `password` | string | O usuário de login do Inversor  | Não         |
+| `url`      | string | A url dos dados Inversor        | Não         |
+| `cep`      | string | O CEP que o inversor está       | Sim         |
+| `lat`      | string | A latitude que o inversor está  | Sim         |
+| `long`     | string | A longitude que o inversor está | Sim         |
+
+### Response
+
+#### Expected Body
+
+```json
+{
+  "message": "Inversor successfully created"
+}
 ```
