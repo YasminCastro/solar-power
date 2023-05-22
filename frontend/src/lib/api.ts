@@ -1,7 +1,6 @@
 import axios from "axios";
-import { API_URL } from "@env";
 
-const api = axios.create({ baseURL: API_URL });
+const api = axios.create({ baseURL: "http://5.189.152.65:4000" });
 
 export const setAuthHeaders = (token: string) => {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
