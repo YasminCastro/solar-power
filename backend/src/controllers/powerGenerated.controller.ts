@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 import { ElginDataDto, HauweiDataDto } from '@/dtos/powerGenerated.dto';
 import { PowerGeneratedService } from '@/services/powerGenerated.service';
-import { InversorsService } from '@/services/inversors.service';
+import { InvertersService } from '@/services/inverters.service';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
 import { Inversor } from '@prisma/client';
@@ -10,7 +10,7 @@ import { logger } from '@/utils/logger';
 
 export class PowerGeneratedController {
   public powerGenerated = Container.get(PowerGeneratedService);
-  public inversors = Container.get(InversorsService);
+  public inversors = Container.get(InvertersService);
 
   public updateAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const getHauweiData = async (inversor: Inversor) => {

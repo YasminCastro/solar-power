@@ -1,12 +1,12 @@
 import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
-import { InversorsService } from '@/services/inversors.service';
+import { InvertersService } from '@/services/inverters.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import { CreateInvertersDto } from '@/dtos/inverters.dto';
 import { HttpException } from '@/exceptions/httpException';
 
 export class InvertersController {
-  public inversor = Container.get(InversorsService);
+  public inversor = Container.get(InvertersService);
 
   public createInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
