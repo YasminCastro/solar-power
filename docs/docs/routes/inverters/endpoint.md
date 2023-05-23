@@ -5,11 +5,11 @@ title: Endpoints
 description: Inversores.
 tags:
   - routes
-  - inversors
+  - inverters
   - endpoint
 ---
 
-## POST /inversors
+## POST /inverters
 
 Este endpoint é usado para criar um inversor.
 
@@ -38,36 +38,18 @@ Este endpoint é usado para criar um inversor.
 }
 ```
 
-## GET /inversors/user/:id
+## GET /inverters
 
 Este endpoint é usado para buscar inversores do usuário.
 
-### Response
+### Request
 
-#### Expected Body
+#### Params
 
-```json
-[
-  {
-    "id": 1,
-    "createdAt": "2023-05-02T19:03:50.787Z",
-    "userId": 1,
-    "name": "teste",
-    "model": "elgin",
-    "url": null,
-    "username": "Glaucia ravilla",
-    "password": "U2FsdGVkX18n7PLDMfn0aiu9i6xzXBy0irTIn/jOBYM=",
-    "active": true,
-    "cep": "74663370",
-    "lat": "-16.6254331",
-    "long": "-49.2475725"
-  }
-]
-```
-
-## GET /inversors/:id
-
-Este endpoint é usado para buscar um inversor por id.
+| Nome         | Tipo   | Descrição                       | Obrigatório |
+| ------------ | ------ | ------------------------------- | ----------- |
+| `inverterId` | string | Id do inversor que deseja bucar | Não         |
+| `userId`     | string | Id do usuário que deseja bucar  | Não         |
 
 ### Response
 
