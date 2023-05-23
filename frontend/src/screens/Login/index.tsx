@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -24,62 +30,80 @@ export default function Login() {
   };
 
   return (
-    <View className="w-full max-w-sm flex-1 items-center justify-center bg-slate-50 p-8">
-      <View>
-        <Text>Bem Vindo</Text>
-        <Text>Faça o Login</Text>
-      </View>
-
-      <TouchableOpacity className="mb-4 flex h-12 items-center justify-center rounded-md bg-blue-500">
-        <View className="flex flex-row space-x-6 ">
-          <Ionicons name="logo-google" size={24} className="bg-white" />
-          <Text className="text-base font-medium text-white">
-            Entrar com o Google
+    <View className="flex-1 items-center justify-center bg-solar-50">
+      {error ? (
+        <View className="absolute top-8 mx-8 w-full max-w-sm rounded-md bg-red-400 p-4">
+          <Text className="font-bold text-white">Os e-mails não conferem</Text>
+        </View>
+      ) : null}
+      <View className="w-full max-w-sm p-8">
+        <View>
+          <Text className="text-center font-title text-4xl  text-white">
+            Bem vindo
+          </Text>
+          <Text className="text-1xl mb-6 mr-1 text-center font-regular text-gray-100">
+            Faça o Login
           </Text>
         </View>
-      </TouchableOpacity>
 
-      <TouchableOpacity
-        className="flex h-12 flex-row items-center justify-center rounded-md bg-blue-900 px-6"
-        onPress={() => navigation.navigate("SignUp")}
-      >
-        <Text className="text-base font-medium text-white">
-          Ainda não tem uma conta? Cadastre já!
-        </Text>
-      </TouchableOpacity>
+        <View>
+          <Pressable className="mb-4 flex h-12 items-center justify-center rounded-full bg-white">
+            <View className="flex flex-row space-x-6 ">
+              <Ionicons name="logo-google" size={24} className="bg-white" />
+              <Text className="text- font-regular text-base text-solar-400">
+                Entrar com o Google
+              </Text>
+            </View>
+          </Pressable>
+        </View>
 
-      <View>
-        <TextInput
-          className="mb-4 h-12 w-full rounded-md border border-slate-200 bg-white px-4"
-          placeholderTextColor="#000"
-          placeholder="E-mail"
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
+        <View>
+          <Text className="text-1xl mb-6 mr-1 text-center font-regular text-white">
+            Ainda não tem uma conta? Cadastre já
+          </Text>
+        </View>
 
+        {/* <View className="flex-row items-center my-8 mr-3">
+          <Pressable
+            className="flex items-center justify-center bg-white border border-slate-200 h-6 w-6 rounded-sm mr-3"
+          >
+            <View className="bg-amber-500 h-4 w-4 rounded-sm" />
+          </Pressable>
+          <Text className="text-slate-900">
+            Li e concordo com os termos de uso e política de privacidade.
+          </Text>
+        </View> */}
+      </View>
+
+      <View className=" w-full max-w-sm bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-8 ">
         <View>
           <TextInput
             className="mb-4 h-12 w-full rounded-md border border-slate-200 bg-white px-4"
             placeholderTextColor="#000"
-            placeholder="Senha"
+            placeholder="Digite seu e-mail"
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+
+          <TextInput
+            className="mb-4 h-12 w-full rounded-md border border-slate-200 bg-white px-4"
+            placeholderTextColor="#000"
+            placeholder="Digite sua senha"
             secureTextEntry={!showPassword}
           />
 
-          <TouchableOpacity
-            className="flex h-12 flex-row items-center justify-center rounded-md bg-blue-900 px-6"
-            onPress={() => navigation.navigate("SignUp")}
-          >
-            <Text className="text-base font-medium text-white">
-              Esqueceu a senha?
-            </Text>
-          </TouchableOpacity>
+          <Text className="text-1xl mb-6 mr-1 text-right font-regular text-white">
+            Esqueceu a senha?
+          </Text>
         </View>
 
         <TouchableOpacity
-          className="flex h-12 flex-row items-center justify-center rounded-md bg-blue-900 px-6"
+          className="flex h-12 flex-row items-center justify-center rounded-full bg-solar-100 px-6"
           onPress={login}
         >
-          <Text className="text-base font-medium text-white">Entrar</Text>
+          <View className="flex flex-1 items-center">
+            <Text className="font-body text-base text-solar-500">Entrar</Text>
+          </View>
         </TouchableOpacity>
       </View>
     </View>

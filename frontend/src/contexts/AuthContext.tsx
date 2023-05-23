@@ -8,14 +8,13 @@ interface AuthProps {
   onRegister?: (email: string, password: string) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
   onLogout?: () => Promise<any>;
-  user?: User;
+  user?: User | null;
 }
 
-const TOKEN_KEY = "my-jwt";
+export const TOKEN_KEY = "token";
 
 const AuthContext = createContext<AuthProps>({
   authState: { token: null, isAuth: false },
-  user: { email: "", name: "", id: null },
 });
 
 export const useAuth = () => {
@@ -24,7 +23,7 @@ export const useAuth = () => {
 
 interface User {
   name: string;
-  id: number | null;
+  id: number;
   email: string;
 }
 
@@ -34,7 +33,7 @@ export const AuthProvider = ({ children }: any) => {
     isAuth: boolean;
   }>({ token: null, isAuth: false });
 
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const loadToken = async () => {
@@ -66,8 +65,9 @@ export const AuthProvider = ({ children }: any) => {
         password,
       });
 
-      setAuthState({ token: data.tokenData.token, isAuth: true });
-      const userDecoded: User = jwtDecode(data.tokenData.token);
+      setAuthState({ token: data.token, isAuth: true });
+
+      const userDecoded: User = jwtDecode(data.token);
       setUser(userDecoded);
 
       setAuthHeaders(data.token);
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }: any) => {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
 
     setAuthHeaders("");
-    setUser({ email: "", name: "", id: null });
+    setUser(null);
 
     setAuthState({ token: null, isAuth: false });
   };
