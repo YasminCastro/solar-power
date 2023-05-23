@@ -2,14 +2,14 @@ import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
 import { InversorsService } from '@/services/inversors.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
-import { CreateInversorsDto } from '@/dtos/inversors.dto';
+import { CreateInnvertersDto } from '@/dtos/inversors.dto';
 
-export class InversorController {
+export class InvertersController {
   public inversor = Container.get(InversorsService);
 
   public createInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inversorData: CreateInversorsDto = req.body;
+      const inversorData: CreateInnvertersDto = req.body;
       const userId = req.user.id;
 
       await this.inversor.createInversor(inversorData, userId);
@@ -47,7 +47,7 @@ export class InversorController {
 
   public updateInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inversorData: CreateInversorsDto = req.body;
+      const inversorData: CreateInnvertersDto = req.body;
       const inversorId = parseInt(req.params.id);
 
       const inversor = await this.inversor.updateInversor(inversorData, inversorId);

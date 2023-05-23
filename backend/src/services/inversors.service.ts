@@ -1,6 +1,6 @@
 import { Inversor, PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
-import { CreateInversorsDto } from '@/dtos/inversors.dto';
+import { CreateInnvertersDto } from '@/dtos/inversors.dto';
 import { HttpException } from '@/exceptions/httpException';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
@@ -9,7 +9,7 @@ import { CRYPTO_KEY } from '@/config';
 export class InversorsService {
   public inversors = new PrismaClient().inversor;
 
-  public async createInversor(inversorData: CreateInversorsDto, userId: number): Promise<Inversor> {
+  public async createInversor(inversorData: CreateInnvertersDto, userId: number): Promise<Inversor> {
     let password = null;
     if (inversorData.password) {
       password = Crypto.AES.encrypt(inversorData.password, CRYPTO_KEY).toString();
@@ -44,7 +44,7 @@ export class InversorsService {
     return findUserInversor;
   }
 
-  public async updateInversor(inversorData: CreateInversorsDto, inversorId: number): Promise<Inversor> {
+  public async updateInversor(inversorData: CreateInnvertersDto, inversorId: number): Promise<Inversor> {
     const findUserInversor: Inversor = await this.inversors.findUnique({ where: { id: inversorId } });
     if (!findUserInversor) throw new HttpException(409, "Inversor doesn't exist");
 
