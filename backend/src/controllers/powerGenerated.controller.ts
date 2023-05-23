@@ -7,10 +7,11 @@ import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
 import { Inversor } from '@prisma/client';
 import { logger } from '@/utils/logger';
+import { HttpException } from '@/exceptions/httpException';
 
 export class PowerGeneratedController {
   public powerGenerated = Container.get(PowerGeneratedService);
-  public inversors = Container.get(InvertersService);
+  public inverters = Container.get(InvertersService);
 
   public updateAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const getHauweiData = async (inversor: Inversor) => {
@@ -49,7 +50,7 @@ export class PowerGeneratedController {
     };
 
     try {
-      const allInversors = await this.inversors.getAllInversors();
+      const allInversors = await this.inverters.getAllInversors();
 
       for (const inversor of allInversors) {
         switch (inversor.model) {
@@ -74,7 +75,7 @@ export class PowerGeneratedController {
     }
   };
 
-  public getHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public saveHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { inversorId, lat, long, url, userId }: HauweiDataDto = req.body;
 
@@ -99,7 +100,7 @@ export class PowerGeneratedController {
     }
   };
 
-  public getElginData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public saveElginData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const elginLoginInfo: ElginDataDto = req.body;
       const { inversorId, lat, long, userId, passwordIsEncrypted, password: rawPassword, username } = elginLoginInfo;
@@ -127,6 +128,32 @@ export class PowerGeneratedController {
       const saveInversorData = await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
 
       res.status(201).json(saveInversorData);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getPowerGeneratedData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = Number(req.query.userId);
+      const inverterId = Number(req.query.inverterId);
+      let limit = Number(req.query.limit);
+
+      if (!userId) {
+        throw new HttpException(409, 'userId is required');
+      }
+
+      if (!limit) {
+        limit = 10;
+      }
+
+      if (inverterId) {
+        const inversor = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
+        res.status(201).json(inversor);
+      } else {
+        const inversor = await this.powerGenerated.getByUserId(userId, limit);
+        res.status(201).json(inversor);
+      }
     } catch (error) {
       next(error);
     }
