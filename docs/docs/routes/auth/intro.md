@@ -5,7 +5,6 @@ title: Introdução
 tags:
   - routes
   - auth
-  - endpoint
 ---
 
 # Autenticação
