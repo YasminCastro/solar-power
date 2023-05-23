@@ -24,7 +24,6 @@ Este endpoint é usado para encontrar um usuário existente.
   "name": "yasmin",
   "createdAt": "2023-05-02T19:03:33.987Z",
   "inversors": []
-  "powerGenerated": []
 }
 ```
 
