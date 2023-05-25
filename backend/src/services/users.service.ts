@@ -11,7 +11,7 @@ const selectQuery = {
   name: true,
   createdAt: true,
   inversors: true,
-  powerGenerated: true,
+  powerGenerated: false,
 };
 
 @Service()
@@ -39,17 +39,18 @@ export class UserService {
     const findUser: UserPrisma = await this.user.findUnique({ where: { id: userId } });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-    const updateUserData = await this.user.update({ where: { id: userId }, data: { ...userData, password: findUser.password } });
-    return updateUserData;
-  }
+    let data = findUser;
 
-  public async updateUserPassword(userId: number, password: string): Promise<User> {
-    const findUser: UserPrisma = await this.user.findUnique({ where: { id: userId } });
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    if (userData.password) {
+      const hashedPassword = await hash(userData.password, 10);
+      data.password = hashedPassword;
+    }
 
-    const hashedPassword = await hash(password, 10);
+    if (userData.name) {
+      data.name = userData.name;
+    }
 
-    const updateUserData = await this.user.update({ where: { id: userId }, data: { ...findUser, password: hashedPassword } });
+    const updateUserData = await this.user.update({ where: { id: userId }, data });
     return updateUserData;
   }
 

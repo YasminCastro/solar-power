@@ -10,6 +10,34 @@ import { weatherApi } from '@/config';
 export class PowerGeneratedService {
   public powerGenerated = new PrismaClient().powerGenerated;
 
+  public async getByUserId(userId: number, limit: number): Promise<any> {
+    try {
+      const powerGenerated: PowerGenerated[] = await this.powerGenerated.findMany({
+        where: { userId },
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      });
+
+      return powerGenerated;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async getByInverterId(userId: number, inverterId: number, limit: number): Promise<any> {
+    try {
+      const powerGenerated: PowerGenerated[] = await this.powerGenerated.findMany({
+        where: { userId, inversorId: inverterId },
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      });
+
+      return powerGenerated;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   public async hauwei(page: Page, browser: Browser): Promise<HauweiDataInterface> {
     const POWER_REAL_DATA_SELECTOR = '.nco-kiosk-overview-data';
     const C02_SELECTOR = '.social-co2-item';

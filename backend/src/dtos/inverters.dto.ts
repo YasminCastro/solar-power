@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsUrl, ValidateIf } from 'class-validator';
 
-export class CreateInversorsDto {
+export class CreateInvertersDto {
   @IsString()
   @IsNotEmpty()
   public name: string;

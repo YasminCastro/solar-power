@@ -1,15 +1,16 @@
 import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
-import { InversorsService } from '@/services/inversors.service';
+import { InvertersService } from '@/services/inverters.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
-import { CreateInversorsDto } from '@/dtos/inversors.dto';
+import { CreateInvertersDto } from '@/dtos/inverters.dto';
+import { HttpException } from '@/exceptions/httpException';
 
-export class InversorController {
-  public inversor = Container.get(InversorsService);
+export class InvertersController {
+  public inversor = Container.get(InvertersService);
 
   public createInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inversorData: CreateInversorsDto = req.body;
+      const inversorData: CreateInvertersDto = req.body;
       const userId = req.user.id;
 
       await this.inversor.createInversor(inversorData, userId);
@@ -20,26 +21,22 @@ export class InversorController {
     }
   };
 
-  public getByUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public getInverters = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.user.id;
+      const userId = Number(req.query.userId);
+      const inverterId = Number(req.query.inverterId);
 
-      const inversor = await this.inversor.getInversorsByUser(userId);
+      if (!userId) {
+        throw new HttpException(409, 'userId is required');
+      }
 
-      res.status(201).json(inversor);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  public getById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const inversorId = parseInt(req.params.id);
-      const userId = req.user.id;
-
-      const inversor = await this.inversor.getInversorById(inversorId, userId);
-
-      res.status(201).json(inversor);
+      if (inverterId) {
+        const inversor = await this.inversor.getInversorById(inverterId, userId);
+        res.status(201).json([inversor]);
+      } else {
+        const inversor = await this.inversor.getInversorsByUser(userId);
+        res.status(201).json(inversor);
+      }
     } catch (error) {
       next(error);
     }
@@ -47,7 +44,7 @@ export class InversorController {
 
   public updateInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inversorData: CreateInversorsDto = req.body;
+      const inversorData: CreateInvertersDto = req.body;
       const inversorId = parseInt(req.params.id);
 
       const inversor = await this.inversor.updateInversor(inversorData, inversorId);
