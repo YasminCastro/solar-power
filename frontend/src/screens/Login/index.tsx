@@ -23,7 +23,7 @@ export default function Login() {
   const { onLogin } = useAuth();
 
   const login = async () => {
-    const result = await onLogin!("yasmincastro@gmail.com", "teste1234");
+    const result = await onLogin!(email, password);
     if (result && result.error) {
       alert(result.message);
     }
@@ -83,6 +83,7 @@ export default function Login() {
             placeholder="Digite seu e-mail"
             autoCapitalize="none"
             keyboardType="email-address"
+            onChangeText={(text) => setEmail(text)}
           />
 
           <TextInput
@@ -90,6 +91,7 @@ export default function Login() {
             placeholderTextColor="#000"
             placeholder="Digite sua senha"
             secureTextEntry={!showPassword}
+            onChangeText={(text) => setPassword(text)}
           />
 
           <Text className="text-1xl mb-6 mr-1 text-right font-regular text-white">
