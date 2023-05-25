@@ -137,14 +137,10 @@ export class PowerGeneratedController {
     try {
       const userId = Number(req.query.userId);
       const inverterId = Number(req.query.inverterId);
-      let limit = Number(req.query.limit);
+      let limit = Number(req.query.limit) || 10;
 
       if (!userId) {
         throw new HttpException(409, 'userId is required');
-      }
-
-      if (!limit) {
-        limit = 10;
       }
 
       if (inverterId) {
