@@ -9,7 +9,7 @@ import Settings from "../screens/Settings";
 import { Foundation } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import UserCircle from "../components/BottomTab/UserIcon";
+import UserCircle from "../components/Global/BottomTab/UserIcon";
 
 const Tab = createBottomTabNavigator();
 

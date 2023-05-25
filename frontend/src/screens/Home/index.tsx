@@ -2,10 +2,11 @@ import { Text, SafeAreaView, View, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
-import api from "../lib/api";
+import api from "../../lib/api";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+import CircleChart from "../../components/Screens/Home/circleChart";
 
 const Home = () => {
   const [powerGenerated, setPowerGenerated] = useState<any>(null);
@@ -48,6 +49,7 @@ const Home = () => {
           <Text className="text-number text-2xl text-white">
             Tempo: {powerGenerated.tempC}° C
           </Text>
+          <CircleChart />
         </View>
       ) : (
         <Spinner visible={true} color="#FEBE3D" />

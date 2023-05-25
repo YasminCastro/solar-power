@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function UserCircle() {
   const { user } = useAuth();
