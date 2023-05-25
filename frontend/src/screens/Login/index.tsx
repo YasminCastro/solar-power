@@ -12,6 +12,9 @@ import { useNavigation } from "@react-navigation/native";
 import { LoginScreenNavigationProp } from "./interface";
 import { useAuth } from "../../contexts/AuthContext";
 
+import { LinearGradient } from 'expo-linear-gradient';
+
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -75,38 +78,49 @@ export default function Login() {
         </View> */}
       </View>
 
-      <View className=" w-full max-w-sm bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-8 ">
-        <View>
-          <TextInput
-            className="mb-4 h-12 w-full rounded-md border border-slate-200 bg-white px-4"
-            placeholderTextColor="#000"
-            placeholder="Digite seu e-mail"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            onChangeText={(text) => setEmail(text)}
-          />
 
-          <TextInput
-            className="mb-4 h-12 w-full rounded-md border border-slate-200 bg-white px-4"
-            placeholderTextColor="#000"
-            placeholder="Digite sua senha"
-            secureTextEntry={!showPassword}
-            onChangeText={(text) => setPassword(text)}
-          />
+      <View className=" w-full max-w-sm inline-block align-bottom">
+      <LinearGradient
+      className="rounded-lg" 
+          colors={[ '#B08C09', '#10237A']}
+          start={[0,0]}
+          >
+        <View className="px-7 pt-5 pb-10">
 
-          <Text className="text-1xl mb-6 mr-1 text-right font-regular text-white">
-            Esqueceu a senha?
-          </Text>
+          <View className="pt-8">
+            <TextInput
+              className="mb-4 h-12 w-full rounded-md border border-white border-t-0 border-x-0 bg-transparent px-4 font-regular "
+              placeholderTextColor="#ffff"
+              placeholder="E-mail"
+              autoCapitalize="none"
+              keyboardType="email-address"
+            />
+
+            <TextInput
+              className="mb-4 h-12 w-full rounded-md border border-white border-t-0 border-x-0 bg-transparent px-4 font-regular"
+              placeholderTextColor="s#ffff"
+              placeholder="Senha"
+              secureTextEntry={!showPassword}
+            />
+
+            <Text className="text-1xl mb-14 mr-1 text-right font-regular text-white">
+              Esqueceu a senha?
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            className="flex h-12 flex-row items-center justify-center rounded-full bg-solar-100 px-6 "
+            onPress={login}
+          >
+            <View className="flex flex-1 items-center">
+              <Text className="font-body text-base text-solar-500">Entrar</Text>
+            </View>
+          </TouchableOpacity>
+
         </View>
 
-        <TouchableOpacity
-          className="flex h-12 flex-row items-center justify-center rounded-full bg-solar-100 px-6"
-          onPress={login}
-        >
-          <View className="flex flex-1 items-center">
-            <Text className="font-body text-base text-solar-500">Entrar</Text>
-          </View>
-        </TouchableOpacity>
+      </LinearGradient>
+
       </View>
     </View>
   );

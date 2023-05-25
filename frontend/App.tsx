@@ -8,8 +8,8 @@ import {
 import { Poppins_700Bold } from "@expo-google-fonts/poppins";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import { NavigationContainer } from "@react-navigation/native";
-import AuthStackNavigation from "./src/routes/Auth";
-import Layout from "./src/routes/Layout";
+import AuthStackNavigation from "./src/Routes/Auth";
+import Layout from "./src/Routes/Layout";
 import Login from "./src/screens/Login/index";
 
 export default function App() {
