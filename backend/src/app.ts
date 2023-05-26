@@ -64,7 +64,7 @@ export class App {
       'America/Sao_Paulo',
     );
 
-    // job.start();
+    job.start();
     logger.info(`is job running? ${job.running} `);
   }
 

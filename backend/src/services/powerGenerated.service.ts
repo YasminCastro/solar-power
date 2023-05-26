@@ -75,18 +75,26 @@ export class PowerGeneratedService {
       //ENVIRONMENTAL BENEFITS
 
       logger.silly(`ENVIRONMENT BENEFITS...`);
+      const separeteValueFromText = /\d+(\.\d+)?\(t\)/;
+      const removeParanthesis = /(\d+(\.\d+)?)(\(t\))/;
+      const getNumbers = /\d+/;
 
       await page.waitForSelector(C02_SELECTOR, { timeout: 5000 });
-      let co2Element = await page.$(C02_SELECTOR);
-      let co2Value = await page.evaluate(el => el.textContent, co2Element);
+      const co2Element = await page.$(C02_SELECTOR);
+      const co2Value = await page.evaluate(el => el.textContent, co2Element);
+      let co2 = co2Value.match(separeteValueFromText)[0];
+      co2 = co2.replace(removeParanthesis, '$1t');
 
       await page.waitForSelector(COAL_SELECTOR, { timeout: 5000 });
-      let coalElement = await page.$(COAL_SELECTOR);
-      let coalValue = await page.evaluate(el => el.textContent, coalElement);
+      const coalElement = await page.$(COAL_SELECTOR);
+      const coalValue = await page.evaluate(el => el.textContent, coalElement);
+      let coal = coalValue.match(separeteValueFromText)[0];
+      coal = coal.replace(removeParanthesis, '$1t');
 
       await page.waitForSelector(TREE_SELECTOR, { timeout: 5000 });
-      let treeElement = await page.$(TREE_SELECTOR);
-      let treeValue = await page.evaluate(el => el.textContent, treeElement);
+      const treeElement = await page.$(TREE_SELECTOR);
+      const treeValue = await page.evaluate(el => el.textContent, treeElement);
+      const tree = treeValue.match(getNumbers)[0];
 
       logger.silly(`Environmental benefits data OK...`);
 
@@ -96,9 +104,9 @@ export class PowerGeneratedService {
         powerMonth: powerGenerationData[2],
         powerYear: powerGenerationData[3],
         allPower: powerGenerationData[4],
-        co2: co2Value,
-        coal: coalValue,
-        tree: treeValue,
+        co2,
+        coal,
+        tree,
       };
     } catch (error) {
       console.log(error);
