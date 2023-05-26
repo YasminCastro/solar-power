@@ -91,14 +91,14 @@ export class PowerGeneratedService {
       logger.silly(`Environmental benefits data OK...`);
 
       return {
-        powerInRealTime: parseFloat(powerGenerationData[0]),
-        powerToday: parseFloat(powerGenerationData[1]),
-        powerMonth: parseFloat(powerGenerationData[2]),
-        powerYear: parseFloat(powerGenerationData[3]),
-        allPower: parseFloat(powerGenerationData[4]),
-        co2: parseFloat(co2Value),
-        coal: parseFloat(coalValue),
-        tree: parseInt(treeValue),
+        powerInRealTime: powerGenerationData[0],
+        powerToday: powerGenerationData[1],
+        powerMonth: powerGenerationData[2],
+        powerYear: powerGenerationData[3],
+        allPower: powerGenerationData[4],
+        co2: co2Value,
+        coal: coalValue,
+        tree: treeValue,
       };
     } catch (error) {
       console.log(error);
@@ -159,11 +159,11 @@ export class PowerGeneratedService {
       let coalValue = await page.evaluate(el => el.textContent, coalValueElement);
 
       return {
-        powerToday: parseFloat(todayPerformance),
-        powerMonth: parseFloat(monthPerformace),
-        powerYear: parseFloat(yearPerformace),
-        allPower: parseFloat(allPerformace),
-        co2: parseFloat(coalValue),
+        powerToday: todayPerformance,
+        powerMonth: monthPerformace,
+        powerYear: yearPerformace,
+        allPower: allPerformace,
+        co2: coalValue,
       };
     } catch (error) {
       console.log(error);
@@ -229,8 +229,24 @@ export class PowerGeneratedService {
       logger.error(`WEATHER API ERROR: ${error.message}`);
       throw new HttpException(400, error.message);
     }
+  }
 
-    // const createInversorData: Promise<PowerGenerated> = this.powerGenerated.create({ data: { userId, ...inversorData } });
-    // return createInversorData;
+  public async calculateRealTimePower(inversorId: number, nowEnergy: number): Promise<number> {
+    try {
+      const previousEnergyFound: PowerGenerated = await this.powerGenerated.findFirst({
+        where: { inversorId },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      if (!previousEnergyFound) return null;
+
+      const previousEnergy = parseFloat(previousEnergyFound.powerToday);
+
+      const power = (nowEnergy - previousEnergy) / (1 / 12);
+      return power;
+    } catch (error: any) {
+      logger.error(`Not able to calculate power: ${error.message}`);
+      throw new HttpException(400, error.message);
+    }
   }
 }

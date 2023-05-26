@@ -1,20 +1,21 @@
 export interface HauweiDataInterface {
-  powerInRealTime: number;
-  powerToday: number;
-  powerMonth: number;
-  powerYear: number;
-  allPower: number;
-  co2: number;
-  coal: number;
-  tree: number;
+  powerInRealTime: string;
+  powerToday: string;
+  powerMonth: string;
+  powerYear: string;
+  allPower: string;
+  co2: string;
+  coal: string;
+  tree: string;
 }
 
 export interface ElginDataInterface {
-  powerToday: number;
-  powerMonth: number;
-  powerYear: number;
-  allPower: number;
-  co2: number;
+  powerInRealTime?: string;
+  powerToday: string;
+  powerMonth: string;
+  powerYear: string;
+  allPower: string;
+  co2: string;
 }
 
 export interface WeatherInterface {
