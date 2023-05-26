@@ -5,6 +5,7 @@ title: Introdução
 tags:
   - routes
   - power-generated
+  - calculate-real-time-power
 ---
 
 # Energia Gerada
