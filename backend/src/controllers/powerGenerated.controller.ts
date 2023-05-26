@@ -124,6 +124,9 @@ export class PowerGeneratedController {
       };
 
       const weather = await this.powerGenerated.getWeatherData(lat, long);
+      const powerInRealTime = await this.powerGenerated.calculateRealTimePower(inversorId, parseFloat(elginData.powerToday));
+
+      elginData.powerInRealTime = `${powerInRealTime}kW`;
 
       const saveInversorData = await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
 

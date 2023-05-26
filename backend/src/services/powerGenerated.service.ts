@@ -229,8 +229,24 @@ export class PowerGeneratedService {
       logger.error(`WEATHER API ERROR: ${error.message}`);
       throw new HttpException(400, error.message);
     }
+  }
 
-    // const createInversorData: Promise<PowerGenerated> = this.powerGenerated.create({ data: { userId, ...inversorData } });
-    // return createInversorData;
+  public async calculateRealTimePower(inversorId: number, nowEnergy: number): Promise<number> {
+    try {
+      const previousEnergyFound: PowerGenerated = await this.powerGenerated.findFirst({
+        where: { inversorId },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      if (!previousEnergyFound) return null;
+
+      const previousEnergy = parseFloat(previousEnergyFound.powerToday);
+
+      const power = (nowEnergy - previousEnergy) / (1 / 12);
+      return power;
+    } catch (error: any) {
+      logger.error(`Not able to calculate power: ${error.message}`);
+      throw new HttpException(400, error.message);
+    }
   }
 }

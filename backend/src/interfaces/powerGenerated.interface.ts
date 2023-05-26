@@ -10,6 +10,7 @@ export interface HauweiDataInterface {
 }
 
 export interface ElginDataInterface {
+  powerInRealTime?: string;
   powerToday: string;
   powerMonth: string;
   powerYear: string;
