@@ -44,14 +44,14 @@ model PowerGenerated {
   inversorId      Int
   user            User     @relation(fields: [userId], references: [id])
   userId          Int
-  powerInRealTime Float?
-  powerToday      Float
-  powerMonth      Float
-  powerYear       Float
-  allPower        Float
-  co2             Float?
-  coal            Float?
-  tree            Int?
+  powerInRealTime String?
+  powerToday      String
+  powerMonth      String
+  powerYear       String
+  allPower        String
+  co2             String?
+  coal            String?
+  tree            String?
   lat             String
   long            String
   localtime       String
