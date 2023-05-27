@@ -1,8 +1,8 @@
 import { View, Text } from "react-native";
-import { useAuth } from "../../../contexts/AuthContext";
+import { useUser } from "../../../contexts/UserContext";
 
 export default function UserCircle() {
-  const { user } = useAuth();
+  const { user } = useUser();
   return (
     <View className="h-8 w-8 rounded-full bg-yellow-300">
       <Text className="text-center font-title text-2xl uppercase text-blueDark-300">

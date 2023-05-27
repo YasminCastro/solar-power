@@ -1,65 +1,33 @@
-import { View, Text, Dimensions } from "react-native";
-import { useAuth } from "../../../contexts/AuthContext";
-import { LineChart, ProgressChart } from "react-native-chart-kit";
+import { View } from "react-native";
+import CircularProgress from "react-native-circular-progress-indicator";
 
-export default function CircleChart() {
+interface IProps {
+  realTimePower: string;
+}
+
+export default function CircleChart({ realTimePower }: IProps) {
+  const title = realTimePower.slice(-2);
+  const value = parseFloat(realTimePower);
+
   return (
     <View>
-      <Text>Bezier Line Chart</Text>
-      {/* <ProgressChart
-       height={}
-      /> */}
+      <CircularProgress
+        value={100}
+        radius={100}
+        delay={5}
+        duration={2000}
+        progressValueColor="#FFFFFF"
+        maxValue={50}
+        title={title}
+        titleColor={"white"}
+        titleStyle={{ fontWeight: "bold" }}
+        activeStrokeColor="#FBCF24"
+        inActiveStrokeColor="#5E6795"
+        inActiveStrokeOpacity={0.5}
+        inActiveStrokeWidth={30}
+        activeStrokeWidth={30}
+        activeStrokeSecondaryColor="#FDA933"
+      />
     </View>
   );
 }
-
-// export default function CircleChart() {
-//     return (
-//       <View>
-//         <Text>Bezier Line Chart</Text>
-//         <LineChart
-//           data={{
-//             labels: ["January", "February", "March", "April", "May", "June"],
-//             datasets: [
-//               {
-//                 data: [
-//                   Math.random() * 100,
-//                   Math.random() * 100,
-//                   Math.random() * 100,
-//                   Math.random() * 100,
-//                   Math.random() * 100,
-//                   Math.random() * 100,
-//                 ],
-//               },
-//             ],
-//           }}
-//           width={Dimensions.get("window").width} // from react-native
-//           height={220}
-//           yAxisLabel="$"
-//           yAxisSuffix="k"
-//           yAxisInterval={1} // optional, defaults to 1
-//           chartConfig={{
-//             backgroundColor: "#e26a00",
-//             backgroundGradientFrom: "#fb8c00",
-//             backgroundGradientTo: "#ffa726",
-//             decimalPlaces: 2, // optional, defaults to 2dp
-//             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-//             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-//             style: {
-//               borderRadius: 16,
-//             },
-//             propsForDots: {
-//               r: "6",
-//               strokeWidth: "2",
-//               stroke: "#ffa726",
-//             },
-//           }}
-//           bezier
-//           style={{
-//             marginVertical: 8,
-//             borderRadius: 16,
-//           }}
-//         />
-//       </View>
-//     );
-//   }

@@ -6,25 +6,35 @@ import { useAuth } from "../../contexts/AuthContext";
 
 import api from "../../lib/api";
 import Spinner from "react-native-loading-spinner-overlay/lib";
-import CircleChart from "../../components/Screens/Home/circleChart";
+import CircleChart from "../../components/Screens/Home/CircleChart";
+import PowerGenerated from "../../interfaces/powerGenerated";
+import { useUser } from "../../contexts/UserContext";
 
 const Home = () => {
-  const [powerGenerated, setPowerGenerated] = useState<any>(null);
-  const { user, authState } = useAuth();
+  const [powerGenerated, setPowerGenerated] = useState<PowerGenerated | null>(
+    null
+  );
+  const { authState } = useAuth();
+  const { user } = useUser();
 
   async function loadPowerGenerated() {
-    const response = await api.get("/users/1", {
-      headers: {
-        Authorization: `Bearer ${authState.token}`,
-      },
-    });
+    if (user) {
+      const { data } = await api.get(
+        `/power-generated?userId=${user.id}&limit=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.token}`,
+          },
+        }
+      );
 
-    setPowerGenerated(response.data.powerGenerated[0]);
+      setPowerGenerated(data[0]);
+    }
   }
 
   useEffect(() => {
     loadPowerGenerated();
-  }, []);
+  }, [user]);
 
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-blueDark-500">
@@ -40,16 +50,17 @@ const Home = () => {
       </View>
       {powerGenerated ? (
         <View>
+          <CircleChart realTimePower={powerGenerated.powerInRealTime} />
+
           <Text className="text-number text-2xl text-white">
-            Tempo real: {powerGenerated.powerInRealTime}kW
+            Tempo real: {powerGenerated.powerInRealTime}
           </Text>
           <Text className="text-number text-2xl text-white">
-            Produção Hoje: {powerGenerated.powerToday}KWh
+            Produção Hoje: {powerGenerated.powerToday}
           </Text>
           <Text className="text-number text-2xl text-white">
             Tempo: {powerGenerated.tempC}° C
           </Text>
-          <CircleChart />
         </View>
       ) : (
         <Spinner visible={true} color="#FEBE3D" />
