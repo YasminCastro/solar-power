@@ -1,4 +1,4 @@
-export default interface Inverters {
+export default interface IInverter {
   id: number;
   createdAt: string;
   name: string;

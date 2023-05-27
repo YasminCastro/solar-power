@@ -1,11 +1,11 @@
-import Inverters from "./inverters";
+import IInverter from "./inverter";
 
 export interface IUser {
   id: number;
   email: string;
   name: string;
   createdAt: string;
-  inversors: Inverters[];
+  inversors: IInverter[];
 }
 
 export interface IUserDecoded {

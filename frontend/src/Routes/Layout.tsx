@@ -3,13 +3,13 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
 import Data from "../screens/Data";
-import Inversors from "../screens/Inversors";
 import Settings from "../screens/Settings";
 
 import { Foundation } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import UserCircle from "../components/Global/BottomTab/UserIcon";
+import Inverters from "../screens/Inverters";
 
 const Tab = createBottomTabNavigator();
 
@@ -47,8 +47,8 @@ const Layout = () => {
         }}
       />
       <Tab.Screen
-        name="Inversors"
-        component={Inversors}
+        name="Inverters"
+        component={Inverters}
         options={{
           tabBarIcon: ({ color, size, focused }) => {
             if (focused) {

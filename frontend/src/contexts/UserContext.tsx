@@ -4,19 +4,22 @@ import jwtDecode from "jwt-decode";
 import { IUserDecoded, IUser } from "../interfaces/user";
 import api from "../lib/api";
 import { TOKEN_KEY } from "../config";
+import IInverter from "../interfaces/inverter";
 
-interface UserProps {
-  user?: IUser | null;
+interface IValue {
+  user?: IUser;
+  userInverters?: IInverter[];
 }
 
-const UserContext = createContext<UserProps>({});
+const UserContext = createContext({} as IValue);
 
-export const useUser = () => {
+export const useUser = (): IValue => {
   return useContext(UserContext);
 };
 
 export const UserProvider = ({ children }: any) => {
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<IUser>();
+  const [userInverters, setUserInverters] = useState<IInverter[]>();
 
   useEffect(() => {
     const loadUser = async () => {
@@ -32,6 +35,7 @@ export const UserProvider = ({ children }: any) => {
         });
 
         setUser(response.data);
+        setUserInverters(response.data.inversors);
       }
     };
 
@@ -41,8 +45,9 @@ export const UserProvider = ({ children }: any) => {
   const value = useMemo(
     () => ({
       user,
+      userInverters,
     }),
-    [user]
+    [user, userInverters]
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
