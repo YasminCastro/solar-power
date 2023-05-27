@@ -14,6 +14,7 @@ import api from "../../lib/api";
 import CircleChart from "../../components/Screens/Home/CircleChart";
 import PowerGenerated from "../../interfaces/powerGenerated";
 import { useUser } from "../../contexts/UserContext";
+import Logo from "../../assets/logo.svg";
 
 const Home = () => {
   const [powerGenerated, setPowerGenerated] = useState<PowerGenerated | null>(
@@ -48,14 +49,14 @@ const Home = () => {
       <StatusBar style="auto" />
       <View className="absolute top-24 flex-row justify-between">
         <View className="flex-row">
-          <Text className="text-yellow-300">LOGO</Text>
+          <Logo width={40} height={40} />
           <Text className="font-title text-2xl text-white">Bom dia!</Text>
         </View>
         <Pressable>
           <Ionicons name="notifications" size={24} color="#FEBE3D" />
         </Pressable>
       </View>
-      {powerGenerated ? (
+      {powerGenerated && (
         <View>
           <CircleChart realTimePower={powerGenerated.powerInRealTime} />
 
@@ -69,8 +70,6 @@ const Home = () => {
             Tempo: {powerGenerated.tempC}° C
           </Text>
         </View>
-      ) : (
-        <ActivityIndicator size="large" color="#FEBE3D" />
       )}
     </SafeAreaView>
   );
