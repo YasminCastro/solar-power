@@ -1,11 +1,16 @@
-import { Text, SafeAreaView, View, Pressable } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  View,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../../contexts/AuthContext";
 
 import api from "../../lib/api";
-import Spinner from "react-native-loading-spinner-overlay/lib";
 import CircleChart from "../../components/Screens/Home/CircleChart";
 import PowerGenerated from "../../interfaces/powerGenerated";
 import { useUser } from "../../contexts/UserContext";
@@ -15,9 +20,11 @@ const Home = () => {
     null
   );
   const { authState } = useAuth();
-  const { user } = useUser();
+  const { user, userInverters } = useUser();
 
   async function loadPowerGenerated() {
+    console.log(userInverters);
+
     if (user) {
       const { data } = await api.get(
         `/power-generated?userId=${user.id}&limit=1`,
@@ -63,7 +70,7 @@ const Home = () => {
           </Text>
         </View>
       ) : (
-        <Spinner visible={true} color="#FEBE3D" />
+        <ActivityIndicator size="large" color="#FEBE3D" />
       )}
     </SafeAreaView>
   );
