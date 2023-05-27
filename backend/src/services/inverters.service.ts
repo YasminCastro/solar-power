@@ -1,6 +1,6 @@
 import { Inversor, PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
-import { CreateInvertersDto } from '@/dtos/inverters.dto';
+import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
 import { HttpException } from '@/exceptions/httpException';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
@@ -44,7 +44,7 @@ export class InvertersService {
     return findUserInversor;
   }
 
-  public async updateInversor(inversorData: CreateInvertersDto, inversorId: number): Promise<Inversor> {
+  public async updateInversor(inversorData: UpdateInvertersDto, inversorId: number): Promise<Inversor> {
     const findUserInversor: Inversor = await this.inversors.findUnique({ where: { id: inversorId } });
     if (!findUserInversor) throw new HttpException(409, "Inversor doesn't exist");
 
