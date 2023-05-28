@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
@@ -18,6 +18,9 @@ const Tab = createBottomTabNavigator();
 
 const Layout = () => {
   const { user } = useUser();
+
+  useEffect(() => {}, [user]);
+
   return (
     <>
       {user ? (

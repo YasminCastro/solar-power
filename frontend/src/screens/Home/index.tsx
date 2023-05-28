@@ -20,21 +20,37 @@ const Home = () => {
   const [powerGenerated, setPowerGenerated] = useState<PowerGenerated | null>(
     null
   );
+  const [maxValue, setMaxValue] = useState<number>(100);
   const { authState } = useAuth();
-  const { user, userInverters } = useUser();
+  const { user } = useUser();
 
   async function loadPowerGenerated() {
-    console.log(userInverters);
+    if (user && user?.inversors) {
+      let invertersId: number[] = [];
+      let maxValuSum = 0;
 
-    if (user) {
-      const { data } = await api.get(
-        `/power-generated?userId=${user.id}&limit=1`,
-        {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
+      user?.inversors.forEach((inverter) => {
+        if (inverter.active) {
+          console.log(maxValuSum);
+          maxValuSum += inverter.maxRealTimePower;
         }
-      );
+      });
+      setMaxValue(maxValuSum);
+
+      let params: any = { userId: user.id };
+      if (invertersId.length === 1) {
+        params.inverterId = invertersId[0].toString();
+        params.limit = 1;
+      } else if (invertersId.length > 1) {
+        params.invertersId = invertersId.toString();
+      }
+
+      const { data } = await api.get(`/power-generated`, {
+        params,
+        headers: {
+          Authorization: `Bearer ${authState.token}`,
+        },
+      });
 
       setPowerGenerated(data[0]);
     }
@@ -58,7 +74,10 @@ const Home = () => {
       </View>
       {powerGenerated && (
         <View>
-          <CircleChart realTimePower={powerGenerated.powerInRealTime} />
+          <CircleChart
+            realTimePower={powerGenerated.powerInRealTime}
+            maxValue={maxValue}
+          />
 
           <Text className="text-number text-2xl text-white">
             Tempo real: {powerGenerated.powerInRealTime}
