@@ -19,11 +19,12 @@ Este endpoint é usado para buscar os dados gerados.
 
 #### Params
 
-| Nome         | Descrição                         | Obrigatório |
-| ------------ | --------------------------------- | ----------- |
-| `userId`     | O id do Usuario                   | Sim         |
-| `inversorId` | O id do inversor.                 | Não         |
-| `limit`      | Total de dados que quer retornar. | Não         |
+| Nome          | Descrição                                                             | Obrigatório |
+| ------------- | --------------------------------------------------------------------- | ----------- |
+| `userId`      | O id do Usuario                                                       | Sim         |
+| `inversorId`  | O id do inversor.                                                     | Não         |
+| `limit`       | Total de dados que quer retornar.                                     | Não         |
+| `invertersId` | O id dos inversores desejados (faz uma junção dos dados encontrados). | Não         |
 
 :::info
 
