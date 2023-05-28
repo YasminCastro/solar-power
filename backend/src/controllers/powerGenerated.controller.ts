@@ -149,7 +149,7 @@ export class PowerGeneratedController {
 
       if (invertersIdString) {
         const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersIdString);
-        res.status(201).json(powerGeneratedJoined);
+        res.status(201).json([powerGeneratedJoined]);
       } else if (inverterId) {
         const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
         res.status(201).json(powerGeneratedById);
