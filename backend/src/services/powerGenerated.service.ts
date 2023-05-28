@@ -5,6 +5,7 @@ import { HttpException } from '@/exceptions/httpException';
 import { logger } from '@/utils/logger';
 import { ElginDataInterface, HauweiDataInterface, WeatherInterface } from '@/interfaces/powerGenerated.interface';
 import { weatherApi } from '@/config';
+import { convertToKWh, convertToMWh } from '@/utils/convertPower';
 
 @Service()
 export class PowerGeneratedService {
@@ -33,6 +34,66 @@ export class PowerGeneratedService {
       });
 
       return powerGenerated;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async joinPowerGenerated(userId: number, invertersIdString: string): Promise<any> {
+    try {
+      const invertersId = invertersIdString.split(',').map(Number);
+      let powerGeneratedRaw: PowerGenerated[] = [];
+      for (let inverter of invertersId) {
+        const inversor = await this.getByInverterId(userId, inverter, 1);
+        powerGeneratedRaw.push(inversor[0]);
+      }
+
+      let result: any = {
+        id: Math.floor(Math.random() * 10000) + 1,
+        createdAt: powerGeneratedRaw[0].createdAt,
+        inversorId: [],
+        userId: powerGeneratedRaw[0].userId,
+        powerInRealTime: 0,
+        powerToday: 0,
+        powerMonth: 0,
+        powerYear: 0,
+        allPower: 0,
+        co2: 0,
+        coal: 0,
+        tree: 0,
+        lat: powerGeneratedRaw[0].lat,
+        long: powerGeneratedRaw[0].long,
+        localtime: powerGeneratedRaw[0].localtime,
+        tempC: powerGeneratedRaw[0].tempC,
+        windKph: powerGeneratedRaw[0].windKph,
+        pressureIn: powerGeneratedRaw[0].pressureIn,
+        humidity: powerGeneratedRaw[0].humidity,
+        cloud: powerGeneratedRaw[0].cloud,
+        uv: powerGeneratedRaw[0].uv,
+        precipMM: powerGeneratedRaw[0].precipMM,
+      };
+
+      for (let item of powerGeneratedRaw) {
+        result.inversorId.push(item.inversorId);
+        result.powerInRealTime += parseFloat(item.powerInRealTime);
+        result.powerToday += convertToKWh(item.powerToday);
+        result.powerMonth += convertToKWh(item.powerMonth);
+        result.powerYear += convertToKWh(item.powerYear);
+        result.allPower += convertToKWh(item.allPower);
+        result.co2 += parseFloat(item.co2);
+        result.coal += parseFloat(item.coal || '0');
+        result.tree += parseFloat(item.tree || '0');
+      }
+
+      result.co2 += `${result.co2}t`;
+      result.coal += `${result.coal}t`;
+      result.powerInRealTime = `${result.powerInRealTime}kW`;
+      result.powerToday = `${result.powerToday}kWh`;
+      result.powerMonth = result.powerMonth > 10000 ? `${convertToMWh(result.powerMonth)}MWh` : `${result.powerMonth}kWh`;
+      result.powerYear = result.powerYear > 10000 ? `${convertToMWh(result.powerYear)}MWh` : `${result.powerYear}kWh`;
+      result.allPower = result.allPower > 10000 ? `${convertToMWh(result.allPower)}MWh` : `${result.allPower}kWh`;
+
+      return result;
     } catch (error) {
       console.log(error);
     }

@@ -138,20 +138,24 @@ export class PowerGeneratedController {
 
   public getPowerGeneratedData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = Number(req.query.userId);
-      const inverterId = Number(req.query.inverterId);
+      const userId = Number(req.query.userId) || null;
+      const inverterId = Number(req.query.inverterId) || null;
+      const invertersIdString = req.query.invertersId as string;
       let limit = Number(req.query.limit) || 10;
 
       if (!userId) {
         throw new HttpException(409, 'userId is required');
       }
 
-      if (inverterId) {
-        const inversor = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
-        res.status(201).json(inversor);
+      if (invertersIdString) {
+        const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersIdString);
+        res.status(201).json(powerGeneratedJoined);
+      } else if (inverterId) {
+        const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
+        res.status(201).json(powerGeneratedById);
       } else {
-        const inversor = await this.powerGenerated.getByUserId(userId, limit);
-        res.status(201).json(inversor);
+        const powerGeneratedByUserId = await this.powerGenerated.getByUserId(userId, limit);
+        res.status(201).json(powerGeneratedByUserId);
       }
     } catch (error) {
       next(error);
