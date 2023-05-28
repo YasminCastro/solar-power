@@ -84,7 +84,7 @@ const Layout = () => {
         </Tab.Navigator>
       ) : (
         <View className="flex-1 items-center justify-center bg-blueDark-500">
-          <Logo width={200} height={200} className="m-10" />
+          <Logo width={200} height={200} />
           <ActivityIndicator size="large" color="#FEBE3D" />
         </View>
       )}
