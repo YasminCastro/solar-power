@@ -27,45 +27,45 @@ export class App {
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
 
-    // let job = new CronJob(
-    //   '0 */5 6-18 * * *',
-    //   async function () {
-    //     logger.info('Runing cronjob:', moment().format('DD-MM-YYYY HH:mm:ss'));
+    let job = new CronJob(
+      '0 */5 6-18 * * *',
+      async function () {
+        logger.info('Runing cronjob:', moment().format('DD-MM-YYYY HH:mm:ss'));
 
-    //     try {
-    //       await cronjobApi.post(`/power-generated/hauwei`, {
-    //         url: 'https://la5.fusionsolar.huawei.com/pvmswebsite/nologin/assets/build/index.html#/kiosk?kk=c8G84jaHlgapefCwiO3spDcixh4dKQeI',
-    //         lat: '-16.6254331',
-    //         long: '-49.2475725',
-    //         inversorId: 2,
-    //         userId: 1,
-    //       });
-    //     } catch (error) {
-    //       logger.error('Cronjob Error to get hauwei data');
-    //       logger.error(error);
-    //     }
+        try {
+          await cronjobApi.post(`/power-generated/hauwei`, {
+            url: 'https://la5.fusionsolar.huawei.com/pvmswebsite/nologin/assets/build/index.html#/kiosk?kk=c8G84jaHlgapefCwiO3spDcixh4dKQeI',
+            lat: '-16.6254331',
+            long: '-49.2475725',
+            inversorId: 2,
+            userId: 1,
+          });
+        } catch (error) {
+          logger.error('Cronjob Error to get hauwei data');
+          logger.error(error);
+        }
 
-    //     try {
-    //       await cronjobApi.post(`/power-generated/elgin`, {
-    //         username: ELGIN_USER,
-    //         password: ELGIN_PASSWORD,
-    //         lat: '-16.6254331',
-    //         long: '-49.2475725',
-    //         inversorId: 1,
-    //         userId: 1,
-    //       });
-    //     } catch (error) {
-    //       logger.error('Cronjob Error to get elgin data');
-    //       logger.error(error);
-    //     }
-    //   },
-    //   null,
-    //   true,
-    //   'America/Sao_Paulo',
-    // );
+        try {
+          await cronjobApi.post(`/power-generated/elgin`, {
+            username: ELGIN_USER,
+            password: ELGIN_PASSWORD,
+            lat: '-16.6254331',
+            long: '-49.2475725',
+            inversorId: 1,
+            userId: 1,
+          });
+        } catch (error) {
+          logger.error('Cronjob Error to get elgin data');
+          logger.error(error);
+        }
+      },
+      null,
+      true,
+      'America/Sao_Paulo',
+    );
 
-    // // job.start();
-    // logger.info(`is job running? ${job.running} `);
+    job.start();
+    logger.info(`is job running? ${job.running} `);
   }
 
   public listen() {

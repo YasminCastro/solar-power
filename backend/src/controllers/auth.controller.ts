@@ -10,35 +10,6 @@ export class AuthController {
 
   public hello = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const powerGeneratedRecords = await this.power.findMany();
-      console.log('UPDATING', powerGeneratedRecords.length);
-
-      let total = powerGeneratedRecords.length;
-
-      for (let record of powerGeneratedRecords) {
-        if (record.allPowerString) {
-          total = total - 1;
-        }
-
-        if (!record.allPowerString) {
-          console.log(`UPDATING ID: ${record.id}, FALTAM ${total}`);
-          await this.power.update({
-            where: { id: record.id },
-            data: {
-              powerInRealTimeString: record.powerInRealTime?.toString(),
-              powerTodayString: record.powerToday?.toString(),
-              powerMonthString: record.powerMonth?.toString(),
-              powerYearString: record.powerYear?.toString(),
-              allPowerString: record.allPower?.toString(),
-              co2String: record.co2?.toString(),
-              coalString: record.coal?.toString(),
-              treeString: record.tree?.toString(),
-            },
-          });
-          total = total - 1;
-        }
-      }
-
       res.status(201).json({ message: 'Project running ☀️! ' });
     } catch (error) {
       next(error);

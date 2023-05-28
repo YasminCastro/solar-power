@@ -2,7 +2,7 @@ import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
 import { InvertersService } from '@/services/inverters.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
-import { CreateInvertersDto } from '@/dtos/inverters.dto';
+import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
 import { HttpException } from '@/exceptions/httpException';
 
 export class InvertersController {
@@ -44,7 +44,7 @@ export class InvertersController {
 
   public updateInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inversorData: CreateInvertersDto = req.body;
+      const inversorData: UpdateInvertersDto = req.body;
       const inversorId = parseInt(req.params.id);
 
       const inversor = await this.inversor.updateInversor(inversorData, inversorId);
