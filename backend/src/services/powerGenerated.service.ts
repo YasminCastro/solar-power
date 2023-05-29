@@ -355,7 +355,7 @@ export class PowerGeneratedService {
         orderBy: { createdAt: 'desc' },
       });
 
-      if (!previousEnergyFound) return null;
+      if (!previousEnergyFound) return nowEnergy;
 
       const previousEnergy = parseFloat(previousEnergyFound.powerToday);
 
