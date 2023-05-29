@@ -5,12 +5,18 @@ import {
   useFonts,
 } from "@expo-google-fonts/ubuntu";
 
-import { Poppins_700Bold } from "@expo-google-fonts/poppins";
+import { Poppins_700Bold, Poppins_300Light } from "@expo-google-fonts/poppins";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthStackNavigation from "./src/routes/Auth";
 import Layout from "./src/routes/Layout";
-import Login from "./src/screens/Login/index";
+import { UserProvider } from "./src/contexts/UserContext";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import moment from "moment";
+import "moment/locale/pt-br";
+import { StatusBar } from "expo-status-bar";
+
+moment.locale("pt-br");
 
 export default function App() {
   const [hasLoadedFonts] = useFonts({
@@ -18,6 +24,7 @@ export default function App() {
     Ubuntu_500Medium,
     Ubuntu_400Regular,
     Poppins_700Bold,
+    Poppins_300Light,
   });
 
   if (!hasLoadedFonts) {
@@ -26,7 +33,11 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <AppLayout />
+      <UserProvider>
+        <SafeAreaProvider>
+          <AppLayout />
+        </SafeAreaProvider>
+      </UserProvider>
     </AuthProvider>
   );
 }
@@ -36,6 +47,8 @@ function AppLayout() {
 
   return (
     <NavigationContainer>
+      <StatusBar style="light" />
+
       {authState.isAuth ? <Layout /> : <AuthStackNavigation />}
     </NavigationContainer>
   );
