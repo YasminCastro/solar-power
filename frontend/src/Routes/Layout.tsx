@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
-import Data from "../screens/Data";
 import Settings from "../screens/Settings";
 
 import { Foundation } from "@expo/vector-icons";
@@ -13,6 +12,7 @@ import Inverters from "../screens/Inverters";
 import { useUser } from "../contexts/UserContext";
 import { View, ActivityIndicator } from "react-native";
 import Logo from "../assets/logo.svg";
+import Previsao from "../screens/Previsao";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +45,7 @@ const Layout = () => {
           />
           <Tab.Screen
             name="Data"
-            component={Data}
+            component={Previsao}
             options={{
               tabBarIcon: ({ color, size, focused }) => {
                 if (focused) {

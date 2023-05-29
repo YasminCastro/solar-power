@@ -14,6 +14,7 @@ import { UserProvider } from "./src/contexts/UserContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import moment from "moment";
 import "moment/locale/pt-br";
+import { StatusBar } from "expo-status-bar";
 
 moment.locale("pt-br");
 
@@ -46,6 +47,8 @@ function AppLayout() {
 
   return (
     <NavigationContainer>
+      <StatusBar style="light" />
+
       {authState.isAuth ? <Layout /> : <AuthStackNavigation />}
     </NavigationContainer>
   );
