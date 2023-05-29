@@ -348,18 +348,18 @@ export class PowerGeneratedService {
     }
   }
 
-  public async calculateRealTimePower(inversorId: number, nowEnergy: number): Promise<number> {
+  public async calculateRealTimePower(inversorId: number, nowEnergy: number): Promise<string> {
     try {
       const previousEnergyFound = await this.powerGenerated.findFirst({
         where: { inversorId },
         orderBy: { createdAt: 'desc' },
       });
 
-      if (!previousEnergyFound) return nowEnergy;
+      if (!previousEnergyFound) return `${nowEnergy}`;
 
       const previousEnergy = parseFloat(previousEnergyFound.powerToday);
 
-      const power = (nowEnergy - previousEnergy) / (1 / 12);
+      const power = ((nowEnergy - previousEnergy) / (1 / 12)).toFixed(1);
       return power;
     } catch (error: any) {
       logger.error(`Not able to calculate power: ${error.message}`);
