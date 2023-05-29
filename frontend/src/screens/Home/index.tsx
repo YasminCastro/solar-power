@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <SafeAreaView className="flex-1 bg-blueDark-500 pt-1">
       <ScrollView>
-        <StatusBar style="auto" />
+        <StatusBar style="light" />
         <WelcomeView />
         <RealTimeView />
         <TodayGraph />

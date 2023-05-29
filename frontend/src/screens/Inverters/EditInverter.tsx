@@ -24,7 +24,7 @@ const EditInverter = ({ setEditItem }: IProps) => {
           onPress={() => setEditItem({ edit: false, inverterId: null })}
         />
       </TouchableOpacity>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 };

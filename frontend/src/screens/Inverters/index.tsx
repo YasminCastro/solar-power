@@ -39,7 +39,7 @@ const ListInverters = () => {
         </View>
       )}
 
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 };
