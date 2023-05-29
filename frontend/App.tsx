@@ -12,6 +12,10 @@ import AuthStackNavigation from "./src/routes/Auth";
 import Layout from "./src/routes/Layout";
 import { UserProvider } from "./src/contexts/UserContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import moment from "moment";
+import "moment/locale/pt-br";
+
+moment.locale("pt-br");
 
 export default function App() {
   const [hasLoadedFonts] = useFonts({
