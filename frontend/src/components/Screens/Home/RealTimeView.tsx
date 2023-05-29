@@ -23,6 +23,7 @@ export default function RealTimeView() {
 
       user?.inversors.forEach((inverter) => {
         if (inverter.active) {
+          invertersId.push(inverter.id);
           maxValuSum += inverter.maxRealTimePower;
         }
       });
