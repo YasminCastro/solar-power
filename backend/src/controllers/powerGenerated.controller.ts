@@ -77,6 +77,7 @@ export class PowerGeneratedController {
 
   public saveHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      //todo: mudar para o cheerio já que é um pagina estatica
       const { inversorId, lat, long, url, userId }: HauweiDataDto = req.body;
 
       const { page, browser } = await this.powerGenerated.goToPage(url);
@@ -141,15 +142,23 @@ export class PowerGeneratedController {
       const userId = Number(req.query.userId) || null;
       const inverterId = Number(req.query.inverterId) || null;
       const invertersIdString = req.query.invertersId as string;
+      const todayData = Boolean(req.query.today);
       let limit = Number(req.query.limit) || 10;
 
       if (!userId) {
         throw new HttpException(409, 'userId is required');
       }
 
+      if (todayData && !inverterId) {
+        throw new HttpException(409, 'inverterId is required');
+      }
+
       if (invertersIdString) {
         const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersIdString);
         res.status(201).json([powerGeneratedJoined]);
+      } else if (todayData) {
+        const powerGeneratedToday = await this.powerGenerated.getTodayData(userId, inverterId, limit);
+        res.status(201).json(powerGeneratedToday);
       } else if (inverterId) {
         const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
         res.status(201).json(powerGeneratedById);

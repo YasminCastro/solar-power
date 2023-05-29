@@ -6,6 +6,7 @@ import { logger } from '@/utils/logger';
 import { ElginDataInterface, HauweiDataInterface, WeatherInterface } from '@/interfaces/powerGenerated.interface';
 import { weatherApi } from '@/config';
 import { convertToKWh, convertToMWh } from '@/utils/convertPower';
+import moment from 'moment';
 
 @Service()
 export class PowerGeneratedService {
@@ -34,6 +35,42 @@ export class PowerGeneratedService {
       });
 
       return powerGenerated;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async getTodayData(userId: number, inverterId: number, limit: number): Promise<any> {
+    try {
+      const startOfDay = moment().startOf('day').toDate();
+
+      const recordsFromToday: PowerGenerated[] = await this.powerGenerated.findMany({
+        where: {
+          userId,
+          inversorId: inverterId,
+          createdAt: { gte: startOfDay },
+          powerInRealTime: {
+            not: '0kW',
+          },
+        },
+      });
+
+      const recordByHour = {};
+
+      for (const record of recordsFromToday) {
+        const hour = moment(record.createdAt).hour();
+
+        if (!recordByHour[hour] || moment(record.createdAt).isAfter(recordByHour[hour].createdAt)) {
+          // Se ainda não tivermos um registro para essa hora, ou se o registro atual for mais recente, armazene-o
+          recordByHour[hour] = record;
+        }
+      }
+
+      const recordsByHour: PowerGenerated[] = Object.values(recordByHour);
+
+      recordsByHour.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
+      return recordsByHour;
     } catch (error) {
       console.log(error);
     }
@@ -160,7 +197,7 @@ export class PowerGeneratedService {
       logger.silly(`Environmental benefits data OK...`);
 
       return {
-        powerInRealTime: powerGenerationData[0],
+        powerInRealTime: powerGenerationData[0].startsWith('0') ? '0kW' : powerGenerationData[0],
         powerToday: powerGenerationData[1],
         powerMonth: powerGenerationData[2],
         powerYear: powerGenerationData[3],
@@ -273,7 +310,18 @@ export class PowerGeneratedService {
     inversorData: HauweiDataInterface | ElginDataInterface,
     weather: WeatherInterface,
     userInfo: { lat: string; long: string; userId: number; inversorId: number },
-  ): Promise<PowerGenerated> {
+  ): Promise<PowerGenerated | string> {
+    if (inversorData.powerInRealTime === '0kW') {
+      const startOfDay = moment().startOf('day').toDate();
+      //se ja tiver um registro com 0kw não precisa salvar dnv
+      const findData = await this.powerGenerated.findFirst({
+        where: { userId: userInfo.userId, inversorId: userInfo.inversorId, powerInRealTime: '0kW', createdAt: { gte: startOfDay } },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      if (findData) return 'Data already saved';
+    }
+
     const createInversorData: Promise<PowerGenerated> = this.powerGenerated.create({
       data: { ...inversorData, ...weather, ...userInfo },
     });
@@ -302,7 +350,7 @@ export class PowerGeneratedService {
 
   public async calculateRealTimePower(inversorId: number, nowEnergy: number): Promise<number> {
     try {
-      const previousEnergyFound: PowerGenerated = await this.powerGenerated.findFirst({
+      const previousEnergyFound = await this.powerGenerated.findFirst({
         where: { inversorId },
         orderBy: { createdAt: 'desc' },
       });
