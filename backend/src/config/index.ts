@@ -9,6 +9,6 @@ export const EXPIRES_IN = 604800; //7 days in seconds
 
 export const weatherApi = axios.create({ baseURL: `http://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&aqi=no` });
 
-let projectURL = NODE_ENV === 'production' ? 'http://yascastro.com.br:4000' : `http://localhost:4000`;
+let projectURL = NODE_ENV === 'production' ? 'http://5.189.152.65:4000' : `http://localhost:4000`;
 
 export const cronjobApi = axios.create({ baseURL: projectURL });
