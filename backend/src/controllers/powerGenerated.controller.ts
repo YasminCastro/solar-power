@@ -77,7 +77,6 @@ export class PowerGeneratedController {
 
   public saveHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      //todo: mudar para o cheerio já que é um pagina estatica
       const { inversorId, lat, long, url, userId }: HauweiDataDto = req.body;
 
       const { page, browser } = await this.powerGenerated.goToPage(url);
@@ -128,6 +127,8 @@ export class PowerGeneratedController {
       const powerInRealTime = await this.powerGenerated.calculateRealTimePower(inversorId, parseFloat(elginData.powerToday));
 
       elginData.powerInRealTime = `${powerInRealTime}kW`;
+
+      if (!powerInRealTime) elginData.powerInRealTime = `0kW`;
 
       const saveInversorData = await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
 

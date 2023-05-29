@@ -230,13 +230,13 @@ export class PowerGeneratedService {
       logger.silly(`LOGIN ELGIN MONITOR...`);
 
       // LOGIN
-      await page.waitForSelector(USERNAME_INPUT, { timeout: 5000 });
+      await page.waitForSelector(USERNAME_INPUT, { timeout: 10000 });
       await page.type(USERNAME_INPUT, username);
 
-      await page.waitForSelector(PASSWORD_INPUT, { timeout: 5000 });
+      await page.waitForSelector(PASSWORD_INPUT, { timeout: 10000 });
       await page.type(PASSWORD_INPUT, password);
 
-      await page.waitForSelector(LOGIN_BUTTON, { timeout: 5000 });
+      await page.waitForSelector(LOGIN_BUTTON, { timeout: 10000 });
       await page.click(LOGIN_BUTTON);
 
       await page.waitForNavigation({ waitUntil: 'networkidle0' });
@@ -244,7 +244,7 @@ export class PowerGeneratedService {
       // POWER GENERATION DATA
       logger.silly(`GETTING TOTAL_ENERGY...`);
 
-      await page.waitForSelector(TODAY_ENERGY);
+      await page.waitForSelector(TODAY_ENERGY, { timeout: 10000 });
       let todayPerformanceElement = await page.$(TODAY_ENERGY);
       let todayPerformance = await page.evaluate(el => el.textContent, todayPerformanceElement);
 
