@@ -30,7 +30,7 @@ export class App {
     let job = new CronJob(
       '0 */5 6-18 * * *',
       async function () {
-        logger.info('Runing cronjob:', moment().format('DD-MM-YYYY HH:mm:ss'));
+        logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
 
         try {
           await cronjobApi.post(`/power-generated/hauwei`, {
