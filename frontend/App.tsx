@@ -5,12 +5,13 @@ import {
   useFonts,
 } from "@expo-google-fonts/ubuntu";
 
-import { Poppins_700Bold } from "@expo-google-fonts/poppins";
+import { Poppins_700Bold, Poppins_300Light } from "@expo-google-fonts/poppins";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthStackNavigation from "./src/routes/Auth";
 import Layout from "./src/routes/Layout";
 import { UserProvider } from "./src/contexts/UserContext";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
   const [hasLoadedFonts] = useFonts({
@@ -18,6 +19,7 @@ export default function App() {
     Ubuntu_500Medium,
     Ubuntu_400Regular,
     Poppins_700Bold,
+    Poppins_300Light,
   });
 
   if (!hasLoadedFonts) {
@@ -27,7 +29,9 @@ export default function App() {
   return (
     <AuthProvider>
       <UserProvider>
-        <AppLayout />
+        <SafeAreaProvider>
+          <AppLayout />
+        </SafeAreaProvider>
       </UserProvider>
     </AuthProvider>
   );

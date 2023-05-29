@@ -8,6 +8,7 @@ module.exports = {
         body: "Ubuntu_500Medium",
         regular: "Ubuntu_400Regular",
         number: "Poppins_700Bold",
+        numberLight: "Poppins_300Light",
       },
 
       colors: {
