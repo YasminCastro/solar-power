@@ -359,7 +359,9 @@ export class PowerGeneratedService {
 
       const previousEnergy = parseFloat(previousEnergyFound.powerToday);
 
-      const power = ((nowEnergy - previousEnergy) / (1 / 12)).toFixed(1);
+      const rawPower = (nowEnergy - previousEnergy) / (1 / 12);
+
+      const power = rawPower.toFixed(1);
       return power;
     } catch (error: any) {
       logger.error(`Not able to calculate power: ${error.message}`);
