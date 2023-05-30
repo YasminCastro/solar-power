@@ -8,6 +8,7 @@ module.exports = {
         body: "Ubuntu_500Medium",
         regular: "Ubuntu_400Regular",
         number: "Poppins_700Bold",
+        numberLight: "Poppins_300Light",
       },
 
       colors: {
@@ -71,15 +72,14 @@ module.exports = {
           800: "#724c17",
           900: "#593b12",
         },
-        solar:{
+        solar: {
           50: "#0F1E44",
           100: "#FDA933",
           200: "#10237A",
           300: "#B08C09",
           400: "#424242",
           500: "#010B2B",
-        }
-        
+        },
       },
     },
   },

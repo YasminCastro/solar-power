@@ -20,7 +20,7 @@ const Settings = () => {
           <Text className="font-body text-base text-solar-500">Logout</Text>
         </View>
       </TouchableOpacity>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 };
