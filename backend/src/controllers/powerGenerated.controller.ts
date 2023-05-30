@@ -8,16 +8,18 @@ import { CRYPTO_KEY } from '@/config';
 import { Inversor } from '@prisma/client';
 import { logger } from '@/utils/logger';
 import { HttpException } from '@/exceptions/httpException';
+import { UtilsService } from '@/services/utils.service';
 
 export class PowerGeneratedController {
   public powerGenerated = Container.get(PowerGeneratedService);
   public inverters = Container.get(InvertersService);
+  public utils = Container.get(UtilsService);
 
   public updateAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const getHauweiData = async (inversor: Inversor) => {
       const { page, browser } = await this.powerGenerated.goToPage(inversor.url);
       const hauweiData = await this.powerGenerated.hauwei(page, browser);
-      const weather = await this.powerGenerated.getWeatherData(inversor.lat, inversor.long);
+      const weather = await this.utils.getWeatherData(inversor.lat, inversor.long);
       const userInfo = {
         lat: inversor.lat,
         long: inversor.long,
@@ -44,7 +46,7 @@ export class PowerGeneratedController {
         inversorId: inversor.id,
       };
 
-      const weather = await this.powerGenerated.getWeatherData(inversor.lat, inversor.long);
+      const weather = await this.utils.getWeatherData(inversor.lat, inversor.long);
 
       await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
     };
@@ -83,7 +85,7 @@ export class PowerGeneratedController {
 
       const hauweiData = await this.powerGenerated.hauwei(page, browser);
 
-      const weather = await this.powerGenerated.getWeatherData(lat, long);
+      const weather = await this.utils.getWeatherData(lat, long);
 
       const userInfo = {
         lat,
@@ -123,7 +125,7 @@ export class PowerGeneratedController {
         inversorId,
       };
 
-      const weather = await this.powerGenerated.getWeatherData(lat, long);
+      const weather = await this.utils.getWeatherData(lat, long);
       const powerInRealTime = await this.powerGenerated.calculateRealTimePower(inversorId, parseFloat(elginData.powerToday));
 
       elginData.powerInRealTime = `${powerInRealTime}kW`;

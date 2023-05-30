@@ -2,11 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 import { AuthService } from '@services/auth.service';
 import { CreateUserDto, LoginUserDto } from '@/dtos/users.dto';
-import { PrismaClient } from '@prisma/client';
 
 export class AuthController {
   public auth = Container.get(AuthService);
-  public power = new PrismaClient().powerGenerated;
 
   public hello = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
