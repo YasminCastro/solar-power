@@ -1,82 +1,104 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Pressable } from 'react-native';
+import { View, Text, TextInput, Pressable, TouchableOpacity } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
+
+import LogoGoogle from "../assets/icons8-google-24.svg";
+import { LoginScreenNavigationProp } from './Login/interface';
+import { useNavigation } from '@react-navigation/native';
 
 
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
+  
+  const navigation = useNavigation<LoginScreenNavigationProp>();
+
+  const continuar = () => {
+    navigation.navigate("Marca");
+  }
 
   return (
-    <View className="flex-1 items-center justify-center bg-slate-50">
+    <View className="flex-1 items-center justify-center bg-solar-50">
+      
       {error ? (
-        <View className="absolute top-8 w-full bg-red-400 mx-8 max-w-sm p-4 rounded-md">
-          <Text className="text-white font-bold">Os e-mails não conferem</Text>
+        <View className="absolute top-8 mx-8 w-full max-w-sm rounded-md bg-red-400 p-4">
+          <Text className="font-bold text-white">Os e-mails não conferem</Text>
         </View>
       ) : null}
-      <View className="p-8 w-full max-w-sm">
-        <Text className="text-5xl font-bold mb-6 text-slate-900">Crie sua conta</Text>
-
-        <Pressable
-        className="h-12 bg-blue-500 rounded-md items-center mb-4 flex justify-center"
-        >
-        <View className="flex flex-row space-x-6 ">
-            <Ionicons name="logo-google" size={24} className="bg-white" />
-            <Text className="text-white text-base font-medium">Criar conta com Google</Text>
-        </View>
-        </Pressable>
-
-        <TextInput
-          className="w-full bg-white border border-slate-200 rounded-md h-12 px-4 mb-4"
-          placeholderTextColor="#000"
-          placeholder="Digite seu e-mail"
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-
-        <TextInput
-          className="w-full bg-white border border-slate-200 rounded-md h-12 px-4 mb-4"
-          placeholderTextColor="#000"
-          placeholder="Confirme seu e-mail"
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-
-        <TextInput
-          className="w-full bg-white border border-slate-200 rounded-md h-12 px-4 mb-4"
-          placeholderTextColor="#000"
-          placeholder="Digite sua senha"
-          secureTextEntry={!showPassword}
-        />
-
-        <TextInput
-          className="w-full bg-white border border-slate-200 rounded-md h-12 px-4"
-          placeholderTextColor="#000"
-          placeholder="Confirme sua senha"
-          secureTextEntry={!showPassword}
-        />
-
-        <View className="flex-row items-center my-8 mr-3">
-          <Pressable
-            className="flex items-center justify-center bg-white border border-slate-200 h-6 w-6 rounded-sm mr-3"
-          >
-            <View className="bg-amber-500 h-4 w-4 rounded-sm" />
-          </Pressable>
-          <Text className="text-slate-900">
-            Li e concordo com os termos de uso e política de privacidade.
+      <View className="w-full max-w-sm p-8 justify-center h-1/2 ">
+        <View>
+          <Text className="text-center font-title text-4xl  text-white">
+            Bem vindo
+          </Text>
+          <Text className="text-1xl mb-6 mr-1 text-center font-regular text-gray-100">
+            Faça o Cadastro
           </Text>
         </View>
 
-        <Pressable
-          className="h-12 bg-blue-900 rounded-md flex flex-row justify-center items-center px-6"
-        >
-          <View className="flex-1 flex items-center">
-            <Text className="text-white text-base font-medium">Criar conta</Text>
-          </View>
-        </Pressable>
+        <View>
+          <Pressable className="mb-4 flex h-12 items-center justify-center rounded-full bg-white">
+            <View className="flex flex-row space-x-6 ">
+              <LogoGoogle></LogoGoogle>
+              <Text className="text- font-regular text-base text-solar-400">
+                Cadastre com o Google
+              </Text>
+            </View>
+          </Pressable>
+        </View>
+
       </View>
+
+      <LinearGradient
+      className="rounded-lg w-full h-1/2  " 
+          colors={[ '#B08C09', '#10237A']}
+          start={[0,0]}
+      >
+
+        <View className=" w-full max-w-sm p-6 ">
+          <View>
+          <TextInput
+                className="mb-4 h-12 w-full rounded-sm border border-white border-t-0 border-x-0 bg-transparent px-4 font-regular text-white"
+                placeholderTextColor="#ffff"
+                placeholder="E-mail"
+                autoCapitalize="none"
+                keyboardType="email-address"
+              />
+
+        
+              <TextInput
+                className="mb-4 h-12 w-full rounded-sm border border-white border-t-0 border-x-0 bg-transparent px-4 font-regular text-white"
+                placeholderTextColor="#ffff"
+                placeholder="Senha"
+                secureTextEntry={!showPassword}
+              />
+
+              <TextInput
+                className="mb-4 h-12 w-full rounded-sm border border-white border-t-0 border-x-0 bg-transparent px-4 font-regular text-white"
+                placeholderTextColor="#ffff"
+                placeholder="Repita a senha"
+                secureTextEntry={!showPassword}
+              />
+
+              <Text className="text-1xl mb-14 text-center font-regular text-white">
+                Já tem uma conta? Clique aqui para logar!
+              </Text>
+          </View>
+
+          <TouchableOpacity
+            className="flex h-12 flex-row items-center justify-center rounded-full bg-solar-100 px-6"
+            onPress={continuar}
+          >
+            <View className="flex flex-1 items-center">
+              <Text className="font-body text-base text-solar-500">Continuar</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+      </LinearGradient>
+
     </View>
   );
 }
