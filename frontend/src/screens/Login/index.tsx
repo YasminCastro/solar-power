@@ -32,17 +32,22 @@ export default function Login() {
       alert(result.message);
     }
   };
+  
+  const cadastrar = () => {
+    navigation.navigate("SignUp");
+  }
+
+ 
 
   return (
     <View className="flex-1 items-center justify-center bg-solar-50">
-
       
       {error ? (
         <View className="absolute top-8 mx-8 w-full max-w-sm rounded-md bg-red-400 p-4">
           <Text className="font-bold text-white">Os e-mails não conferem</Text>
         </View>
       ) : null}
-      <View className="w-full max-w-sm p-8">
+      <View className="w-full max-w-sm p-8 justify-center h-1/2 ">
         <View>
           <Text className="text-center font-title text-4xl  text-white">
             Bem vindo
@@ -65,24 +70,25 @@ export default function Login() {
 
         <View>
           <Text className="text-1xl mb-6 mr-1 text-center font-regular text-white">
-            Ainda não tem uma conta? <Text className="text-solar-600">Cadastre já!</Text>
+            Ainda não tem uma conta? <Text className="text-solar-600" onPress={cadastrar}>Cadastre já!</Text>
           </Text>
         </View>
+
+
+
+        
       </View>
 
       <LinearGradient
-      className="rounded-lg w-full " 
+      className="rounded-lg w-full h-1/2  " 
           colors={[ '#B08C09', '#10237A']}
           start={[0,0]}
       >
 
-        
-        <View className=" w-full max-w-sm  p-6 ">
-
-          
+        <View className=" w-full max-w-sm p-6 ">
           <View>
           <TextInput
-                className="mb-4 h-12 w-full rounded-sm border border-white border-t-0 border-x-0 bg-transparent px-4 font-regular "
+                className="mb-4 h-12 w-full rounded-sm border border-white border-t-0 border-x-0 bg-transparent px-4 font-regular text-white"
                 placeholderTextColor="#ffff"
                 placeholder="E-mail"
                 autoCapitalize="none"
@@ -90,7 +96,7 @@ export default function Login() {
               />
 
               <TextInput
-                className="mb-4 h-12 w-full rounded-sm border border-white border-t-0 border-x-0 bg-transparent px-4 font-regular"
+                className="mb-4 h-12 w-full rounded-sm border border-white border-t-0 border-x-0 bg-transparent px-4 font-regular text-white"
                 placeholderTextColor="#ffff"
                 placeholder="Senha"
                 secureTextEntry={!showPassword}
