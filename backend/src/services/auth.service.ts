@@ -1,4 +1,3 @@
-import { PrismaClient, User } from '@prisma/client';
 import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { Service } from 'typedi';
@@ -6,23 +5,23 @@ import { EXPIRES_IN, SECRET_KEY } from '@config';
 import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/httpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
+import { UserModel } from '@/models/users.models';
+import { User } from '@/interfaces/users.interface';
 
 @Service()
 export class AuthService {
-  public users = new PrismaClient().user;
-
   public async signup(userData: CreateUserDto): Promise<User> {
-    const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
+    const findUser: User = await UserModel.findOne({ email: userData.email });
     if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);
-    const createUserData: Promise<User> = this.users.create({ data: { ...userData, password: hashedPassword } });
+    const createUserData: User = await UserModel.create({ ...userData, password: hashedPassword });
 
     return createUserData;
   }
 
   public async login(userData: LoginUserDto): Promise<TokenData> {
-    const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
+    const findUser: User = await UserModel.findOne({ email: userData.email });
     if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
 
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
@@ -37,7 +36,6 @@ export class AuthService {
     const payload: DataStoredInToken = {
       id: user.id,
       name: user.name,
-
       email: user.email,
     };
 

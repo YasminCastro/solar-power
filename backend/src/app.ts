@@ -12,6 +12,8 @@ import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, cronjobApi, ELGIN_USER
 import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import { dbConnection } from './database';
+import { connect, set } from 'mongoose';
 
 export class App {
   public app: express.Application;
@@ -23,49 +25,50 @@ export class App {
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
 
+    this.connectToDatabase();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
 
-    let job = new CronJob(
-      '0 */5 6-18 * * *',
-      async function () {
-        logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
+    // let job = new CronJob(
+    //   '0 */5 6-18 * * *',
+    //   async function () {
+    //     logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
 
-        try {
-          await cronjobApi.post(`/power-generated/hauwei`, {
-            url: 'https://la5.fusionsolar.huawei.com/pvmswebsite/nologin/assets/build/index.html#/kiosk?kk=c8G84jaHlgapefCwiO3spDcixh4dKQeI',
-            lat: '-16.6254331',
-            long: '-49.2475725',
-            inversorId: 2,
-            userId: 1,
-          });
-        } catch (error) {
-          logger.error('Cronjob Error to get hauwei data');
-          logger.error(error);
-        }
+    //     try {
+    //       await cronjobApi.post(`/power-generated/hauwei`, {
+    //         url: 'https://la5.fusionsolar.huawei.com/pvmswebsite/nologin/assets/build/index.html#/kiosk?kk=c8G84jaHlgapefCwiO3spDcixh4dKQeI',
+    //         lat: '-16.6254331',
+    //         long: '-49.2475725',
+    //         inversorId: 2,
+    //         userId: 1,
+    //       });
+    //     } catch (error) {
+    //       logger.error('Cronjob Error to get hauwei data');
+    //       logger.error(error);
+    //     }
 
-        try {
-          await cronjobApi.post(`/power-generated/elgin`, {
-            username: ELGIN_USER,
-            password: ELGIN_PASSWORD,
-            lat: '-16.6254331',
-            long: '-49.2475725',
-            inversorId: 1,
-            userId: 1,
-          });
-        } catch (error) {
-          logger.error('Cronjob Error to get elgin data');
-          logger.error(error);
-        }
-      },
-      null,
-      true,
-      'America/Sao_Paulo',
-    );
+    //     try {
+    //       await cronjobApi.post(`/power-generated/elgin`, {
+    //         username: ELGIN_USER,
+    //         password: ELGIN_PASSWORD,
+    //         lat: '-16.6254331',
+    //         long: '-49.2475725',
+    //         inversorId: 1,
+    //         userId: 1,
+    //       });
+    //     } catch (error) {
+    //       logger.error('Cronjob Error to get elgin data');
+    //       logger.error(error);
+    //     }
+    //   },
+    //   null,
+    //   true,
+    //   'America/Sao_Paulo',
+    // );
 
-    job.start();
-    logger.info(`is job running? ${job.running} `);
+    // job.start();
+    // logger.info(`is job running? ${job.running} `);
   }
 
   public listen() {
@@ -79,6 +82,14 @@ export class App {
 
   public getServer() {
     return this.app;
+  }
+
+  private async connectToDatabase() {
+    if (this.env !== 'production') {
+      set('debug', true);
+    }
+
+    await connect(dbConnection.url);
   }
 
   private initializeMiddlewares() {
