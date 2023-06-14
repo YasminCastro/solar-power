@@ -3,6 +3,10 @@
   "compilerOptions": {
     "strict": true,
     "types": ["nativewind/types"],
-    "typeRoots": ["./src/types"]
+    "typeRoots": [
+      "./src/types",
+      "./node_modules/@types",
+      "./node_modules/nativewind/types"
+    ]
   }
 }

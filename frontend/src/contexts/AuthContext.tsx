@@ -2,16 +2,20 @@ import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
 import api, { setAuthHeaders } from "../lib/api";
 import { TOKEN_KEY } from "../config";
+import { IUserDecoded } from "../interfaces/user";
+import jwtDecode from "jwt-decode";
 
 interface AuthProps {
   authState: { token: string | null; isAuth: boolean };
   onRegister?: (email: string, password: string) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
+  isValidToken: (token: string) => boolean;
   onLogout?: () => Promise<any>;
 }
 
 const AuthContext = createContext<AuthProps>({
   authState: { token: null, isAuth: false },
+  isValidToken: () => false,
 });
 
 export const useAuth = () => {
@@ -28,7 +32,7 @@ export const AuthProvider = ({ children }: any) => {
     const loadToken = async () => {
       const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
-      if (token) {
+      if (token && isValidToken(token)) {
         setAuthState({ token: token, isAuth: true });
         setAuthHeaders(token);
       }
@@ -67,6 +71,16 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
+  const isValidToken = (token: string) => {
+    const userDecoded: IUserDecoded = jwtDecode(token);
+    if (Date.now() >= userDecoded.exp * 1000) {
+      onLogout();
+      return false;
+    }
+
+    return true;
+  };
+
   const onLogout = async () => {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
 
@@ -81,8 +95,9 @@ export const AuthProvider = ({ children }: any) => {
       onLogin,
       onLogout,
       authState,
+      isValidToken,
     }),
-    [onRegister, onLogin, onLogout, authState]
+    [onRegister, onLogin, onLogout, authState, isValidToken]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

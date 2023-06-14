@@ -5,6 +5,7 @@ import { IUserDecoded, IUser } from "../interfaces/user";
 import api from "../lib/api";
 import { TOKEN_KEY } from "../config";
 import IInverter from "../interfaces/inverter";
+import { useAuth } from "./AuthContext";
 
 interface IValue {
   user?: IUser;
@@ -20,12 +21,13 @@ export const useUser = (): IValue => {
 export const UserProvider = ({ children }: any) => {
   const [user, setUser] = useState<IUser>();
   const [userInverters, setUserInverters] = useState<IInverter[]>();
+  const { isValidToken } = useAuth();
 
   useEffect(() => {
     const loadUser = async () => {
       const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
-      if (token) {
+      if (token && isValidToken(token)) {
         const userDecoded: IUserDecoded = await jwtDecode(token);
 
         const response = await api.get(`/users/${userDecoded.id}`, {
