@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
 export interface DataStoredInToken {
-  id: number;
+  _id: number;
   name: string;
   email: string;
 }

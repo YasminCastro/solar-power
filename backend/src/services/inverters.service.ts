@@ -4,18 +4,19 @@ import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
 import { HttpException } from '@/exceptions/httpException';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
+import { InverterModel } from '@/models/inverters.models';
+import { Inverter } from '@/interfaces/inverter.interface';
 
 @Service()
 export class InvertersService {
   public inversors = new PrismaClient().inversor;
 
-  public async createInversor(inversorData: CreateInvertersDto, userId: number): Promise<Inversor> {
+  public async createInversor(inversorData: CreateInvertersDto, userId: number): Promise<Inverter> {
     let password = null;
     if (inversorData.password) {
       password = Crypto.AES.encrypt(inversorData.password, CRYPTO_KEY).toString();
     }
-    const createInversorData: Promise<Inversor> = this.inversors.create({ data: { userId, ...inversorData, password } });
-
+    const createInversorData: Inverter = await InverterModel.create({ userId, ...inversorData, password });
     return createInversorData;
   }
 

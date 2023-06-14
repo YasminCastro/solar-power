@@ -1,6 +1,6 @@
 import { User } from './users.interface';
 
-export interface InversorInterface {
+export interface Inverter {
   id?: number;
   createdAt?: Date;
   user: User;
@@ -8,5 +8,5 @@ export interface InversorInterface {
   model: string;
   hauwei?: any;
   elgin?: any;
-  powerGenerated?: any;
+  powerGenerated?: number;
 }

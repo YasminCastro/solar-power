@@ -20,7 +20,7 @@ export class UserController {
 
   public getUserById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = Number(req.params.id);
+      const userId = String(req.params.id);
       const findOneUserData: User = await this.user.findUserById(userId);
 
       res.status(200).json(findOneUserData);
@@ -31,7 +31,7 @@ export class UserController {
 
   public updateUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = Number(req.params.id);
+      const userId = String(req.params.id);
       const userData: UpdateUserDto = req.body;
       const user = await this.user.updateUser(userId, userData);
 
@@ -43,7 +43,7 @@ export class UserController {
 
   public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = Number(req.params.id);
+      const userId = String(req.params.id);
       await this.user.deleteUser(userId);
 
       res.status(200).json({ message: 'User successfully deleted' });

@@ -4,6 +4,7 @@ import { Service } from 'typedi';
 import { UpdateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@/exceptions/httpException';
 import { User } from '@/interfaces/users.interface';
+import { UserModel } from '@/models/users.models';
 
 const selectQuery = {
   id: true,
@@ -19,24 +20,20 @@ export class UserService {
   public user = new PrismaClient().user;
 
   public async findAllUser(): Promise<User[]> {
-    const allUser: User[] = await this.user.findMany({
-      select: selectQuery,
-    });
-    return allUser;
+    const users: User[] = await UserModel.find();
+    return users;
   }
 
-  public async findUserById(userId: number): Promise<User> {
-    const findUser: User = await this.user.findUnique({
-      where: { id: userId },
-      select: selectQuery,
-    });
+  public async findUserById(userId: string): Promise<User> {
+    const findUser: User = await UserModel.findOne({ _id: userId });
+
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
     return findUser;
   }
 
-  public async updateUser(userId: number, userData: UpdateUserDto): Promise<User> {
-    const findUser: UserPrisma = await this.user.findUnique({ where: { id: userId } });
+  public async updateUser(userId: string, userData: UpdateUserDto): Promise<User> {
+    const findUser: User = await UserModel.findOne({ _id: userId });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
 
     let data = findUser;
@@ -50,15 +47,14 @@ export class UserService {
       data.name = userData.name;
     }
 
-    const updateUserData = await this.user.update({ where: { id: userId }, data });
-    return updateUserData;
+    const updateUserById: User = await UserModel.findByIdAndUpdate(userId, { userData });
+    return updateUserById;
   }
 
-  public async deleteUser(userId: number): Promise<User> {
-    const findUser: User = await this.user.findUnique({ where: { id: userId } });
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+  public async deleteUser(userId: string): Promise<User> {
+    const deleteUserById: User = await UserModel.findByIdAndDelete(userId);
+    if (!deleteUserById) throw new HttpException(409, "User doesn't exist");
 
-    const deleteUserData = await this.user.delete({ where: { id: userId } });
-    return deleteUserData;
+    return deleteUserById;
   }
 }

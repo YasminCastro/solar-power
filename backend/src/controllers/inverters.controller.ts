@@ -11,7 +11,7 @@ export class InvertersController {
   public createInversor = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const inversorData: CreateInvertersDto = req.body;
-      const userId = req.user.id;
+      const userId = req.user._id;
 
       await this.inversor.createInversor(inversorData, userId);
 

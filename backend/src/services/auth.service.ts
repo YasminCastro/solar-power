@@ -34,7 +34,7 @@ export class AuthService {
 
   public createToken(user: User): TokenData {
     const payload: DataStoredInToken = {
-      id: user.id,
+      _id: user._id,
       name: user.name,
       email: user.email,
     };
