@@ -11,12 +11,12 @@ import { Inverter } from '@/interfaces/inverter.interface';
 export class InvertersService {
   public inversors = new PrismaClient().inversor;
 
-  public async createInversor(inversorData: CreateInvertersDto, userId: number): Promise<Inverter> {
+  public async createInversor(inverterData: CreateInvertersDto, userId: number): Promise<Inverter> {
     let password = null;
-    if (inversorData.password) {
-      password = Crypto.AES.encrypt(inversorData.password, CRYPTO_KEY).toString();
+    if (inverterData.password) {
+      password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
     }
-    const createInversorData: Inverter = await InverterModel.create({ userId, ...inversorData, password });
+    const createInversorData: Inverter = await InverterModel.create({ userId, ...inverterData, password });
     return createInversorData;
   }
 
@@ -26,44 +26,35 @@ export class InvertersService {
     return findUserInversors;
   }
 
-  public async getInversorsByUser(userId: number): Promise<Inversor[]> {
-    const findUserInversors: Inversor[] = await this.inversors.findMany({
-      where: { userId: userId },
-    });
+  public async getInvertersByUser(userId: string): Promise<Inverter[]> {
+    const findUserInverters: Inverter[] = await InverterModel.find({ userId: userId });
 
-    return findUserInversors;
+    return findUserInverters;
   }
 
-  public async getInversorById(inversorId: number, userId: number): Promise<Inversor> {
-    const findUserInversor: Inversor = await this.inversors.findUnique({
-      where: { id: inversorId },
-    });
-    if (!findUserInversor) throw new HttpException(409, "Inversor doesn't exist");
+  public async getInverterById(inverterId: string, userId: string): Promise<Inverter> {
+    const findUserInversor: Inverter = await InverterModel.findOne({ _id: inverterId });
+    if (!findUserInversor) throw new HttpException(409, "Inverter doesn't exist");
 
-    if (findUserInversor.userId !== userId) throw new HttpException(401, "Inversor doesn't belong to this user");
+    if (findUserInversor.userId !== userId) throw new HttpException(401, "Inverter doesn't belong to this user");
 
     return findUserInversor;
   }
 
-  public async updateInversor(inversorData: UpdateInvertersDto, inversorId: number): Promise<Inversor> {
-    const findUserInversor: Inversor = await this.inversors.findUnique({ where: { id: inversorId } });
-    if (!findUserInversor) throw new HttpException(409, "Inversor doesn't exist");
-
+  public async updateInverter(inversorData: UpdateInvertersDto, inverterId: string): Promise<Inverter> {
     let password = null;
     if (inversorData.password) {
       password = Crypto.AES.encrypt(inversorData.password, CRYPTO_KEY).toString();
     }
 
-    const updateInversorData = await this.inversors.update({ where: { id: inversorId }, data: { ...inversorData, password } });
+    const updateInverterData: Inverter = await InverterModel.findByIdAndUpdate({ _id: inverterId }, { ...inversorData, password });
 
-    return updateInversorData;
+    return updateInverterData;
   }
 
-  public async deleteInversor(inversorId: number): Promise<Inversor> {
-    const findInversor: Inversor = await this.inversors.findUnique({ where: { id: inversorId } });
-    if (!findInversor) throw new HttpException(409, "Inversor doesn't exist");
+  public async deleteInverter(inverterId: string): Promise<Inverter> {
+    const deleteInversorData: Inverter = await InverterModel.findByIdAndRemove({ _id: inverterId });
 
-    const deleteInversorData = await this.inversors.delete({ where: { id: inversorId } });
     return deleteInversorData;
   }
 }

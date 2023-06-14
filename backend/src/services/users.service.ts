@@ -1,4 +1,3 @@
-import { PrismaClient, User as UserPrisma } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { Service } from 'typedi';
 import { UpdateUserDto } from '@dtos/users.dto';
@@ -6,19 +5,8 @@ import { HttpException } from '@/exceptions/httpException';
 import { User } from '@/interfaces/users.interface';
 import { UserModel } from '@/models/users.models';
 
-const selectQuery = {
-  id: true,
-  email: true,
-  name: true,
-  createdAt: true,
-  inversors: true,
-  powerGenerated: false,
-};
-
 @Service()
 export class UserService {
-  public user = new PrismaClient().user;
-
   public async findAllUser(): Promise<User[]> {
     const users: User[] = await UserModel.find();
     return users;
