@@ -20,8 +20,8 @@ export class InvertersService {
     return createInversorData;
   }
 
-  public async getAllInversors(): Promise<Inversor[]> {
-    const findUserInversors: Inversor[] = await this.inversors.findMany();
+  public async getAllInversors(): Promise<Inverter[]> {
+    const findUserInversors: Inverter[] = await InverterModel.find();
 
     return findUserInversors;
   }
