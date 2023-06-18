@@ -1,4 +1,3 @@
-import { Inversor, PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
 import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
 import { HttpException } from '@/exceptions/httpException';
@@ -9,8 +8,6 @@ import { Inverter } from '@/interfaces/inverter.interface';
 
 @Service()
 export class InvertersService {
-  public inversors = new PrismaClient().inversor;
-
   public async createInversor(inverterData: CreateInvertersDto, userId: number): Promise<Inverter> {
     let password = null;
     if (inverterData.password) {
