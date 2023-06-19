@@ -20,6 +20,9 @@ export class PowerGeneratedRoute implements Routes {
     this.router.post(`${this.path}/hauwei`, ValidationMiddleware(HauweiDataDto), this.powerGenerated.saveHauweiData);
     this.router.post(`${this.path}/elgin`, ValidationMiddleware(ElginDataDto), this.powerGenerated.saveElginData);
 
-    this.router.get(`${this.path}`, AuthMiddleware, this.powerGenerated.getPowerGeneratedData);
+    this.router.get(`${this.path}/real-time`, AuthMiddleware, this.powerGenerated.getPowerGeneratedData);
+    this.router.get(`${this.path}/day`, AuthMiddleware, this.powerGenerated.getPowerGeneratedData);
+    this.router.get(`${this.path}/month`, AuthMiddleware, this.powerGenerated.getPowerGeneratedData);
+    this.router.get(`${this.path}/year`, AuthMiddleware, this.powerGenerated.getPowerGeneratedData);
   }
 }

@@ -14,7 +14,7 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
       const findUser = await UserModel.findById(_id);
 
       if (findUser) {
-        req.user = findUser;
+        req.user = { _id: findUser._id.toString(), name: findUser.name, email: findUser.email };
         next();
       } else {
         next(new HttpException(401, 'Wrong authentication token'));

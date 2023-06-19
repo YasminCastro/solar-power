@@ -9,6 +9,10 @@ import { Inversor } from '@prisma/client';
 import { logger } from '@/utils/logger';
 import { HttpException } from '@/exceptions/httpException';
 import { UtilsService } from '@/services/utils.service';
+import { RequestWithUser } from '@/interfaces/auth.interface';
+import moment from 'moment';
+import { PowerGenerated } from '@/interfaces/powerGenerated.interface';
+import isValidDateFormat from '@/utils/isValidDateFormat';
 
 export class PowerGeneratedController {
   public powerGenerated = Container.get(PowerGeneratedService);
@@ -140,24 +144,37 @@ export class PowerGeneratedController {
     }
   };
 
-  public getPowerGeneratedData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public getPowerGeneratedData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.query.userId as string;
-      const inverterId = req.query.inverterId as string;
-      const invertersId = req.query.invertersId as string;
+      const userId = req.user._id;
+      const invertersIdString = req.query.invertersId as string;
       let limit = Number(req.query.limit) || 1;
+      let startDate = (req.query.startDate as string) || moment().format('DD-MM-YYYY');
+      let endDate = (req.query.endDate as string) || moment().format('DD-MM-YYYY');
 
-      if (!userId) {
-        throw new HttpException(409, 'userId is required');
+      if (!invertersIdString) {
+        throw new HttpException(409, 'invertersId is required');
       }
 
-      if (inverterId) {
-        const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
-        res.status(201).json(powerGeneratedById);
-      } else if (invertersId) {
-        const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersId, limit);
-        res.status(201).json([powerGeneratedJoined]);
+      if (!isValidDateFormat(startDate) && !isValidDateFormat(startDate)) {
+        throw new HttpException(409, 'Date must be in the format DD-MM-YYYY');
       }
+
+      let invertersId: string[] = invertersIdString.split(',');
+      let powerGeneratedRaw: PowerGenerated[] = [];
+
+      for (let inverterId of invertersId) {
+        const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit, startDate, endDate);
+        console.log(powerGeneratedById);
+      }
+
+      // if (inverterId) {
+      //   const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
+      //   res.status(201).json(powerGeneratedById);
+      // } else if (invertersId) {
+      //   const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersId, limit);
+      //   res.status(201).json([powerGeneratedJoined]);
+      // }
 
       // if (invertersId) {
       //   // const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersIdString);

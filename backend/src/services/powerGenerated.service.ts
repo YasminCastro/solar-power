@@ -24,8 +24,11 @@ export class PowerGeneratedService {
   //   }
   // }
 
-  public async getByInverterId(userId: string, inverterId: string, limit: number): Promise<any> {
+  public async getByInverterId(userId: string, inverterId: string, limit: number, startDateRaw: string, endDateRaw: string): Promise<any> {
     try {
+      const today = moment().format();
+      const startDate = moment(startDateRaw, 'DD-MM-YYYY').format();
+
       const powerGenerated: PowerGenerated[] = await PowerGeneratedModel.find({ userId, inverterId }).limit(limit).sort({ createdAt: -1 });
 
       return powerGenerated;
@@ -51,68 +54,68 @@ export class PowerGeneratedService {
     }
   }
 
-  public async joinPowerGenerated(userId: string, invertersIdString: string, limit: number): Promise<any> {
-    try {
-      const invertersId = invertersIdString.split(',');
-      let powerGeneratedRaw: PowerGenerated[] = [];
+  // public async joinPowerGenerated(userId: string, invertersIdString: string, limit: number): Promise<any> {
+  //   try {
+  //     const invertersId = invertersIdString.split(',');
+  //     let powerGeneratedRaw: PowerGenerated[] = [];
 
-      for (let inverter of invertersId) {
-        const inverterFound = await this.getByInverterId(userId, inverter, 1);
-        if (inverterFound.length > 0) {
-          powerGeneratedRaw.push(inverterFound[0]);
-        }
-      }
+  //     for (let inverter of invertersId) {
+  //       const inverterFound = await this.getByInverterId(userId, inverter, 1);
+  //       if (inverterFound.length > 0) {
+  //         powerGeneratedRaw.push(inverterFound[0]);
+  //       }
+  //     }
 
-      let result: any = {
-        id: Math.floor(Math.random() * 10000) + 1,
-        createdAt: powerGeneratedRaw[0].createdAt,
-        inversorId: [],
-        userId: powerGeneratedRaw[0].userId,
-        powerInRealTime: 0,
-        powerToday: 0,
-        powerMonth: 0,
-        powerYear: 0,
-        allPower: 0,
-        co2: 0,
-        coal: 0,
-        tree: 0,
-        lat: powerGeneratedRaw[0].lat,
-        long: powerGeneratedRaw[0].long,
-        localtime: powerGeneratedRaw[0].localtime,
-        tempC: powerGeneratedRaw[0].tempC,
-        windKph: powerGeneratedRaw[0].windKph,
-        pressureIn: powerGeneratedRaw[0].pressureIn,
-        humidity: powerGeneratedRaw[0].humidity,
-        cloud: powerGeneratedRaw[0].cloud,
-        uv: powerGeneratedRaw[0].uv,
-        precipMM: powerGeneratedRaw[0].precipMM,
-      };
+  //     let result: any = {
+  //       id: Math.floor(Math.random() * 10000) + 1,
+  //       createdAt: powerGeneratedRaw[0].createdAt,
+  //       inversorId: [],
+  //       userId: powerGeneratedRaw[0].userId,
+  //       powerInRealTime: 0,
+  //       powerToday: 0,
+  //       powerMonth: 0,
+  //       powerYear: 0,
+  //       allPower: 0,
+  //       co2: 0,
+  //       coal: 0,
+  //       tree: 0,
+  //       lat: powerGeneratedRaw[0].lat,
+  //       long: powerGeneratedRaw[0].long,
+  //       localtime: powerGeneratedRaw[0].localtime,
+  //       tempC: powerGeneratedRaw[0].tempC,
+  //       windKph: powerGeneratedRaw[0].windKph,
+  //       pressureIn: powerGeneratedRaw[0].pressureIn,
+  //       humidity: powerGeneratedRaw[0].humidity,
+  //       cloud: powerGeneratedRaw[0].cloud,
+  //       uv: powerGeneratedRaw[0].uv,
+  //       precipMM: powerGeneratedRaw[0].precipMM,
+  //     };
 
-      for (let item of powerGeneratedRaw) {
-        result.inversorId.push(item.inverterId);
-        result.powerInRealTime += parseFloat(item.powerInRealTime);
-        result.powerToday += convertToKWh(item.powerToday);
-        result.powerMonth += convertToKWh(item.powerMonth);
-        result.powerYear += convertToKWh(item.powerYear);
-        result.allPower += convertToKWh(item.allPower);
-        result.co2 += parseFloat(item.co2);
-        result.coal += parseFloat(item.coal || '0');
-        result.tree += parseFloat(item.tree || '0');
-      }
+  //     for (let item of powerGeneratedRaw) {
+  //       result.inversorId.push(item.inverterId);
+  //       result.powerInRealTime += parseFloat(item.powerInRealTime);
+  //       result.powerToday += convertToKWh(item.powerToday);
+  //       result.powerMonth += convertToKWh(item.powerMonth);
+  //       result.powerYear += convertToKWh(item.powerYear);
+  //       result.allPower += convertToKWh(item.allPower);
+  //       result.co2 += parseFloat(item.co2);
+  //       result.coal += parseFloat(item.coal || '0');
+  //       result.tree += parseFloat(item.tree || '0');
+  //     }
 
-      result.co2 += `${result.co2}t`;
-      result.coal += `${result.coal}t`;
-      result.powerInRealTime = `${result.powerInRealTime}kW`;
-      result.powerToday = `${result.powerToday}kWh`;
-      result.powerMonth = result.powerMonth > 10000 ? `${convertToMWh(result.powerMonth)}MWh` : `${result.powerMonth}kWh`;
-      result.powerYear = result.powerYear > 10000 ? `${convertToMWh(result.powerYear)}MWh` : `${result.powerYear}kWh`;
-      result.allPower = result.allPower > 10000 ? `${convertToMWh(result.allPower)}MWh` : `${result.allPower}kWh`;
+  //     result.co2 += `${result.co2}t`;
+  //     result.coal += `${result.coal}t`;
+  //     result.powerInRealTime = `${result.powerInRealTime}kW`;
+  //     result.powerToday = `${result.powerToday}kWh`;
+  //     result.powerMonth = result.powerMonth > 10000 ? `${convertToMWh(result.powerMonth)}MWh` : `${result.powerMonth}kWh`;
+  //     result.powerYear = result.powerYear > 10000 ? `${convertToMWh(result.powerYear)}MWh` : `${result.powerYear}kWh`;
+  //     result.allPower = result.allPower > 10000 ? `${convertToMWh(result.allPower)}MWh` : `${result.allPower}kWh`;
 
-      return result;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //     return result;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   public async hauwei(page: Page, browser: Browser): Promise<HauweiDataInterface> {
     const POWER_REAL_DATA_SELECTOR = '.nco-kiosk-overview-data';
