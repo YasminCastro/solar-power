@@ -1,11 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
-import { ElginDataDto, HauweiDataDto } from '@/dtos/solarData';
 import { PowerGeneratedService } from '@/services/powerGenerated.service';
 import { InvertersService } from '@/services/inverters.service';
-import * as Crypto from 'crypto-js';
-import { CRYPTO_KEY } from '@/config';
-import { logger } from '@/utils/logger';
 import { HttpException } from '@/exceptions/httpException';
 import { UtilsService } from '@/services/utils.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
@@ -18,126 +14,31 @@ export class PowerGeneratedController {
   public inverters = Container.get(InvertersService);
   public utils = Container.get(UtilsService);
 
-  // public updateAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  //   const getHauweiData = async (inverter: Inversor) => {
-  //     const { page, browser } = await this.powerGenerated.goToPage(inverter.url);
-  //     const hauweiData = await this.powerGenerated.hauwei(page, browser);
-  //     const weather = await this.utils.getWeatherData(inverter.lat, inverter.long);
-  //     const userInfo = {
-  //       lat: inverter.lat,
-  //       long: inverter.long,
-  //       userId: inverter.userId,
-  //       inverterId: inverter.id,
-  //     };
-
-  //     // await this.powerGenerated.saveInversorData(hauweiData, weather, userInfo);
-  //   };
-
-  //   const getElginData = async (inversor: Inversor) => {
-  //     const password = Crypto.AES.decrypt(inversor.password, CRYPTO_KEY);
-  //     const username = inversor.username;
-
-  //     const url = 'https://elgin.shinemonitor.com';
-  //     const { page, browser } = await this.powerGenerated.goToPage(url);
-
-  //     const elginData = await this.powerGenerated.elgin(page, browser, username, password);
-
-  //     const userInfo = {
-  //       lat: inversor.lat,
-  //       long: inversor.long,
-  //       userId: inversor.userId,
-  //       inversorId: inversor.id,
-  //     };
-
-  //     const weather = await this.utils.getWeatherData(inversor.lat, inversor.long);
-
-  //     await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
-  //   };
-
-  //   try {
-  //     const allInversors = await this.inverters.getAllInversors();
-
-  //     for (const inversor of allInversors) {
-  //       switch (inversor.model) {
-  //         case 'hauwei':
-  //           logger.info('Updating hauwei model ' + inversor.id);
-  //           await getHauweiData(inversor);
-  //           logger.info('Finish updating hauwei model');
-
-  //           break;
-  //         case 'elgin':
-  //           logger.info('Updating elgin model  ' + inversor.id);
-  //           await getElginData(inversor);
-  //           logger.info('Finish updating elgin model');
-
-  //           break;
-  //       }
-  //     }
-
-  //     res.status(201).json();
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
-
-  public saveHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public getRealTimeData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { inverterId, lat, long, url, userId }: HauweiDataDto = req.body;
+      const userId = req.user._id;
+      const invertersIdString = req.query.invertersId as string;
 
-      const { page, browser } = await this.powerGenerated.goToPage(url);
-
-      const hauweiData = await this.powerGenerated.hauwei(page, browser);
-
-      const weather = await this.utils.getWeatherData(lat, long);
-
-      const userInfo = {
-        lat,
-        long,
-        userId,
-        inverterId,
-      };
-
-      const saveInversorData = await this.powerGenerated.saveInversorData(hauweiData, weather, userInfo);
-
-      res.status(201).json(saveInversorData);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  public saveElginData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const elginLoginInfo: ElginDataDto = req.body;
-      const { inverterId, lat, long, userId, passwordIsEncrypted, password: rawPassword, username } = elginLoginInfo;
-
-      let password = rawPassword;
-
-      if (passwordIsEncrypted) {
-        password = Crypto.AES.decrypt(rawPassword, CRYPTO_KEY);
+      if (!invertersIdString) {
+        throw new HttpException(409, 'invertersId is required');
       }
 
-      const url = 'https://elgin.shinemonitor.com';
-      const { page, browser } = await this.powerGenerated.goToPage(url);
+      let invertersId: string[] = invertersIdString.split(',');
+      let data: PowerGenerated[] = [];
 
-      const elginData = await this.powerGenerated.elgin(page, browser, username, password);
+      for (let inverterId of invertersId) {
+        const powerGenerated = await this.powerGenerated.byInverterId(userId, inverterId);
+        if (powerGenerated) data.push(powerGenerated);
+      }
 
-      const userInfo = {
-        lat,
-        long,
-        userId,
-        inverterId,
-      };
+      if (data.length === 1) {
+        res.status(201).json(data[0]);
+        return;
+      }
 
-      const weather = await this.utils.getWeatherData(lat, long);
-      const powerInRealTime = await this.powerGenerated.calculateRealTimePower(parseFloat(inverterId), parseFloat(elginData.powerToday));
+      const powerGenerated = await this.powerGenerated.joinData(data);
 
-      elginData.powerInRealTime = `${powerInRealTime}kW`;
-
-      if (!powerInRealTime) elginData.powerInRealTime = `0kW`;
-
-      const saveInversorData = await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
-
-      res.status(201).json(saveInversorData);
+      res.status(201).json(powerGenerated);
     } catch (error) {
       next(error);
     }

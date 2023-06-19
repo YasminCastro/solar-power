@@ -30,7 +30,7 @@ export interface WeatherInterface {
 }
 
 export interface PowerGenerated {
-  id?: number;
+  _id?: string;
   createdAt?: Date;
   inverterId: string;
   userId: string;
@@ -52,5 +52,18 @@ export interface PowerGenerated {
   cloud: number;
   uv: number;
   precipMM: number;
+}
+
+export interface PowerGeneratedJoined {
+  _id?: string;
+  createdAt?: Date;
+  powerInRealTime: string;
+  powerToday: string;
+  powerMonth: string;
+  powerYear: string;
+  allPower: string;
+  co2?: string;
+  coal?: string;
+  tree?: string;
 }
 
