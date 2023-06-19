@@ -16,7 +16,7 @@ export class PowerGeneratedRoute implements Routes {
 
   private initializeRoutes() {
     //WEB SCRAPPING
-    this.router.post(`${this.path}`, this.powerGenerated.updateAll);
+    // this.router.post(`${this.path}`, this.powerGenerated.updateAll);
     this.router.post(`${this.path}/hauwei`, ValidationMiddleware(HauweiDataDto), this.powerGenerated.saveHauweiData);
     this.router.post(`${this.path}/elgin`, ValidationMiddleware(ElginDataDto), this.powerGenerated.saveElginData);
 

@@ -1,24 +1,32 @@
-import { PowerGenerated, PrismaClient } from '@prisma/client';
 import { Service } from 'typedi';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { HttpException } from '@/exceptions/httpException';
 import { logger } from '@/utils/logger';
-import { ElginDataInterface, HauweiDataInterface, WeatherInterface } from '@/interfaces/powerGenerated.interface';
+import { ElginDataInterface, HauweiDataInterface, WeatherInterface, PowerGenerated } from '@/interfaces/powerGenerated.interface';
 import { weatherApi } from '@/config';
 import { convertToKWh, convertToMWh } from '@/utils/convertPower';
 import moment from 'moment';
+import { PowerGeneratedModel } from '@/models/powerGenerated.models';
 
 @Service()
 export class PowerGeneratedService {
-  public powerGenerated = new PrismaClient().powerGenerated;
+  // public async getByUserId(userId: string, limit: number): Promise<any> {
+  //   try {
+  //     const powerGenerated: PowerGenerated[] = await this.powerGenerated.findMany({
+  //       where: { userId },
+  //       take: limit,
+  //       orderBy: { createdAt: 'desc' },
+  //     });
 
-  public async getByUserId(userId: number, limit: number): Promise<any> {
+  //     return powerGenerated;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  public async getByInverterId(userId: string, inverterId: string, limit: number): Promise<any> {
     try {
-      const powerGenerated: PowerGenerated[] = await this.powerGenerated.findMany({
-        where: { userId },
-        take: limit,
-        orderBy: { createdAt: 'desc' },
-      });
+      const powerGenerated: PowerGenerated[] = await PowerGeneratedModel.find({ userId, inverterId }).limit(limit).sort({ createdAt: -1 });
 
       return powerGenerated;
     } catch (error) {
@@ -26,63 +34,33 @@ export class PowerGeneratedService {
     }
   }
 
-  public async getByInverterId(userId: number, inverterId: number, limit: number): Promise<any> {
-    try {
-      const powerGenerated: PowerGenerated[] = await this.powerGenerated.findMany({
-        where: { userId, inversorId: inverterId },
-        take: limit,
-        orderBy: { createdAt: 'desc' },
-      });
-
-      return powerGenerated;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  public async getTodayData(userId: number, inverterId: number, limit: number): Promise<any> {
+  public async getTodayData(userId: string, inverterId: string): Promise<any> {
     try {
       const startOfDay = moment().startOf('day').toDate();
 
-      const recordsFromToday: PowerGenerated[] = await this.powerGenerated.findMany({
-        where: {
-          userId,
-          inversorId: inverterId,
-          createdAt: { gte: startOfDay },
-          powerInRealTime: {
-            not: '0kW',
-          },
-        },
-      });
+      const recordsFromToday: PowerGenerated[] = await PowerGeneratedModel.find({
+        userId,
+        inverterId,
+        powerInRealTime: { $ne: '0kW' },
+        createdAt: { gte: startOfDay },
+      }).sort({ createdAt: -1 });
 
-      const recordByHour = {};
-
-      for (const record of recordsFromToday) {
-        const hour = moment(record.createdAt).hour();
-
-        if (!recordByHour[hour] || moment(record.createdAt).isAfter(recordByHour[hour].createdAt)) {
-          // Se ainda não tivermos um registro para essa hora, ou se o registro atual for mais recente, armazene-o
-          recordByHour[hour] = record;
-        }
-      }
-
-      const recordsByHour: PowerGenerated[] = Object.values(recordByHour);
-
-      recordsByHour.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
-      return recordsByHour;
+      return recordsFromToday;
     } catch (error) {
       console.log(error);
     }
   }
 
-  public async joinPowerGenerated(userId: number, invertersIdString: string): Promise<any> {
+  public async joinPowerGenerated(userId: string, invertersIdString: string, limit: number): Promise<any> {
     try {
-      const invertersId = invertersIdString.split(',').map(Number);
+      const invertersId = invertersIdString.split(',');
       let powerGeneratedRaw: PowerGenerated[] = [];
+
       for (let inverter of invertersId) {
-        const inversor = await this.getByInverterId(userId, inverter, 1);
-        powerGeneratedRaw.push(inversor[0]);
+        const inverterFound = await this.getByInverterId(userId, inverter, 1);
+        if (inverterFound.length > 0) {
+          powerGeneratedRaw.push(inverterFound[0]);
+        }
       }
 
       let result: any = {
@@ -111,7 +89,7 @@ export class PowerGeneratedService {
       };
 
       for (let item of powerGeneratedRaw) {
-        result.inversorId.push(item.inversorId);
+        result.inversorId.push(item.inverterId);
         result.powerInRealTime += parseFloat(item.powerInRealTime);
         result.powerToday += convertToKWh(item.powerToday);
         result.powerMonth += convertToKWh(item.powerMonth);
@@ -309,31 +287,39 @@ export class PowerGeneratedService {
   public async saveInversorData(
     inversorData: HauweiDataInterface | ElginDataInterface,
     weather: WeatherInterface,
-    userInfo: { lat: string; long: string; userId: number; inversorId: number },
+    userInfo: { lat: string; long: string; userId: string; inverterId: string },
   ): Promise<PowerGenerated | string> {
-    if (inversorData.powerInRealTime === '0kW') {
-      const startOfDay = moment().startOf('day').toDate();
-      //se ja tiver um registro com 0kw não precisa salvar dnv
-      const findData = await this.powerGenerated.findFirst({
-        where: { userId: userInfo.userId, inversorId: userInfo.inversorId, powerInRealTime: '0kW', createdAt: { gte: startOfDay } },
-        orderBy: { createdAt: 'desc' },
+    try {
+      if (inversorData.powerInRealTime === '0kW') {
+        //se ja tiver um registro com 0kw não precisa salvar dnv
+        const findData: PowerGenerated = await PowerGeneratedModel.findOne({
+          userId: userInfo.userId,
+          inverterId: userInfo.inverterId,
+          powerInRealTime: '0kW',
+        });
+
+        if (findData) return 'Data already saved';
+      }
+
+      const createPowerGenerated: PowerGenerated = await PowerGeneratedModel.create({
+        ...userInfo,
+        ...inversorData,
+        ...weather,
       });
 
-      if (findData) return 'Data already saved';
+      return createPowerGenerated;
+    } catch (error) {
+      throw new HttpException(400, error.message);
     }
-
-    const createInversorData: Promise<PowerGenerated> = this.powerGenerated.create({
-      data: { ...inversorData, ...weather, ...userInfo },
-    });
-    return createInversorData;
   }
 
-  public async calculateRealTimePower(inversorId: number, nowEnergy: number): Promise<string> {
+  public async calculateRealTimePower(inverterId: number, nowEnergy: number): Promise<string> {
     try {
-      const previousEnergyFound = await this.powerGenerated.findFirst({
-        where: { inversorId },
-        orderBy: { createdAt: 'desc' },
-      });
+      const previousEnergyFound: PowerGenerated = await PowerGeneratedModel.findOne({
+        inverterId: inverterId,
+      }).sort({ _id: -1 });
+
+      console.log(previousEnergyFound);
 
       if (!previousEnergyFound) return `${nowEnergy}`;
 

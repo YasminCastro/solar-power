@@ -15,71 +15,71 @@ export class PowerGeneratedController {
   public inverters = Container.get(InvertersService);
   public utils = Container.get(UtilsService);
 
-  public updateAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const getHauweiData = async (inversor: Inversor) => {
-      const { page, browser } = await this.powerGenerated.goToPage(inversor.url);
-      const hauweiData = await this.powerGenerated.hauwei(page, browser);
-      const weather = await this.utils.getWeatherData(inversor.lat, inversor.long);
-      const userInfo = {
-        lat: inversor.lat,
-        long: inversor.long,
-        userId: inversor.userId,
-        inversorId: inversor.id,
-      };
+  // public updateAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  //   const getHauweiData = async (inverter: Inversor) => {
+  //     const { page, browser } = await this.powerGenerated.goToPage(inverter.url);
+  //     const hauweiData = await this.powerGenerated.hauwei(page, browser);
+  //     const weather = await this.utils.getWeatherData(inverter.lat, inverter.long);
+  //     const userInfo = {
+  //       lat: inverter.lat,
+  //       long: inverter.long,
+  //       userId: inverter.userId,
+  //       inverterId: inverter.id,
+  //     };
 
-      await this.powerGenerated.saveInversorData(hauweiData, weather, userInfo);
-    };
+  //     // await this.powerGenerated.saveInversorData(hauweiData, weather, userInfo);
+  //   };
 
-    const getElginData = async (inversor: Inversor) => {
-      const password = Crypto.AES.decrypt(inversor.password, CRYPTO_KEY);
-      const username = inversor.username;
+  //   const getElginData = async (inversor: Inversor) => {
+  //     const password = Crypto.AES.decrypt(inversor.password, CRYPTO_KEY);
+  //     const username = inversor.username;
 
-      const url = 'https://elgin.shinemonitor.com';
-      const { page, browser } = await this.powerGenerated.goToPage(url);
+  //     const url = 'https://elgin.shinemonitor.com';
+  //     const { page, browser } = await this.powerGenerated.goToPage(url);
 
-      const elginData = await this.powerGenerated.elgin(page, browser, username, password);
+  //     const elginData = await this.powerGenerated.elgin(page, browser, username, password);
 
-      const userInfo = {
-        lat: inversor.lat,
-        long: inversor.long,
-        userId: inversor.userId,
-        inversorId: inversor.id,
-      };
+  //     const userInfo = {
+  //       lat: inversor.lat,
+  //       long: inversor.long,
+  //       userId: inversor.userId,
+  //       inversorId: inversor.id,
+  //     };
 
-      const weather = await this.utils.getWeatherData(inversor.lat, inversor.long);
+  //     const weather = await this.utils.getWeatherData(inversor.lat, inversor.long);
 
-      await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
-    };
+  //     await this.powerGenerated.saveInversorData(elginData, weather, userInfo);
+  //   };
 
-    try {
-      const allInversors = await this.inverters.getAllInversors();
+  //   try {
+  //     const allInversors = await this.inverters.getAllInversors();
 
-      for (const inversor of allInversors) {
-        switch (inversor.model) {
-          case 'hauwei':
-            logger.info('Updating hauwei model ' + inversor.id);
-            await getHauweiData(inversor);
-            logger.info('Finish updating hauwei model');
+  //     for (const inversor of allInversors) {
+  //       switch (inversor.model) {
+  //         case 'hauwei':
+  //           logger.info('Updating hauwei model ' + inversor.id);
+  //           await getHauweiData(inversor);
+  //           logger.info('Finish updating hauwei model');
 
-            break;
-          case 'elgin':
-            logger.info('Updating elgin model  ' + inversor.id);
-            await getElginData(inversor);
-            logger.info('Finish updating elgin model');
+  //           break;
+  //         case 'elgin':
+  //           logger.info('Updating elgin model  ' + inversor.id);
+  //           await getElginData(inversor);
+  //           logger.info('Finish updating elgin model');
 
-            break;
-        }
-      }
+  //           break;
+  //       }
+  //     }
 
-      res.status(201).json();
-    } catch (error) {
-      next(error);
-    }
-  };
+  //     res.status(201).json();
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 
   public saveHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { inversorId, lat, long, url, userId }: HauweiDataDto = req.body;
+      const { inverterId, lat, long, url, userId }: HauweiDataDto = req.body;
 
       const { page, browser } = await this.powerGenerated.goToPage(url);
 
@@ -91,7 +91,7 @@ export class PowerGeneratedController {
         lat,
         long,
         userId,
-        inversorId,
+        inverterId,
       };
 
       const saveInversorData = await this.powerGenerated.saveInversorData(hauweiData, weather, userInfo);
@@ -105,7 +105,7 @@ export class PowerGeneratedController {
   public saveElginData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const elginLoginInfo: ElginDataDto = req.body;
-      const { inversorId, lat, long, userId, passwordIsEncrypted, password: rawPassword, username } = elginLoginInfo;
+      const { inverterId, lat, long, userId, passwordIsEncrypted, password: rawPassword, username } = elginLoginInfo;
 
       let password = rawPassword;
 
@@ -122,11 +122,11 @@ export class PowerGeneratedController {
         lat,
         long,
         userId,
-        inversorId,
+        inverterId,
       };
 
       const weather = await this.utils.getWeatherData(lat, long);
-      const powerInRealTime = await this.powerGenerated.calculateRealTimePower(inversorId, parseFloat(elginData.powerToday));
+      const powerInRealTime = await this.powerGenerated.calculateRealTimePower(parseFloat(inverterId), parseFloat(elginData.powerToday));
 
       elginData.powerInRealTime = `${powerInRealTime}kW`;
 
@@ -142,33 +142,38 @@ export class PowerGeneratedController {
 
   public getPowerGeneratedData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = Number(req.query.userId) || null;
-      const inverterId = Number(req.query.inverterId) || null;
-      const invertersIdString = req.query.invertersId as string;
-      const todayData = Boolean(req.query.today);
-      let limit = Number(req.query.limit) || 10;
+      const userId = req.query.userId as string;
+      const inverterId = req.query.inverterId as string;
+      const invertersId = req.query.invertersId as string;
+      let limit = Number(req.query.limit) || 1;
 
       if (!userId) {
         throw new HttpException(409, 'userId is required');
       }
 
-      if (todayData && !inverterId) {
-        throw new HttpException(409, 'inverterId is required');
-      }
-
-      if (invertersIdString) {
-        const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersIdString);
-        res.status(201).json([powerGeneratedJoined]);
-      } else if (todayData) {
-        const powerGeneratedToday = await this.powerGenerated.getTodayData(userId, inverterId, limit);
-        res.status(201).json(powerGeneratedToday);
-      } else if (inverterId) {
+      if (inverterId) {
         const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
         res.status(201).json(powerGeneratedById);
-      } else {
-        const powerGeneratedByUserId = await this.powerGenerated.getByUserId(userId, limit);
-        res.status(201).json(powerGeneratedByUserId);
+      } else if (invertersId) {
+        const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersId, limit);
+        res.status(201).json([powerGeneratedJoined]);
       }
+
+      // if (invertersId) {
+      //   // const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersIdString);
+      //   // res.status(201).json([powerGeneratedJoined]);
+      //   console.log("AQUI 1")
+      //   return
+      // } else if (todayData) {
+      //   const powerGeneratedToday = await this.powerGenerated.getTodayData(userId, inverterId);
+      //   res.status(201).json(powerGeneratedToday);
+      // } else if (inverterId) {
+      //   const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
+      //   res.status(201).json(powerGeneratedById);
+      // } else {
+      //   const powerGeneratedByUserId = await this.powerGenerated.getByUserId(userId, limit);
+      //   res.status(201).json(powerGeneratedByUserId);
+      // }
     } catch (error) {
       next(error);
     }

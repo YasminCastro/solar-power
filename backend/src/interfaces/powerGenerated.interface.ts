@@ -28,3 +28,29 @@ export interface WeatherInterface {
   uv: number;
   precipMM: number;
 }
+
+export interface PowerGenerated {
+  id?: number;
+  createdAt?: Date;
+  inverterId: string;
+  userId: string;
+  powerInRealTime: string;
+  powerToday: string;
+  powerMonth: string;
+  powerYear: string;
+  allPower: string;
+  co2?: string;
+  coal?: string;
+  tree?: string;
+  lat: string;
+  long: string;
+  localtime: string;
+  tempC: number;
+  windKph: number;
+  pressureIn: number;
+  humidity: number;
+  cloud: number;
+  uv: number;
+  precipMM: number;
+}
+
