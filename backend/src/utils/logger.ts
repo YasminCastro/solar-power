@@ -47,6 +47,16 @@ const logger = winston.createLogger({
       json: false,
       zippedArchive: true,
     }),
+    new winstonDaily({
+      level: 'silly',
+      datePattern: 'YYYY-MM-DD',
+      dirname: logDir + '/webscrapping', // log file /logs/error/*.log in save
+      filename: `%DATE%.log`,
+      maxFiles: 30, // 30 Days saved
+      handleExceptions: true,
+      json: false,
+      zippedArchive: true,
+    }),
   ],
 });
 

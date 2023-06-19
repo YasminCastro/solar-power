@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
-import { ElginDataDto, HauweiDataDto } from '@/dtos/powerGenerated.dto';
+import { ElginDataDto, HauweiDataDto } from '@/dtos/solarData';
 import { PowerGeneratedService } from '@/services/powerGenerated.service';
 import { InvertersService } from '@/services/inverters.service';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
-import { Inversor } from '@prisma/client';
 import { logger } from '@/utils/logger';
 import { HttpException } from '@/exceptions/httpException';
 import { UtilsService } from '@/services/utils.service';

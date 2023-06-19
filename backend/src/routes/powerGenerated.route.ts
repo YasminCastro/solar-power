@@ -3,7 +3,7 @@ import { Routes } from '@interfaces/routes.interface';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { PowerGeneratedController } from '@/controllers/powerGenerated.controller';
 import { ValidationMiddleware } from '@/middlewares/validation.middleware';
-import { ElginDataDto, HauweiDataDto } from '@/dtos/powerGenerated.dto';
+import { ElginDataDto, HauweiDataDto } from '@/dtos/solarData';
 
 export class PowerGeneratedRoute implements Routes {
   public path = '/power-generated';
@@ -17,8 +17,6 @@ export class PowerGeneratedRoute implements Routes {
   private initializeRoutes() {
     //WEB SCRAPPING
     // this.router.post(`${this.path}`, this.powerGenerated.updateAll);
-    this.router.post(`${this.path}/hauwei`, ValidationMiddleware(HauweiDataDto), this.powerGenerated.saveHauweiData);
-    this.router.post(`${this.path}/elgin`, ValidationMiddleware(ElginDataDto), this.powerGenerated.saveElginData);
 
     this.router.get(`${this.path}/real-time`, AuthMiddleware, this.powerGenerated.getPowerGeneratedData);
     this.router.get(`${this.path}/day`, AuthMiddleware, this.powerGenerated.getPowerGeneratedData);
