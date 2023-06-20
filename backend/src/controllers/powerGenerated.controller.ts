@@ -7,7 +7,7 @@ import { UtilsService } from '@/services/utils.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import moment from 'moment';
 import { PowerGenerated } from '@/interfaces/powerGenerated.interface';
-import isValidDateFormat from '@/utils/isValidDateFormat';
+import { isValidDateDay, isValidDateMonth, isValidDateYear } from '@/utils/isValidDate';
 
 export class PowerGeneratedController {
   public powerGenerated = Container.get(PowerGeneratedService);
@@ -27,7 +27,7 @@ export class PowerGeneratedController {
       let data: PowerGenerated[] = [];
 
       for (let inverterId of invertersId) {
-        const powerGenerated = await this.powerGenerated.byInverterId(userId, inverterId);
+        const powerGenerated = await this.powerGenerated.lastRegister(userId, inverterId);
         if (powerGenerated) data.push(powerGenerated);
       }
 
@@ -44,53 +44,67 @@ export class PowerGeneratedController {
     }
   };
 
-  public getPowerGeneratedData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public getDayData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = req.user._id;
-      const invertersIdString = req.query.invertersId as string;
-      let limit = Number(req.query.limit) || 1;
-      let startDate = (req.query.startDate as string) || moment().format('DD-MM-YYYY');
-      let endDate = (req.query.endDate as string) || moment().format('DD-MM-YYYY');
+      const inverterId = req.query.inverterId as string;
+      const selectDate = (req.query.date as string) || moment().format('DD-MM-YYYY');
 
-      if (!invertersIdString) {
-        throw new HttpException(409, 'invertersId is required');
+      if (!inverterId) {
+        throw new HttpException(409, 'inverterId is required');
       }
 
-      if (!isValidDateFormat(startDate) && !isValidDateFormat(startDate)) {
-        throw new HttpException(409, 'Date must be in the format DD-MM-YYYY');
+      if (selectDate && !isValidDateDay(selectDate)) {
+        throw new HttpException(409, 'date must follow the format DD-MM-YYYY');
       }
 
-      let invertersId: string[] = invertersIdString.split(',');
-      let powerGeneratedRaw: PowerGenerated[] = [];
+      const powerGenerated = await this.powerGenerated.allDay(userId, inverterId, selectDate);
 
-      for (let inverterId of invertersId) {
-        const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit, startDate, endDate);
-        console.log(powerGeneratedById);
+      res.status(201).json(powerGenerated);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getMonthData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = req.user._id;
+      const inverterId = req.query.inverterId as string;
+      const selectDate = (req.query.date as string) || moment().format('MM-YYYY');
+
+      if (!inverterId) {
+        throw new HttpException(409, 'inverterId is required');
       }
 
-      // if (inverterId) {
-      //   const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
-      //   res.status(201).json(powerGeneratedById);
-      // } else if (invertersId) {
-      //   const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersId, limit);
-      //   res.status(201).json([powerGeneratedJoined]);
-      // }
+      if (selectDate && !isValidDateMonth(selectDate)) {
+        throw new HttpException(409, 'date must follow the format MM-YYYY');
+      }
 
-      // if (invertersId) {
-      //   // const powerGeneratedJoined = await this.powerGenerated.joinPowerGenerated(userId, invertersIdString);
-      //   // res.status(201).json([powerGeneratedJoined]);
-      //   console.log("AQUI 1")
-      //   return
-      // } else if (todayData) {
-      //   const powerGeneratedToday = await this.powerGenerated.getTodayData(userId, inverterId);
-      //   res.status(201).json(powerGeneratedToday);
-      // } else if (inverterId) {
-      //   const powerGeneratedById = await this.powerGenerated.getByInverterId(userId, inverterId, limit);
-      //   res.status(201).json(powerGeneratedById);
-      // } else {
-      //   const powerGeneratedByUserId = await this.powerGenerated.getByUserId(userId, limit);
-      //   res.status(201).json(powerGeneratedByUserId);
-      // }
+      const powerGenerated = await this.powerGenerated.allMonth(userId, inverterId, selectDate);
+
+      res.status(201).json(powerGenerated);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getYearData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = req.user._id;
+      const inverterId = req.query.inverterId as string;
+      const selectDate = (req.query.date as string) || moment().format('YYYY');
+
+      if (!inverterId) {
+        throw new HttpException(409, 'inverterId is required');
+      }
+
+      if (selectDate && !isValidDateYear(selectDate)) {
+        throw new HttpException(409, 'date must follow the format YYYY');
+      }
+
+      const powerGenerated = await this.powerGenerated.allYear(userId, inverterId, selectDate);
+
+      res.status(201).json(powerGenerated);
     } catch (error) {
       next(error);
     }

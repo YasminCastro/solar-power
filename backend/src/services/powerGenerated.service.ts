@@ -16,7 +16,7 @@ import { PowerGeneratedModel } from '@/models/powerGenerated.models';
 
 @Service()
 export class PowerGeneratedService {
-  public async byInverterId(userId: string, inverterId: string): Promise<PowerGenerated> {
+  public async lastRegister(userId: string, inverterId: string): Promise<PowerGenerated> {
     try {
       const startOfDay = moment().startOf('day').toDate();
 
@@ -27,6 +27,56 @@ export class PowerGeneratedService {
       }).sort({ createdAt: 1 });
 
       return realTime;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async allDay(userId: string, inverterId: string, selectDate: string): Promise<PowerGenerated[]> {
+    try {
+      const startOfDay = moment(selectDate, 'DD-MM-YYYY').startOf('day').toDate();
+
+      const day = await PowerGeneratedModel.find({
+        userId,
+        inverterId,
+        createdAt: { $gte: startOfDay },
+      }).sort({ createdAt: 1 });
+
+      return day;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async allMonth(userId: string, inverterId: string, selectDate: string): Promise<PowerGenerated[]> {
+    try {
+      const startOfMonth = moment(selectDate, 'MM-YYYY').startOf('month').toDate();
+      const endOfMonth = moment(selectDate, 'MM-YYYY').endOf('month').toDate();
+
+      const month = await PowerGeneratedModel.find({
+        userId,
+        inverterId,
+        createdAt: { $gte: startOfMonth, $lte: endOfMonth },
+      }).sort({ createdAt: 1 });
+
+      return month;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async allYear(userId: string, inverterId: string, selectDate: string): Promise<PowerGenerated[]> {
+    try {
+      const startOfYear = moment(selectDate, 'YYYY').startOf('year').toDate();
+      const endOfYear = moment(selectDate, 'YYYY').endOf('year').toDate();
+
+      const year = await PowerGeneratedModel.find({
+        userId,
+        inverterId,
+        createdAt: { $gte: startOfYear, $lte: endOfYear },
+      }).sort({ createdAt: 1 });
+
+      return year;
     } catch (error) {
       console.log(error);
     }
