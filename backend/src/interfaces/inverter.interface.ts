@@ -1,9 +1,15 @@
 export interface Inverter {
-  id?: number;
-  createdAt?: Date;
+  _id: string;
   userId: string;
+  name: string;
   model: string;
-  hauwei?: any;
-  elgin?: any;
-  powerGenerated?: number;
+  url?: string;
+  password?: string;
+  username?: string;
+  active: boolean;
+  cep: string;
+  lat: string;
+  long: string;
+  maxRealTimePower: number;
+  createdAt: Date;
 }

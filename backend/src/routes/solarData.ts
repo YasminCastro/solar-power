@@ -14,8 +14,7 @@ export class SolarDataRoute implements Routes {
   }
 
   private initializeRoutes() {
-    //WEB SCRAPPING
-    // this.router.post(`${this.path}`, this.powerGenerated.updateAll);
+    this.router.post(`${this.path}`, this.solarData.saveAllData);
     this.router.post(`${this.path}/hauwei`, ValidationMiddleware(HauweiDataDto), this.solarData.saveHauweiData);
     this.router.post(`${this.path}/elgin`, ValidationMiddleware(ElginDataDto), this.solarData.saveElginData);
   }

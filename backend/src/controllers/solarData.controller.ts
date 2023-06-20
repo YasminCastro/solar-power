@@ -6,32 +6,70 @@ import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
 import { UtilsService } from '@/services/utils.service';
 import { SolarDataService } from '@/services/solarData.service';
+import { logger } from '@/utils/logger';
 
 export class SolarDataController {
   public solarData = Container.get(SolarDataService);
   public inverters = Container.get(InvertersService);
   public utils = Container.get(UtilsService);
 
+  public saveAllData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const inveters = await this.solarData.getAllInveters();
+
+      for (let inverter of inveters) {
+        if (inverter.active) {
+          switch (inverter.model) {
+            case 'hauwei':
+              try {
+                await this.solarData.saveHauweiData({
+                  inverterId: inverter._id,
+                  userId: inverter.userId,
+                  lat: inverter.lat,
+                  long: inverter.long,
+                  url: inverter.url,
+                });
+                logger.info(`Hauwei data saved: ${inverter._id}`);
+              } catch (error) {
+                logger.error(error);
+              }
+
+              break;
+
+            case 'elgin':
+              try {
+                await this.solarData.saveElginData({
+                  inverterId: inverter._id,
+                  userId: inverter.userId,
+                  lat: inverter.lat,
+                  long: inverter.long,
+                  password: inverter.password,
+                  username: inverter.username,
+                  passwordIsEncrypted: true,
+                });
+                logger.info(`Elgin data saved: ${inverter._id}`);
+              } catch (error) {
+                logger.error(error);
+              }
+
+              break;
+          }
+        }
+      }
+
+      res.status(201).json({ message: 'ok' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public saveHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { inverterId, lat, long, url, userId }: HauweiDataDto = req.body;
+      const hauweiLoginInfo: HauweiDataDto = req.body;
 
-      const { page, browser } = await this.solarData.goToPage(url);
+      const hauweiData = await this.solarData.saveHauweiData(hauweiLoginInfo);
 
-      const hauweiData = await this.solarData.hauwei(page, browser);
-
-      const weather = await this.utils.getWeatherData(lat, long);
-
-      const userInfo = {
-        lat,
-        long,
-        userId,
-        inverterId,
-      };
-
-      const saveInversorData = await this.solarData.saveInversorData(hauweiData, weather, userInfo);
-
-      res.status(201).json(saveInversorData);
+      res.status(201).json(hauweiData);
     } catch (error) {
       next(error);
     }
@@ -40,36 +78,10 @@ export class SolarDataController {
   public saveElginData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const elginLoginInfo: ElginDataDto = req.body;
-      const { inverterId, lat, long, userId, passwordIsEncrypted, password: rawPassword, username } = elginLoginInfo;
 
-      let password = rawPassword;
+      const elginData = await this.solarData.saveElginData(elginLoginInfo);
 
-      if (passwordIsEncrypted) {
-        password = Crypto.AES.decrypt(rawPassword, CRYPTO_KEY);
-      }
-
-      const url = 'https://elgin.shinemonitor.com';
-      const { page, browser } = await this.solarData.goToPage(url);
-
-      const elginData = await this.solarData.elgin(page, browser, username, password);
-
-      const userInfo = {
-        lat,
-        long,
-        userId,
-        inverterId,
-      };
-
-      const weather = await this.utils.getWeatherData(lat, long);
-      const powerInRealTime = await this.solarData.calculateRealTimePower(parseFloat(inverterId), parseFloat(elginData.powerToday));
-
-      elginData.powerInRealTime = `${powerInRealTime}kW`;
-
-      if (!powerInRealTime) elginData.powerInRealTime = `0kW`;
-
-      const saveInversorData = await this.solarData.saveInversorData(elginData, weather, userInfo);
-
-      res.status(201).json(saveInversorData);
+      res.status(201).json(elginData);
     } catch (error) {
       next(error);
     }
