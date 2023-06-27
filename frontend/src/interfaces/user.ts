@@ -1,7 +1,7 @@
 import IInverter from "./inverter";
 
 export interface IUser {
-  id: number;
+  _id: string;
   email: string;
   name: string;
   createdAt: string;
@@ -9,7 +9,7 @@ export interface IUser {
 }
 
 export interface IUserDecoded {
-  id: number;
+  _id: string;
   email: string;
   name: string;
 }
