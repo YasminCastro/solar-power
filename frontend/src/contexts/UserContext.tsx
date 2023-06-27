@@ -28,15 +28,11 @@ export const UserProvider = ({ children }: any) => {
       if (token) {
         const userDecoded: IUserDecoded = await jwtDecode(token);
 
-        console.log(userDecoded);
-
         const response = await api.get(`/users/${userDecoded._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        console.log(response);
 
         setUser(response.data);
         setUserInverters(response.data.inversors);
