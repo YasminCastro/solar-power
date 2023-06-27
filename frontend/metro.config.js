@@ -13,6 +13,9 @@ module.exports = (() => {
     ...resolver,
     assetExts: resolver.assetExts.filter((ext) => ext !== "svg"),
     sourceExts: [...resolver.sourceExts, "svg"],
+    extraNodeModules: {
+      "@/": __dirname,
+    },
   };
 
   return config;
