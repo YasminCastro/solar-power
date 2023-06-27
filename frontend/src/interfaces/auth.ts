@@ -3,12 +3,11 @@ import { StackNavigationProp } from "@react-navigation/stack";
 type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;
-  Marca: undefined;
+  Inverter: undefined;
 };
 
-export type LoginScreenNavigationProp = StackNavigationProp<
+export type AuthScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
   "Login",
-  "Marca"
-
+  "Inverter"
 >;

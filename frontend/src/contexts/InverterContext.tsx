@@ -3,22 +3,22 @@ import { createContext, useContext, useMemo, useState, useEffect } from "react";
 import api, { setAuthHeaders } from "../lib/api";
 import { TOKEN_KEY } from "../config";
 
-interface AuthProps {
+interface InverterProps {
   authState: { token: string | null; isAuth: boolean };
   onRegister?: (email: string, password: string, name: string) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
   onLogout?: () => Promise<any>;
 }
 
-const AuthContext = createContext<AuthProps>({
+const InverterContext = createContext<InverterProps>({
   authState: { token: null, isAuth: false },
 });
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  return useContext(InverterContext);
 };
 
-export const AuthProvider = ({ children }: any) => {
+export const InverterProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState<{
     token: string | null;
     isAuth: boolean;
@@ -95,5 +95,9 @@ export const AuthProvider = ({ children }: any) => {
     [onRegister, onLogin, onLogout, authState]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <InverterContext.Provider value={value}>
+      {children}
+    </InverterContext.Provider>
+  );
 };
