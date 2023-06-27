@@ -1,19 +1,25 @@
-import { Service } from 'typedi';
+import Container, { Service } from 'typedi';
 import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
 import { HttpException } from '@/exceptions/httpException';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
 import { InverterModel } from '@/models/inverters.models';
 import { Inverter } from '@/interfaces/inverter.interface';
+import { UtilsService } from './utils.service';
 
 @Service()
 export class InvertersService {
-  public async createInversor(inverterData: CreateInvertersDto, userId: number): Promise<Inverter> {
+  public utils = Container.get(UtilsService);
+
+  public async createInversor(inverterData: CreateInvertersDto, userId: string): Promise<any> {
     let password = null;
     if (inverterData.password) {
       password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
     }
-    const createInversorData: Inverter = await InverterModel.create({ userId, ...inverterData, password });
+
+    const { lat, long } = await this.utils.getCepData(inverterData.cep);
+
+    const createInversorData: Inverter = await InverterModel.create({ userId, ...inverterData, password, lat, long });
     return createInversorData;
   }
 

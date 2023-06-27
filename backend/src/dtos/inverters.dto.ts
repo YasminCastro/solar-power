@@ -29,14 +29,6 @@ export class CreateInvertersDto {
   @IsNotEmpty()
   public cep: string;
 
-  @IsString()
-  @IsNotEmpty()
-  public lat: string;
-
-  @IsString()
-  @IsNotEmpty()
-  public long: string;
-
   @IsNumber()
   @IsNotEmpty()
   public maxRealTimePower: number;
