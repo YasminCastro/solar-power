@@ -6,12 +6,10 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
 import { useAuth } from "../../contexts/AuthContext";
 
-import LogoGoogle from "../../assets/icons8-google-24.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { AuthScreenNavigationProp } from "src/interfaces/auth";
 

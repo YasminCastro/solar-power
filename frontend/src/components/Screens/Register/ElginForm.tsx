@@ -9,6 +9,7 @@ import { AuthScreenNavigationProp } from "src/interfaces/auth";
 import { useNavigation } from "@react-navigation/native";
 import { IStepActive } from "src/screens/SignUp/Inverter";
 import { useState } from "react";
+import { useInverter } from "src/contexts/InverterContext";
 
 interface IProps {
   setStep: React.Dispatch<React.SetStateAction<IStepActive>>;
@@ -21,6 +22,19 @@ export default function ElginForm({ setStep }: IProps) {
   const [password, setPassword] = useState("");
   const [cep, setCep] = useState("");
   const [maxRealTimePower, setmaxRealTimePower] = useState(0);
+
+  const { onRegisterInverter } = useInverter();
+
+  const registerInverter = async () => {
+    const result = await onRegisterInverter!({
+      name,
+      username,
+      password,
+      cep,
+      maxRealTimePower,
+      model: "elgin",
+    });
+  };
 
   return (
     <View className="flex-1 items-center justify-center bg-solar-50">

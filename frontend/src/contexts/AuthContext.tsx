@@ -39,9 +39,23 @@ export const AuthProvider = ({ children }: any) => {
 
   const onRegister = async (email: string, password: string, name: string) => {
     try {
-      const { data } = await api.post("/signup", { email, password, name });
+      const { data: signupData } = await api.post("/signup", {
+        email,
+        password,
+        name,
+      });
 
-      return { error: false, message: data.message };
+      const { data } = await api.post("/login", {
+        email,
+        password,
+      });
+
+      setAuthState({ token: data.token, isAuth: false });
+
+      setAuthHeaders(data.token);
+
+      await SecureStore.setItemAsync(TOKEN_KEY, data.token);
+      return { error: false, message: signupData.message };
     } catch (error: any) {
       let message = "Erro interno entre em contato com o suporte!";
       if (

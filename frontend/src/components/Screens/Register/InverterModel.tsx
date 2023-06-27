@@ -1,6 +1,6 @@
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
-import HuaweiLogo from "@assets/huawei-logo.svg";
-import ElginLogo from "@assets/elgin-logo.svg";
+import HuaweiLogo from "../../../assets/huawei-logo.svg";
+import ElginLogo from "../../../assets/elgin-logo.svg";
 import { AuthScreenNavigationProp } from "../../../interfaces/auth";
 import { useNavigation } from "@react-navigation/native";
 import { IStepActive } from "src/screens/SignUp/Inverter";
