@@ -6,12 +6,22 @@ import { CRYPTO_KEY } from '@/config';
 import { InverterModel } from '@/models/inverters.models';
 import { Inverter } from '@/interfaces/inverter.interface';
 import { UtilsService } from './utils.service';
+import { UserModel } from '@/models/users.models';
+import { omit } from 'lodash';
 
 @Service()
 export class InvertersService {
   public utils = Container.get(UtilsService);
 
-  public async createInversor(inverterData: CreateInvertersDto, userId: string): Promise<any> {
+  public async createInverter(inverterData: CreateInvertersDto, userId: string): Promise<any> {
+    //CHECK IF INVERTER ALREADY EXISTS
+    const userFound = await UserModel.findById(userId);
+    for (let i = 0; i < userFound.inverters.length; i++) {
+      if (userFound.inverters[i].name === inverterData.name) {
+        throw new HttpException(409, 'Inverter name must be unique');
+      }
+    }
+
     let password = null;
     if (inverterData.password) {
       password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
@@ -19,8 +29,9 @@ export class InvertersService {
 
     const { lat, long } = await this.utils.getCepData(inverterData.cep);
 
-    const createInversorData: Inverter = await InverterModel.create({ userId, ...inverterData, password, lat, long });
-    return createInversorData;
+    const createInverterData = await UserModel.findByIdAndUpdate(userId, { $push: { inverters: { ...inverterData, password, lat, long } } });
+
+    return createInverterData;
   }
 
   public async getAllInverters(): Promise<Inverter[]> {
@@ -29,35 +40,34 @@ export class InvertersService {
     return findUserInversors;
   }
 
-  public async getInvertersByUser(userId: string): Promise<Inverter[]> {
-    const findUserInverters: Inverter[] = await InverterModel.find({ userId: userId });
-
-    return findUserInverters;
-  }
-
-  public async getInverterById(inverterId: string, userId: string): Promise<Inverter> {
-    const findUserInversor: Inverter = await InverterModel.findOne({ _id: inverterId });
-    if (!findUserInversor) throw new HttpException(409, "Inverter doesn't exist");
-
-    if (findUserInversor.userId !== userId) throw new HttpException(401, "Inverter doesn't belong to this user");
-
-    return findUserInversor;
-  }
-
-  public async updateInverter(inversorData: UpdateInvertersDto, inverterId: string): Promise<Inverter> {
+  public async updateInverter(inverterData: UpdateInvertersDto, inverterName: string, userId: string): Promise<any> {
     let password = null;
-    if (inversorData.password) {
-      password = Crypto.AES.encrypt(inversorData.password, CRYPTO_KEY).toString();
+    if (inverterData.password) {
+      password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
     }
 
-    const updateInverterData: Inverter = await InverterModel.findByIdAndUpdate({ _id: inverterId }, { ...inversorData, password });
+    let itemsToUpdate = {};
+
+    if (inverterData.active !== undefined || inverterData.active !== null) itemsToUpdate['inverters.$.active'] = inverterData.active;
+    if (inverterData.maxRealTimePower) itemsToUpdate['inverters.$.maxRealTimePower'] = inverterData.maxRealTimePower;
+    if (inverterData.username) itemsToUpdate['inverters.$.username'] = inverterData.username;
+    if (inverterData.cep) itemsToUpdate['inverters.$.cep'] = inverterData.cep;
+    if (inverterData.lat) itemsToUpdate['inverters.$.lat'] = inverterData.lat;
+    if (inverterData.long) itemsToUpdate['inverters.$.long'] = inverterData.long;
+    if (password) itemsToUpdate['inverters.$.password'] = password;
+
+    const updateInverterData = await UserModel.findOneAndUpdate(
+      { _id: userId, 'inverters.name': inverterName },
+      { $set: itemsToUpdate },
+      { new: true },
+    );
 
     return updateInverterData;
   }
 
-  public async deleteInverter(inverterId: string): Promise<Inverter> {
-    const deleteInversorData: Inverter = await InverterModel.findByIdAndRemove({ _id: inverterId });
+  public async deleteInverter(inverterName: string, userId: string): Promise<any> {
+    const deleteInverterData = await UserModel.findByIdAndUpdate(userId, { $pull: { inverters: { name: inverterName } } });
 
-    return deleteInversorData;
+    return deleteInverterData;
   }
 }

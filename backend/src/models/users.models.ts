@@ -5,6 +5,7 @@ const InverterSchema: Schema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   model: {
     type: String,
