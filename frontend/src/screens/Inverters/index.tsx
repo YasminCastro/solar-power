@@ -9,7 +9,7 @@ const ListInverters = () => {
   const { userInverters } = useUser();
   const [editItem, setEditItem] = useState<{
     edit: boolean;
-    inverterId: number | null;
+    inverterId: string | null;
   }>({ edit: false, inverterId: null });
 
   return (
@@ -30,7 +30,7 @@ const ListInverters = () => {
             {userInverters &&
               userInverters.map((item) => (
                 <Inverter
-                  key={item.id}
+                  key={item._id}
                   inverter={item}
                   setEditItem={setEditItem}
                 />
