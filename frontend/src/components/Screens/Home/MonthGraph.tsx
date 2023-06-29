@@ -11,6 +11,7 @@ import moment from "moment";
 import CircleData from "../../Global/CircleData";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { filterByDay } from "../../../utils/dataFilter";
 
 export default function MonthGraph() {
   const [label, setLabel] = useState<string[]>([]);
@@ -18,37 +19,35 @@ export default function MonthGraph() {
   const [allMonth, setAllMonth] = useState<string>("");
   const [dataset, setDataset] = useState<number[]>([]);
   const { authState } = useAuth();
-  const { user } = useUser();
+  const { user, userInverters } = useUser();
 
   async function loadPowerGenerated() {
-    if (user && user?.inversors) {
-      let invertersId: number[] = [];
+    if (userInverters) {
+      let inverterId = userInverters
+        .filter((inverter) => inverter.active)
+        .map((inverter) => inverter._id)
+        .join(",");
 
-      user?.inversors.forEach((inverter) => {
-        if (inverter.active) {
-          invertersId.push(inverter.id);
-        }
-      });
-
-      const { data } = await api.get(`/power-generated`, {
-        params: {
-          userId: user._id,
-          inverterId: invertersId[0],
-          today: true,
-        },
+      const { data } = await api.get(`/power-generated/month`, {
+        params: { inverterId },
         headers: {
           Authorization: `Bearer ${authState.token}`,
         },
       });
 
-      setDataset([]);
       setLabel([]);
+      setDataset([]);
 
-      setAllMonth(data[data.length - 1].powerMonth);
+      const dataFilterd = filterByDay(data);
 
-      data.forEach((element: PowerGenerated) => {
-        const parsedDate = moment(element.createdAt).format("HH");
-        const parseData = parseFloat(element.powerInRealTime);
+      dataFilterd.forEach((element: PowerGenerated) => {
+        const parsedDate = moment(element.localtime, "YYYY-MM-DD HH:mm").format(
+          "DD"
+        );
+
+        const parseData = parseFloat(element.powerToday);
+        setAllMonth(element.powerMonth);
+
         setLabel((prev) => [...prev, parsedDate]);
 
         setDataset((prev) => [...prev, parseData]);
@@ -84,7 +83,7 @@ export default function MonthGraph() {
               }}
               width={Dimensions.get("window").width - 40}
               height={280}
-              yAxisInterval={1}
+              fromZero
               formatYLabel={(yLabel) => `${yLabel}kW`}
               onDataPointClick={(data) => console.log(data)}
               chartConfig={{

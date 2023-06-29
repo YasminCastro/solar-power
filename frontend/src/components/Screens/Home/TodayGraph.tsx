@@ -7,7 +7,7 @@ import api from "../../../lib/api";
 
 import { LineChart } from "react-native-chart-kit";
 import moment from "moment";
-import filterByHour from "../../../utils/dataFilterByHour";
+import { filterByHour } from "../../../utils/dataFilter";
 
 export default function TodayGraph() {
   const [label, setLabel] = useState<string[]>([]);
