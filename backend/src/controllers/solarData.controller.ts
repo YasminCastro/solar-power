@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 import { ElginDataDto, HauweiDataDto } from '@/dtos/solarData';
 import { InvertersService } from '@/services/inverters.service';
-import * as Crypto from 'crypto-js';
-import { CRYPTO_KEY } from '@/config';
 import { UtilsService } from '@/services/utils.service';
 import { SolarDataService } from '@/services/solarData.service';
 import { logger } from '@/utils/logger';
@@ -22,6 +20,7 @@ export class SolarDataController {
           switch (inverter.model) {
             case 'hauwei':
               try {
+                logger.info(`Searching Hauwei data...`);
                 await this.solarData.saveHauweiData({
                   inverterId: inverter._id,
                   userId: inverter.userId,
@@ -38,6 +37,7 @@ export class SolarDataController {
 
             case 'elgin':
               try {
+                logger.info(`Searching Elgin data...`);
                 await this.solarData.saveElginData({
                   inverterId: inverter._id,
                   userId: inverter.userId,
