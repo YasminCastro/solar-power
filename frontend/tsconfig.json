@@ -1,7 +1,6 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "baseUrl": ".",
     "strict": true,
     "types": ["nativewind/types"],
     "typeRoots": ["./src/types"]

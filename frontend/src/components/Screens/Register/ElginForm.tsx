@@ -5,11 +5,11 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { AuthScreenNavigationProp } from "src/interfaces/auth";
 import { useNavigation } from "@react-navigation/native";
-import { IStepActive } from "src/screens/SignUp/Inverter";
 import { useState } from "react";
-import { useInverter } from "src/contexts/InverterContext";
+import { IStepActive } from "../../../screens/SignUp/Inverter";
+import { AuthScreenNavigationProp } from "../../../interfaces/auth";
+import { useInverter } from "../../../contexts/InverterContext";
 
 interface IProps {
   setStep: React.Dispatch<React.SetStateAction<IStepActive>>;
