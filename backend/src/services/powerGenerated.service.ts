@@ -1,16 +1,6 @@
 import { Service } from 'typedi';
-import puppeteer, { Browser, Page } from 'puppeteer';
-import { HttpException } from '@/exceptions/httpException';
-import { logger } from '@/utils/logger';
-import {
-  ElginDataInterface,
-  HauweiDataInterface,
-  WeatherInterface,
-  PowerGenerated,
-  PowerGeneratedJoined,
-} from '@/interfaces/powerGenerated.interface';
-import { weatherApi } from '@/config';
-import { autoKWhConvert, convertToKWh, convertToMWh } from '@/utils/convertPower';
+import { PowerGenerated, PowerGeneratedJoined } from '@/interfaces/powerGenerated.interface';
+import { autoKWhConvert, convertToKWh } from '@/utils/convertPower';
 import moment from 'moment';
 import { PowerGeneratedModel } from '@/models/powerGenerated.models';
 

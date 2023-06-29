@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 import { ElginDataDto, HauweiDataDto } from '@/dtos/solarData';
 import { InvertersService } from '@/services/inverters.service';
-import * as Crypto from 'crypto-js';
-import { CRYPTO_KEY } from '@/config';
 import { UtilsService } from '@/services/utils.service';
 import { SolarDataService } from '@/services/solarData.service';
 import { logger } from '@/utils/logger';
@@ -18,42 +16,42 @@ export class SolarDataController {
       const inveters = await this.solarData.getAllInveters();
 
       for (let inverter of inveters) {
-        if (inverter.active) {
-          switch (inverter.model) {
-            case 'hauwei':
-              try {
-                await this.solarData.saveHauweiData({
-                  inverterId: inverter._id,
-                  userId: inverter.userId,
-                  lat: inverter.lat,
-                  long: inverter.long,
-                  url: inverter.url,
-                });
-                logger.info(`Hauwei data saved: ${inverter._id}`);
-              } catch (error) {
-                logger.error(error);
-              }
+        switch (inverter.model) {
+          case 'hauwei':
+            try {
+              logger.info(`Searching Hauwei data...`);
+              await this.solarData.saveHauweiData({
+                inverterId: inverter._id,
+                userId: inverter.userId,
+                lat: inverter.lat,
+                long: inverter.long,
+                url: inverter.url,
+              });
+              logger.info(`Hauwei data saved: ${inverter._id}`);
+            } catch (error) {
+              logger.error(error);
+            }
 
-              break;
+            break;
 
-            case 'elgin':
-              try {
-                await this.solarData.saveElginData({
-                  inverterId: inverter._id,
-                  userId: inverter.userId,
-                  lat: inverter.lat,
-                  long: inverter.long,
-                  password: inverter.password,
-                  username: inverter.username,
-                  passwordIsEncrypted: true,
-                });
-                logger.info(`Elgin data saved: ${inverter._id}`);
-              } catch (error) {
-                logger.error(error);
-              }
+          case 'elgin':
+            try {
+              logger.info(`Searching Elgin data...`);
+              await this.solarData.saveElginData({
+                inverterId: inverter._id,
+                userId: inverter.userId,
+                lat: inverter.lat,
+                long: inverter.long,
+                password: inverter.password,
+                username: inverter.username,
+                passwordIsEncrypted: true,
+              });
+              logger.info(`Elgin data saved: ${inverter._id}`);
+            } catch (error) {
+              logger.error(error);
+            }
 
-              break;
-          }
+            break;
         }
       }
 

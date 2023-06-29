@@ -30,7 +30,8 @@ export class SolarDataService {
       let password = rawPassword;
 
       if (passwordIsEncrypted) {
-        password = Crypto.AES.decrypt(rawPassword, CRYPTO_KEY);
+        const bytes = Crypto.AES.decrypt(rawPassword, CRYPTO_KEY);
+        password = bytes.toString(Crypto.enc.Utf8);
       }
 
       const url = 'https://elgin.shinemonitor.com';
