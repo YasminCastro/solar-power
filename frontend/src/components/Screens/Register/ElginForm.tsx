@@ -10,6 +10,7 @@ import { useState } from "react";
 import { IStepActive } from "../../../screens/SignUp/Inverter";
 import { AuthScreenNavigationProp } from "../../../interfaces/auth";
 import { useInverter } from "../../../contexts/InverterContext";
+import ElginIcon from "../../Global/Icons/Elgin";
 
 interface IProps {
   setStep: React.Dispatch<React.SetStateAction<IStepActive>>;
@@ -39,6 +40,7 @@ export default function ElginForm({ setStep }: IProps) {
   return (
     <View className="flex-1 items-center justify-center bg-solar-50">
       <View className="h-1/3 w-full max-w-sm justify-center p-8">
+        <ElginIcon />
         <View className="">
           <TextInput
             className="mb-4 h-12 w-full rounded-sm border border-x-0 border-t-0 border-white bg-transparent px-4 font-regular text-white"

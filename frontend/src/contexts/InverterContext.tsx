@@ -28,7 +28,8 @@ export const InverterProvider = ({ children }: any) => {
 
       return { error: false, message: data.message };
     } catch (error: any) {
-      let message = "Erro interno entre em contato com o suporte!";
+      let message =
+        "Não foi possível registrar seu inversor, tente novamente mais tarde.";
       console.log(error);
 
       return { error: true, message };
