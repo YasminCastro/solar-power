@@ -14,37 +14,30 @@ export default function RealTimeView() {
   );
   const [maxValue, setMaxValue] = useState<number>(100);
   const { authState } = useAuth();
-  const { user } = useUser();
+  const { user, userInverters } = useUser();
 
   async function loadPowerGenerated() {
-    if (user && user?.inversors) {
-      let invertersId: number[] = [];
-      let maxValuSum = 0;
+    if (userInverters) {
+      let maxPower = userInverters
+        .filter((inverter) => inverter.active)
+        .map((inverter) => inverter.maxRealTimePower)
+        .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-      user?.inversors.forEach((inverter) => {
-        if (inverter.active) {
-          invertersId.push(inverter.id);
-          maxValuSum += inverter.maxRealTimePower;
-        }
-      });
-      setMaxValue(maxValuSum);
+      setMaxValue(maxPower);
 
-      let params: any = { userId: user._id };
-      if (invertersId.length === 1) {
-        params.inverterId = invertersId[0].toString();
-        params.limit = 1;
-      } else if (invertersId.length > 1) {
-        params.invertersId = invertersId.toString();
-      }
+      let invertersId = userInverters
+        .filter((inverter) => inverter.active)
+        .map((inverter) => inverter._id)
+        .join(",");
 
-      const { data } = await api.get(`/power-generated`, {
-        params,
+      const { data } = await api.get(`/power-generated/real-time`, {
+        params: { invertersId },
         headers: {
           Authorization: `Bearer ${authState.token}`,
         },
       });
 
-      setPowerGenerated(data[0]);
+      setPowerGenerated(data);
     }
   }
 

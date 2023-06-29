@@ -1,5 +1,5 @@
 export default interface PowerGenerated {
-  id: number;
+  _id: string;
   createdAt: string;
   inversor: number;
   inversorId: number;
