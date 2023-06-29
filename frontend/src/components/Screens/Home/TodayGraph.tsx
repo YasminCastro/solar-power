@@ -7,40 +7,39 @@ import api from "../../../lib/api";
 
 import { LineChart } from "react-native-chart-kit";
 import moment from "moment";
+import filterByHour from "../../../utils/dataFilterByHour";
 
 export default function TodayGraph() {
   const [label, setLabel] = useState<string[]>([]);
   const [dataset, setDataset] = useState<number[]>([]);
   const { authState } = useAuth();
-  const { user } = useUser();
+  const { user, userInverters } = useUser();
 
   async function loadPowerGenerated() {
-    if (user && user?.inversors) {
-      let invertersId: number[] = [];
+    if (userInverters) {
+      let inverterId = userInverters
+        .filter((inverter) => inverter.active)
+        .map((inverter) => inverter._id)
+        .join(",");
 
-      user?.inversors.forEach((inverter) => {
-        if (inverter.active) {
-          invertersId.push(inverter.id);
-        }
-      });
-
-      const { data } = await api.get(`/power-generated`, {
-        params: {
-          userId: user._id,
-          inverterId: invertersId[0],
-          today: true,
-        },
+      const { data } = await api.get(`/power-generated/day`, {
+        params: { inverterId },
         headers: {
           Authorization: `Bearer ${authState.token}`,
         },
       });
 
-      setDataset([]);
       setLabel([]);
+      setDataset([]);
 
-      data.forEach((element: PowerGenerated) => {
-        const parsedDate = moment(element.createdAt).format("HH");
+      const dataFilterd = filterByHour(data);
+
+      dataFilterd.forEach((element: PowerGenerated) => {
+        const parsedDate = moment(element.localtime, "YYYY-MM-DD HH:mm").format(
+          "HH"
+        );
         const parseData = parseFloat(element.powerInRealTime);
+
         setLabel((prev) => [...prev, parsedDate]);
 
         setDataset((prev) => [...prev, parseData]);
