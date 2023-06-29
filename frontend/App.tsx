@@ -1,3 +1,12 @@
+import "moment/locale/pt-br";
+import moment from "moment";
+
+moment.locale("pt-br");
+
+import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
 import {
   Ubuntu_700Bold,
   Ubuntu_500Medium,
@@ -6,17 +15,13 @@ import {
 } from "@expo-google-fonts/ubuntu";
 
 import { Poppins_700Bold, Poppins_300Light } from "@expo-google-fonts/poppins";
-import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
-import { NavigationContainer } from "@react-navigation/native";
-import AuthStackNavigation from "./src/Routes/Auth";
-import Layout from "./src/Routes/Layout";
-import { UserProvider } from "./src/contexts/UserContext";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import moment from "moment";
-import "moment/locale/pt-br";
-import { StatusBar } from "expo-status-bar";
 
-moment.locale("pt-br");
+import Layout from "./src/Routes/Layout";
+import AuthStackNavigation from "./src/Routes/Auth";
+
+import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
+import { InverterProvider } from "./src/contexts/InverterContext";
+import { UserProvider } from "./src/contexts/UserContext";
 
 export default function App() {
   const [hasLoadedFonts] = useFonts({
@@ -34,9 +39,11 @@ export default function App() {
   return (
     <AuthProvider>
       <UserProvider>
-        <SafeAreaProvider>
-          <AppLayout />
-        </SafeAreaProvider>
+        <InverterProvider>
+          <SafeAreaProvider>
+            <AppLayout />
+          </SafeAreaProvider>
+        </InverterProvider>
       </UserProvider>
     </AuthProvider>
   );
