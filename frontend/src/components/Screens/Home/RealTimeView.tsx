@@ -29,7 +29,7 @@ export default function RealTimeView() {
       });
       setMaxValue(maxValuSum);
 
-      let params: any = { userId: user.id };
+      let params: any = { userId: user._id };
       if (invertersId.length === 1) {
         params.inverterId = invertersId[0].toString();
         params.limit = 1;

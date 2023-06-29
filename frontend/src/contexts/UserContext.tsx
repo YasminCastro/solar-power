@@ -28,7 +28,7 @@ export const UserProvider = ({ children }: any) => {
       if (token) {
         const userDecoded: IUserDecoded = await jwtDecode(token);
 
-        const response = await api.get(`/users/${userDecoded.id}`, {
+        const response = await api.get(`/users/${userDecoded._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

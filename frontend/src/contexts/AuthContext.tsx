@@ -5,7 +5,7 @@ import { TOKEN_KEY } from "../config";
 
 interface AuthProps {
   authState: { token: string | null; isAuth: boolean };
-  onRegister?: (email: string, password: string) => Promise<any>;
+  onRegister?: (email: string, password: string, name: string) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
   onLogout?: () => Promise<any>;
 }
@@ -37,11 +37,35 @@ export const AuthProvider = ({ children }: any) => {
     loadToken();
   }, []);
 
-  const onRegister = async (email: string, password: string) => {
+  const onRegister = async (email: string, password: string, name: string) => {
     try {
-      return await api.post("/signup", { email, password });
+      const { data: signupData } = await api.post("/signup", {
+        email,
+        password,
+        name,
+      });
+
+      const { data } = await api.post("/login", {
+        email,
+        password,
+      });
+
+      setAuthState({ token: data.token, isAuth: false });
+
+      setAuthHeaders(data.token);
+
+      await SecureStore.setItemAsync(TOKEN_KEY, data.token);
+      return { error: false, message: signupData.message };
     } catch (error: any) {
-      return { error: true, message: error.response };
+      let message = "Erro interno entre em contato com o suporte!";
+      if (
+        error.response.data.message &&
+        error.response.data.message.includes("already exists")
+      ) {
+        message = "Email já cadastrado!";
+      }
+
+      return { error: true, message };
     }
   };
 

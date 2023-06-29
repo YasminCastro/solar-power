@@ -32,7 +32,7 @@ export default function MonthGraph() {
 
       const { data } = await api.get(`/power-generated`, {
         params: {
-          userId: user.id,
+          userId: user._id,
           inverterId: invertersId[0],
           today: true,
         },
