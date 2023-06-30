@@ -35,7 +35,16 @@ export const UserProvider = ({ children }: any) => {
         });
 
         setUser(response.data);
-        setUserInverters(response.data.inversors);
+
+        const inversorsResponse = await api.get(
+          `/inverters?userId=${userDecoded._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUserInverters(inversorsResponse.data);
       }
     };
 

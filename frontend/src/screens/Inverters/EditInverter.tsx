@@ -7,7 +7,7 @@ interface IProps {
   setEditItem: React.Dispatch<
     React.SetStateAction<{
       edit: boolean;
-      inverterId: number | null;
+      inverterId: string | null;
     }>
   >;
 }

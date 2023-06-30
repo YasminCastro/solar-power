@@ -10,7 +10,7 @@ interface IProps {
   setEditItem: React.Dispatch<
     React.SetStateAction<{
       edit: boolean;
-      inverterId: number | null;
+      inverterId: string | null;
     }>
   >;
 }
@@ -26,7 +26,7 @@ const Inverters = ({ inverter, setEditItem }: IProps) => {
       const newActiveStatus = !active;
 
       await api.put(
-        `/inverters/${inverter.id}`,
+        `/inverters/${inverter._id}`,
         {
           active: newActiveStatus,
         },
@@ -64,7 +64,7 @@ const Inverters = ({ inverter, setEditItem }: IProps) => {
               size={24}
               color="black"
               onPress={() =>
-                setEditItem({ edit: true, inverterId: inverter.id })
+                setEditItem({ edit: true, inverterId: inverter._id })
               }
             />
           </TouchableOpacity>
