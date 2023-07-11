@@ -16,8 +16,8 @@ import {
 
 import { Poppins_700Bold, Poppins_300Light } from "@expo-google-fonts/poppins";
 
-import Layout from "./src/Routes/Layout";
-import AuthStackNavigation from "./src/Routes/Auth";
+import Layout from "./src/routes/Layout";
+import AuthStackNavigation from "./src/routes/Auth";
 
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import { InverterProvider } from "./src/contexts/InverterContext";
