@@ -8,6 +8,7 @@ import useYupValidationResolver from "../../validations/useYupValidationResolver
 import { ILoginData } from "../../interfaces/auth";
 import { useNavigation } from "@react-navigation/native";
 import { AuthScreenNavigationProp } from "../../interfaces/navigation";
+import Welcome from "../../components/pages/auth/Welcome";
 
 //todo: poder ver a senha digitada
 //todo: loading no botão de entrar
@@ -60,14 +61,7 @@ const Login: React.FC = () => {
       ) : null}
 
       <View className="h-1/2 w-full max-w-sm justify-center p-8 ">
-        <View>
-          <Text className="text-center font-title text-4xl  text-white">
-            Bem vindo
-          </Text>
-          <Text className="text-1xl mb-6 mr-1 text-center font-regular text-gray-100">
-            Faça o Login
-          </Text>
-        </View>
+        <Welcome message="Faça o Login" />
 
         <View>
           <Text className="text-1xl mb-6 mr-1 text-center font-regular text-white">

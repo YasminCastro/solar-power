@@ -5,21 +5,26 @@ import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import fieldValidationSchema from "../../validations/loginSchema";
 import useYupValidationResolver from "../../validations/useYupValidationResolver";
-import { ILoginData } from "../../interfaces/auth";
+import { ILoginData, ISignUpData } from "../../interfaces/auth";
+import Welcome from "../../components/pages/auth/Welcome";
+import { AuthScreenNavigationProp } from "../../interfaces/navigation";
+import { useNavigation } from "@react-navigation/native";
 
 //todo: poder ver a senha digitada
 //todo: loading no botão de entrar
 
 const SignUp: React.FC = () => {
-  const { login } = useAuth();
+  const { signUp } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const handleLogin = async (data: ILoginData) => {
+  const navigation = useNavigation<AuthScreenNavigationProp>();
+
+  const handleSignUp = async (data: ISignUpData) => {
     setLoading(true);
-    const { error } = await login(data);
+    const { error } = await signUp(data);
     if (error) {
-      setErrorMessage("Erro ao fazer login");
+      setErrorMessage("Erro ao fazer cadastrar");
     }
     setLoading(false);
   };
@@ -29,7 +34,7 @@ const SignUp: React.FC = () => {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<ILoginData>({
+  } = useForm<ISignUpData>({
     resolver: useYupValidationResolver(fieldValidationSchema),
   });
 
@@ -42,7 +47,12 @@ const SignUp: React.FC = () => {
   useEffect(() => {
     register("email");
     register("password");
+    register("name");
   }, [register]);
+
+  const login = () => {
+    navigation.navigate("Login");
+  };
 
   return (
     <View className="flex-1 items-center justify-center bg-solar-50">
@@ -53,21 +63,7 @@ const SignUp: React.FC = () => {
       ) : null}
 
       <View className="h-1/2 w-full max-w-sm justify-center p-8 ">
-        <View>
-          <Text className="text-center font-title text-4xl  text-white">
-            Bem vindo
-          </Text>
-          <Text className="text-1xl mb-6 mr-1 text-center font-regular text-gray-100">
-            Faça seu Cadastro
-          </Text>
-        </View>
-
-        <View>
-          <Text className="text-1xl mb-6 mr-1 text-center font-regular text-white">
-            Ainda não tem uma conta?{" "}
-            <Text className="text-solar-600">Cadastre já!</Text>
-          </Text>
-        </View>
+        <Welcome message="Faça seu Cadastro" />
       </View>
 
       <LinearGradient
@@ -76,6 +72,12 @@ const SignUp: React.FC = () => {
         start={[0, 0]}
       >
         <View className=" w-full max-w-sm p-6">
+          <TextInput
+            className="mb-4 h-12 w-full rounded-sm border border-x-0 border-t-0 border-white bg-transparent px-4 font-regular text-white"
+            placeholderTextColor="#ffff"
+            placeholder="Nome"
+            onChangeText={(text) => setValue("name", text)}
+          />
           <TextInput
             className="mb-4 h-12 w-full rounded-sm border border-x-0 border-t-0 border-white bg-transparent px-4 font-regular text-white"
             placeholderTextColor="#ffff"
@@ -91,18 +93,31 @@ const SignUp: React.FC = () => {
             secureTextEntry={true}
             onChangeText={(text) => setValue("password", text)}
           />
-          <Text className="text-1xl mb-14 mr-1 text-right font-regular text-white">
-            Esqueceu a senha?
-          </Text>
+
+          <TextInput
+            className="mb-4 h-12 w-full rounded-sm border border-x-0 border-t-0 border-white bg-transparent px-4 font-regular text-white"
+            placeholderTextColor="#ffff"
+            placeholder="Repita a senha"
+            secureTextEntry={true}
+            onChangeText={(text) => setValue("password", text)}
+          />
 
           <TouchableOpacity
             className="flex h-12 flex-row items-center justify-center rounded-full bg-solar-100 px-6"
-            onPress={handleSubmit(async (data) => await handleLogin(data))}
+            onPress={handleSubmit(async (data) => await handleSignUp(data))}
           >
             <View className="flex flex-1 items-center">
-              <Text className="font-body text-base text-solar-500">Entrar</Text>
+              <Text className="font-body text-base text-solar-500">
+                Cadastrar
+              </Text>
             </View>
           </TouchableOpacity>
+          <Text
+            className="text-1xl mt-14 text-center font-regular text-white"
+            onPress={login}
+          >
+            Já tem uma conta? Clique aqui para logar!
+          </Text>
         </View>
       </LinearGradient>
     </View>

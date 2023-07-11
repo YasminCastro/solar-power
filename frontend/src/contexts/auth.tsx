@@ -2,13 +2,14 @@ import { createContext, useState, useEffect, useContext } from "react";
 import * as auth from "../services/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../services/api";
-import { ILoginData } from "../interfaces/auth";
+import { ILoginData, ISignUpData } from "../interfaces/auth";
 import { IUser } from "../interfaces/user";
 
 interface AuthContextData {
   isAuth: boolean;
   user: IUser | null;
   login(data: ILoginData): Promise<{ error: boolean }>;
+  signUp(signUp: ISignUpData): Promise<{ error: boolean }>;
   signOut(): void;
   loading: boolean;
 }
@@ -49,6 +50,20 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
     }
   }
 
+  async function signUp(data: ISignUpData) {
+    try {
+      const response = await auth.signUp(data);
+      setUser(response.user);
+      api.defaults.headers["Authorization"] = `Bearer ${response.token}`;
+
+      await AsyncStorage.setItem("@RNAuth:user", JSON.stringify(response.user));
+      await AsyncStorage.setItem("@RNAuth:token", response.token);
+      return { error: false };
+    } catch (error) {
+      return { error: true };
+    }
+  }
+
   function signOut() {
     setUser(null);
     AsyncStorage.clear().then(() => setUser(null));
@@ -56,7 +71,7 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuth: !!user, user, login, signOut, loading }}
+      value={{ isAuth: !!user, user, login, signOut, loading, signUp }}
     >
       {children}
     </AuthContext.Provider>
