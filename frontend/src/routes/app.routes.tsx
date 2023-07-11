@@ -1,4 +1,4 @@
-import Dashboard from "../pages/Dashboard";
+import Home from "../screens/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Foundation } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -18,7 +18,7 @@ const AppRoutes: React.FC = () => (
   >
     <AppStack.Screen
       name="Home"
-      component={Dashboard}
+      component={Home}
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
@@ -30,7 +30,7 @@ const AppRoutes: React.FC = () => (
     />
     <AppStack.Screen
       name="Data"
-      component={Dashboard}
+      component={Home}
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
@@ -42,7 +42,7 @@ const AppRoutes: React.FC = () => (
     />
     <AppStack.Screen
       name="Games"
-      component={Dashboard}
+      component={Home}
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
@@ -54,7 +54,7 @@ const AppRoutes: React.FC = () => (
     />
     <AppStack.Screen
       name="Settings"
-      component={Dashboard}
+      component={Home}
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
