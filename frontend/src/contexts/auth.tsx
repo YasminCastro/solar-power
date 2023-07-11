@@ -8,7 +8,7 @@ import { IUser } from "../interfaces/user";
 interface AuthContextData {
   isAuth: boolean;
   user: IUser | null;
-  login(data: ILoginData): Promise<void>;
+  login(data: ILoginData): Promise<{ error: boolean }>;
   signOut(): void;
   loading: boolean;
 }
@@ -36,12 +36,17 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
   }, []);
 
   async function login(data: ILoginData) {
-    const response = await auth.login(data);
-    setUser(response.user);
-    api.defaults.headers["Authorization"] = `Bearer ${response.token}`;
+    try {
+      const response = await auth.login(data);
+      setUser(response.user);
+      api.defaults.headers["Authorization"] = `Bearer ${response.token}`;
 
-    await AsyncStorage.setItem("@RNAuth:user", JSON.stringify(response.user));
-    await AsyncStorage.setItem("@RNAuth:token", response.token);
+      await AsyncStorage.setItem("@RNAuth:user", JSON.stringify(response.user));
+      await AsyncStorage.setItem("@RNAuth:token", response.token);
+      return { error: false };
+    } catch (error) {
+      return { error: true };
+    }
   }
 
   function signOut() {
