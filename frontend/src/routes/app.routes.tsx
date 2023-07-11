@@ -3,6 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Foundation } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import Data from "../screens/Data";
+import Games from "../screens/Games";
+import Settings from "../screens/Settings";
 
 const AppStack = createBottomTabNavigator();
 
@@ -30,7 +33,7 @@ const AppRoutes: React.FC = () => (
     />
     <AppStack.Screen
       name="Data"
-      component={Home}
+      component={Data}
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
@@ -42,7 +45,7 @@ const AppRoutes: React.FC = () => (
     />
     <AppStack.Screen
       name="Games"
-      component={Home}
+      component={Games}
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
@@ -54,7 +57,7 @@ const AppRoutes: React.FC = () => (
     />
     <AppStack.Screen
       name="Settings"
-      component={Home}
+      component={Settings}
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {

@@ -1,7 +1,7 @@
 import { Button, View } from "react-native";
 import { useAuth } from "../../contexts/auth";
 
-const Home: React.FC = () => {
+const Games: React.FC = () => {
   const { signOut } = useAuth();
 
   function handleSingOut() {
@@ -14,4 +14,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Games;

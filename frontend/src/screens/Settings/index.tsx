@@ -1,7 +1,7 @@
 import { Button, View } from "react-native";
 import { useAuth } from "../../contexts/auth";
 
-const Dashboard: React.FC = () => {
+const Settings: React.FC = () => {
   const { signOut } = useAuth();
 
   function handleSingOut() {
@@ -14,4 +14,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default Settings;
