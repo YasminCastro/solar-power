@@ -4,20 +4,27 @@ import { Service } from 'typedi';
 import { SECRET_KEY } from '@config';
 import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/httpException';
-import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
+import { DataStoredInToken } from '@interfaces/auth.interface';
 import { UserModel } from '@/models/users.models';
 import { User } from '@/interfaces/users.interface';
 
 @Service()
 export class AuthService {
-  public async signup(userData: CreateUserDto): Promise<User> {
+  public async signup(userData: CreateUserDto): Promise<{ token: string; user: DataStoredInToken }> {
     const findUser: User = await UserModel.findOne({ email: userData.email });
     if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);
     const createUserData: User = await UserModel.create({ ...userData, password: hashedPassword });
+    const user: DataStoredInToken = {
+      _id: createUserData._id.toString(),
+      name: createUserData.name,
+      email: createUserData.email,
+    };
 
-    return createUserData;
+    const token = this.createToken(user);
+
+    return { token, user };
   }
 
   public async login(userData: LoginUserDto): Promise<{ token: string; user: DataStoredInToken }> {
