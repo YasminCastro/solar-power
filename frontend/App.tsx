@@ -4,8 +4,6 @@ import moment from "moment";
 moment.locale("pt-br");
 
 import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import {
   Ubuntu_700Bold,
@@ -16,15 +14,13 @@ import {
 
 import { Poppins_700Bold, Poppins_300Light } from "@expo-google-fonts/poppins";
 
-import Layout from "./src/routes/Layout";
-import AuthStackNavigation from "./src/routes/Auth";
+import React from "react";
 
-import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
-import { InverterProvider } from "./src/contexts/InverterContext";
-import { UserProvider } from "./src/contexts/UserContext";
+import { AuthProvider } from "./src/contexts/auth";
+import Routes from "./src/routes";
 
 export default function App() {
-  const [hasLoadedFonts] = useFonts({
+  const [fontsLoaded] = useFonts({
     Ubuntu_700Bold,
     Ubuntu_500Medium,
     Ubuntu_400Regular,
@@ -32,31 +28,15 @@ export default function App() {
     Poppins_300Light,
   });
 
-  if (!hasLoadedFonts) {
+  if (!fontsLoaded) {
     return null;
   }
 
   return (
-    <AuthProvider>
-      <UserProvider>
-        <InverterProvider>
-          <SafeAreaProvider>
-            <AppLayout />
-          </SafeAreaProvider>
-        </InverterProvider>
-      </UserProvider>
-    </AuthProvider>
-  );
-}
-
-function AppLayout() {
-  const { authState } = useAuth();
-
-  return (
     <NavigationContainer>
-      <StatusBar style="light" />
-
-      {authState.isAuth ? <Layout /> : <AuthStackNavigation />}
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </NavigationContainer>
   );
 }
