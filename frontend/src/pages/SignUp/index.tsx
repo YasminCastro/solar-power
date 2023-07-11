@@ -6,17 +6,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import fieldValidationSchema from "../../validations/loginSchema";
 import useYupValidationResolver from "../../validations/useYupValidationResolver";
 import { ILoginData } from "../../interfaces/auth";
-import { useNavigation } from "@react-navigation/native";
-import { AuthScreenNavigationProp } from "../../interfaces/navigation";
 
 //todo: poder ver a senha digitada
 //todo: loading no botão de entrar
 
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
   const { login } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation<AuthScreenNavigationProp>();
 
   const handleLogin = async (data: ILoginData) => {
     setLoading(true);
@@ -25,10 +22,6 @@ const Login: React.FC = () => {
       setErrorMessage("Erro ao fazer login");
     }
     setLoading(false);
-  };
-
-  const signUp = () => {
-    navigation.navigate("SignUp");
   };
 
   const {
@@ -65,16 +58,14 @@ const Login: React.FC = () => {
             Bem vindo
           </Text>
           <Text className="text-1xl mb-6 mr-1 text-center font-regular text-gray-100">
-            Faça o Login
+            Faça seu Cadastro
           </Text>
         </View>
 
         <View>
           <Text className="text-1xl mb-6 mr-1 text-center font-regular text-white">
             Ainda não tem uma conta?{" "}
-            <Text className="text-solar-600" onPress={signUp}>
-              Cadastre já!
-            </Text>
+            <Text className="text-solar-600">Cadastre já!</Text>
           </Text>
         </View>
       </View>
@@ -118,4 +109,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default SignUp;
