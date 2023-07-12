@@ -15,7 +15,7 @@ export class InvertersController {
 
       const inverter = await this.inversor.createInverter(inversorData, userId);
 
-      res.status(201).json({ message: 'Inverter successfully created', inverter });
+      res.status(201).json({ message: 'Inverter successfully created' });
     } catch (error) {
       next(error);
     }

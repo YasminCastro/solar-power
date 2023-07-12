@@ -46,7 +46,12 @@ export class SolarDataService {
         inverterId,
       };
 
+      console.log(elginData);
+
       const weather = await this.utils.getWeatherData(lat, long);
+      console.log('weather');
+      console.log(weather);
+
       const powerInRealTime = await this.calculateRealTimePower(parseFloat(inverterId), parseFloat(elginData.powerToday));
 
       elginData.powerInRealTime = `${powerInRealTime}kW`;
