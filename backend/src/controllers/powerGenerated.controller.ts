@@ -31,14 +31,14 @@ export class PowerGeneratedController {
         if (powerGenerated) data.push(powerGenerated);
       }
 
-      if (data.length === 1) {
-        res.status(201).json(data[0]);
+      if (data.length === 1 || data.length === 0) {
+        res.status(200).json(data[0]);
         return;
       }
 
       const powerGenerated = await this.powerGenerated.joinData(data);
 
-      res.status(201).json(powerGenerated);
+      res.status(200).json(powerGenerated);
     } catch (error) {
       next(error);
     }

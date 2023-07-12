@@ -17,9 +17,9 @@ export class AuthController {
   public signUp = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: CreateUserDto = req.body;
-      await this.auth.signup(userData);
+      const response = await this.auth.signup(userData);
 
-      res.status(201).json({ message: 'User successfully created' });
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }
@@ -28,9 +28,9 @@ export class AuthController {
   public logIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: LoginUserDto = req.body;
-      const tokenData = await this.auth.login(userData);
+      const response = await this.auth.login(userData);
 
-      res.status(200).json(tokenData);
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }

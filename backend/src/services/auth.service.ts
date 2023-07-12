@@ -1,48 +1,53 @@
 import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { Service } from 'typedi';
-import { EXPIRES_IN, SECRET_KEY } from '@config';
+import { SECRET_KEY } from '@config';
 import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/httpException';
-import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
+import { DataStoredInToken } from '@interfaces/auth.interface';
 import { UserModel } from '@/models/users.models';
 import { User } from '@/interfaces/users.interface';
 
 @Service()
 export class AuthService {
-  public async signup(userData: CreateUserDto): Promise<User> {
+  public async signup(userData: CreateUserDto): Promise<{ token: string; user: DataStoredInToken }> {
     const findUser: User = await UserModel.findOne({ email: userData.email });
     if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
 
     const hashedPassword = await hash(userData.password, 10);
     const createUserData: User = await UserModel.create({ ...userData, password: hashedPassword });
+    const user: DataStoredInToken = {
+      _id: createUserData._id.toString(),
+      name: createUserData.name,
+      email: createUserData.email,
+    };
 
-    return createUserData;
+    const token = this.createToken(user);
+
+    return { token, user };
   }
 
-  public async login(userData: LoginUserDto): Promise<TokenData> {
+  public async login(userData: LoginUserDto): Promise<{ token: string; user: DataStoredInToken }> {
     const findUser: User = await UserModel.findOne({ email: userData.email });
     if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
+
+    const user: DataStoredInToken = {
+      _id: findUser._id.toString(),
+      name: findUser.name,
+      email: findUser.email,
+    };
 
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
     if (!isPasswordMatching) throw new HttpException(409, 'Password is not matching');
 
-    const tokenData = this.createToken(findUser);
+    const token = this.createToken(user);
 
-    return tokenData;
+    return { token, user };
   }
 
-  public createToken(user: User): TokenData {
-    const payload: DataStoredInToken = {
-      _id: user._id.toString(),
-      name: user.name,
-      email: user.email,
-    };
+  public createToken(user: DataStoredInToken): string {
+    const token = sign(user, SECRET_KEY);
 
-    const token = sign(payload, SECRET_KEY, {
-      expiresIn: EXPIRES_IN,
-    });
-
-    return { expiresIn: EXPIRES_IN, token };
+    return token;
   }
 }
