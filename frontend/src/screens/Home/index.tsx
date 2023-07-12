@@ -1,16 +1,20 @@
-import { Button, View } from "react-native";
-import { useAuth } from "../../contexts/auth";
+import { ScrollView } from "react-native";
+import { viewWrapperStyles } from "../../styles/app";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import { StatusBar } from "expo-status-bar";
+import WelcomeView from "../../components/pages/home/WelcomeView";
+import RealTimeView from "../../components/pages/home/RealTimeView";
 
 const Home: React.FC = () => {
-  const { signOut } = useAuth();
-
-  function handleSingOut() {
-    signOut();
-  }
   return (
-    <View className="flex-1 justify-center">
-      <Button title="Sign out" onPress={handleSingOut} />
-    </View>
+    <SafeAreaView className={viewWrapperStyles}>
+      <StatusBar style="light" />
+      <ScrollView>
+        <WelcomeView />
+        <RealTimeView />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
