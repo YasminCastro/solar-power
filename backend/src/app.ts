@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import moment from 'moment';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, cronjobApi, ELGIN_USER, ELGIN_PASSWORD } from '@config';
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, cronjobApi } from '@config';
 import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
