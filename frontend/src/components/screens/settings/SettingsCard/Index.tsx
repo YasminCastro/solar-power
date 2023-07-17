@@ -1,8 +1,7 @@
-import { Text, Touchable, View } from "react-native";
+import { Text, Touchable, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../../../contexts/auth";
 import ProfileIcon from "./ProfileIcon";
 import { IStepSettings } from "../../../../screens/Settings";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import SettingsButtons from "./SettingsButtons";
 
 import { FontAwesome5 } from "@expo/vector-icons";
