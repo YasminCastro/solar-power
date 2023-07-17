@@ -1,5 +1,4 @@
 import { ScrollView } from "react-native";
-import { viewWrapperStyles } from "../../styles/app";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { StatusBar } from "expo-status-bar";
@@ -8,7 +7,7 @@ import RealTimeView from "../../components/pages/home/RealTimeView";
 
 const Home: React.FC = () => {
   return (
-    <SafeAreaView className={viewWrapperStyles}>
+    <SafeAreaView className="flex-1 bg-blueDark-500 pt-1">
       <StatusBar style="light" />
       <ScrollView>
         <WelcomeView />
