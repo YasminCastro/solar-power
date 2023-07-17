@@ -20,6 +20,7 @@ export class AuthService {
       _id: createUserData._id.toString(),
       name: createUserData.name,
       email: createUserData.email,
+      inverters: [],
     };
 
     const token = this.createToken(user);
@@ -35,6 +36,7 @@ export class AuthService {
       _id: findUser._id.toString(),
       name: findUser.name,
       email: findUser.email,
+      inverters: findUser.inverters,
     };
 
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
