@@ -1,4 +1,3 @@
-import { useAuth } from "../../contexts/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMemo, useState } from "react";
 import SettingsCard from "../../components/screens/settings/SettingsCard/Index";
@@ -7,7 +6,6 @@ import ProfileCard from "../../components/screens/settings/ProfileCard/Index";
 export type IStepSettings = "settings" | "profile" | "inverter";
 
 const Settings: React.FC = () => {
-  const { signOut } = useAuth();
   const [cardActive, setCardActive] = useState<IStepSettings>("settings");
 
   const Cards = useMemo(
@@ -20,7 +18,7 @@ const Settings: React.FC = () => {
   );
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-blueDark-500">
+    <SafeAreaView className="flex-1 bg-blueDark-500 p-5">
       {Cards[cardActive]()}
     </SafeAreaView>
   );

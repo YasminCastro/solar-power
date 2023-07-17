@@ -16,7 +16,7 @@ export default function ProfileIcon({ setCardActive }: IProps) {
           <Pressable
             className="h-20 w-20 items-center justify-center rounded-full bg-yellow-300"
             onPress={() => {
-              setCardActive("inverter");
+              setCardActive("profile");
             }}
           >
             <Text className="text-4xl font-bold text-blueDark-500">
