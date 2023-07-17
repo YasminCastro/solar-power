@@ -8,7 +8,7 @@ import useYupValidationResolver from "../../validations/useYupValidationResolver
 import { ILoginData } from "../../interfaces/auth";
 import { useNavigation } from "@react-navigation/native";
 import { AuthScreenNavigationProp } from "../../interfaces/navigation";
-import Welcome from "../../components/pages/auth/Welcome";
+import Welcome from "../../components/screens/auth/Welcome";
 
 //todo: poder ver a senha digitada
 //todo: loading no botão de entrar

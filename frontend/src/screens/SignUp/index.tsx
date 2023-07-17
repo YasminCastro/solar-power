@@ -6,7 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import fieldValidationSchema from "../../validations/loginSchema";
 import useYupValidationResolver from "../../validations/useYupValidationResolver";
 import { ILoginData, ISignUpData } from "../../interfaces/auth";
-import Welcome from "../../components/pages/auth/Welcome";
+import Welcome from "../../components/screens/auth/Welcome";
 import { AuthScreenNavigationProp } from "../../interfaces/navigation";
 import { useNavigation } from "@react-navigation/native";
 

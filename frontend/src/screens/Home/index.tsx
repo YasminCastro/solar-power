@@ -2,8 +2,8 @@ import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { StatusBar } from "expo-status-bar";
-import WelcomeView from "../../components/pages/home/WelcomeView";
-import RealTimeView from "../../components/pages/home/RealTimeView";
+import WelcomeView from "../../components/screens/home/WelcomeView";
+import RealTimeView from "../../components/screens/home/RealTimeView";
 
 const Home: React.FC = () => {
   return (
