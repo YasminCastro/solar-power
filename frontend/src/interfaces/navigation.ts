@@ -1,9 +1,10 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 
-type AuthStackParamList = {
+type StackParamList = {
   Login: any;
   SignUp: any;
   Inverter: any;
+  Profile: any;
 };
 
-export type AuthScreenNavigationProp = StackNavigationProp<AuthStackParamList>;
+export type AuthScreenNavigationProp = StackNavigationProp<StackParamList>;
