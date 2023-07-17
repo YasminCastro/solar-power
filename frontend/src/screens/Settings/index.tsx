@@ -2,7 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useMemo, useState } from "react";
 import SettingsCard from "../../components/screens/settings/SettingsCard/Index";
 import ProfileCard from "../../components/screens/settings/ProfileCard/Index";
-import InverterCard from "../../components/screens/settings/InverterCard/Index";
+import InverterCard from "../../components/screens/settings/InvertersCard/Index";
 
 export type IStepSettings = "settings" | "profile" | "inverter";
 
