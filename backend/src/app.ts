@@ -30,25 +30,25 @@ export class App {
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
 
-    let job = new CronJob(
-      '0 */5 6-18 * * *',
-      async function () {
-        logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
+    // let job = new CronJob(
+    //   '0 */5 6-18 * * *',
+    //   async function () {
+    //     logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
 
-        try {
-          await cronjobApi.post(`/solar-data`);
-        } catch (error) {
-          logger.error('Cronjob Error to update data');
-          logger.error(error);
-        }
-      },
-      null,
-      true,
-      'America/Sao_Paulo',
-    );
+    //     try {
+    //       await cronjobApi.post(`/solar-data`);
+    //     } catch (error) {
+    //       logger.error('Cronjob Error to update data');
+    //       logger.error(error);
+    //     }
+    //   },
+    //   null,
+    //   true,
+    //   'America/Sao_Paulo',
+    // );
 
-    job.start();
-    logger.info(`is job running? ${job.running} `);
+    // job.start();
+    // logger.info(`is job running? ${job.running} `);
   }
 
   public listen() {

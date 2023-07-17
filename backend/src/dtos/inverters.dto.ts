@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsUrl, ValidateIf, IsNumber, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsUrl, ValidateIf, IsNumber, IsOptional, IsBoolean } from 'class-validator';
 
 export class CreateInvertersDto {
   @IsString()
@@ -38,6 +38,10 @@ export class UpdateInvertersDto {
   @IsString()
   @IsOptional()
   public name: string;
+
+  @IsBoolean()
+  @IsOptional()
+  public active: boolean;
 
   @IsString()
   @IsOptional()

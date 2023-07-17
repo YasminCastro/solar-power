@@ -13,30 +13,9 @@ export class InvertersController {
       const inversorData: CreateInvertersDto = req.body;
       const userId = req.user._id;
 
-     const inverter = await this.inversor.createInversor(inversorData, userId);
+      const inverter = await this.inversor.createInverter(inversorData, userId);
 
-     res.status(201).json({ message: 'Inverter successfully created', inverter });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  public getInverters = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const userId = req.query.userId as string;
-      const inverterId = req.query.inverterId as string;
-
-      if (!userId) {
-        throw new HttpException(409, 'userId is required');
-      }
-
-      if (inverterId) {
-        const inversor = await this.inversor.getInverterById(inverterId, userId);
-        res.status(201).json([inversor]);
-      } else {
-        const inversor = await this.inversor.getInvertersByUser(userId);
-        res.status(201).json(inversor);
-      }
+      res.status(201).json({ message: 'Inverter successfully created' });
     } catch (error) {
       next(error);
     }
@@ -44,12 +23,13 @@ export class InvertersController {
 
   public updateInverter = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inversorData: UpdateInvertersDto = req.body;
-      const inversorId = String(req.params.id);
+      const inverterData: UpdateInvertersDto = req.body;
+      const inverterName = String(req.params.name);
+      const userId = String(req.user._id);
 
-      const inversor = await this.inversor.updateInverter(inversorData, inversorId);
+      const inverter = await this.inversor.updateInverter(inverterData, inverterName, userId);
 
-      res.status(201).json({ inversor, message: 'Inversor successfully updated' });
+      res.status(201).json({ inverter, message: 'Inverter successfully updated' });
     } catch (error) {
       next(error);
     }
@@ -57,11 +37,12 @@ export class InvertersController {
 
   public deleteInverter = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inversorId = String(req.params.id);
+      const inverterName = String(req.params.name);
+      const userId = String(req.user._id);
 
-      await this.inversor.deleteInverter(inversorId);
+      const deleted = await this.inversor.deleteInverter(inverterName, userId);
 
-      res.status(201).json({ message: 'Inversor successfully deleted' });
+      res.status(201).json({ message: 'Inverter successfully deleted' });
     } catch (error) {
       next(error);
     }
