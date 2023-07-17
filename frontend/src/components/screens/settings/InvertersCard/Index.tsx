@@ -4,46 +4,34 @@ import { AntDesign } from "@expo/vector-icons";
 import { useAuth } from "../../../../contexts/auth";
 import { IStepSettings } from "../../../../screens/Settings";
 import { FontAwesome5 } from "@expo/vector-icons";
-import InverterBlock from "./Inverter/Index";
+import InverterBlock from "./ListInverters/Index";
 import { TextInput } from "react-native-gesture-handler";
 import { useState } from "react";
+import ListInverters from "./ListInverters/Index";
+import EditInverter from "./EditInverter/Index";
 
 interface IProps {
   setCardActive: React.Dispatch<React.SetStateAction<IStepSettings>>;
 }
 
 const InverterCard: React.FC<IProps> = ({ setCardActive }) => {
-  const { user } = useAuth();
-  const inverters = user?.inverters;
-  const [search, setSearch] = useState("");
+  const [editItem, setEditItem] = useState<{
+    edit: boolean;
+    inverterId: string | null;
+  }>({ edit: false, inverterId: null });
+
+  console.log(editItem);
 
   return (
     <View>
-      <TouchableOpacity onPress={() => setCardActive("settings")}>
-        <AntDesign name="arrowleft" size={30} color="white" />
-      </TouchableOpacity>
-      <View className="flex flex-row items-center justify-between">
-        <View>
-          <Text className="font-title text-3xl text-yellow-300">
-            Inversores
-          </Text>
-          <Text className="font-regular text-gray-200">
-            Inversores cadastrados no app
-          </Text>
-        </View>
-        <FontAwesome5 name="solar-panel" size={30} color="#febe3d" />
-      </View>
-      <View className="mt-4">
-        <TextInput
-          className="mb-4 h-12 w-full rounded-sm border border-white bg-transparent px-4 font-regular text-white"
-          placeholderTextColor="#ffff"
-          placeholder="Buscar Inversores"
-          autoCapitalize="none"
-          onChangeText={(text) => setSearch(text)}
+      {editItem.edit ? (
+        <EditInverter setEditItem={setEditItem} />
+      ) : (
+        <ListInverters
+          setCardActive={setCardActive}
+          setEditItem={setEditItem}
         />
-        {inverters &&
-          inverters.map((inverter) => <InverterBlock inverter={inverter} />)}
-      </View>
+      )}
     </View>
   );
 };

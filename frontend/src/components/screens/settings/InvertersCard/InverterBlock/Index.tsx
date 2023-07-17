@@ -5,9 +5,10 @@ import { IInverter } from "../../../../../interfaces/inverter";
 
 interface IProps {
   inverter: IInverter;
+  setEditItem: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const InverterBlock: React.FC<IProps> = ({ inverter }) => {
+const InverterBlock: React.FC<IProps> = ({ inverter, setEditItem }) => {
   const [active, setActive] = useState(inverter.active);
   const [loading, setLoading] = useState(false);
 
@@ -29,8 +30,7 @@ const InverterBlock: React.FC<IProps> = ({ inverter }) => {
               size={24}
               color="black"
               onPress={() =>
-                // setEditItem({ edit: true, inverterId: inverter._id })
-                console.log("edit")
+                setEditItem({ edit: true, inverterId: inverter._id })
               }
             />
           </TouchableOpacity>
