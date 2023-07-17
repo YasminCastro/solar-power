@@ -29,3 +29,20 @@ export const cepAbertoApi = axios.create({
 let projectURL = NODE_ENV === 'production' ? 'http://5.189.152.65:4000' : `http://localhost:4000`;
 
 export const cronjobApi = axios.create({ baseURL: projectURL });
+
+if (
+  NODE_ENV ||
+  PORT ||
+  SECRET_KEY ||
+  LOG_FORMAT ||
+  LOG_DIR ||
+  ORIGIN ||
+  WEATHER_API_KEY ||
+  CRYPTO_KEY ||
+  DB_HOST ||
+  DB_PORT ||
+  DB_DATABASE ||
+  CEP_ABERTO_TOKEN
+) {
+  throw new Error('Env missing');
+}
