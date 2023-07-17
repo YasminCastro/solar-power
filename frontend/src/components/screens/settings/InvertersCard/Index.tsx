@@ -5,6 +5,8 @@ import { useAuth } from "../../../../contexts/auth";
 import { IStepSettings } from "../../../../screens/Settings";
 import { FontAwesome5 } from "@expo/vector-icons";
 import InverterBlock from "./Inverter/Index";
+import { TextInput } from "react-native-gesture-handler";
+import { useState } from "react";
 
 interface IProps {
   setCardActive: React.Dispatch<React.SetStateAction<IStepSettings>>;
@@ -13,6 +15,7 @@ interface IProps {
 const InverterCard: React.FC<IProps> = ({ setCardActive }) => {
   const { user } = useAuth();
   const inverters = user?.inverters;
+  const [search, setSearch] = useState("");
 
   return (
     <View>
@@ -30,11 +33,17 @@ const InverterCard: React.FC<IProps> = ({ setCardActive }) => {
         </View>
         <FontAwesome5 name="solar-panel" size={30} color="#febe3d" />
       </View>
-      <View>
-        <Text className="text-white">Search Bar</Text>
+      <View className="mt-4">
+        <TextInput
+          className="mb-4 h-12 w-full rounded-sm border border-white bg-transparent px-4 font-regular text-white"
+          placeholderTextColor="#ffff"
+          placeholder="Buscar Inversores"
+          autoCapitalize="none"
+          onChangeText={(text) => setSearch(text)}
+        />
+        {inverters &&
+          inverters.map((inverter) => <InverterBlock inverter={inverter} />)}
       </View>
-      {inverters &&
-        inverters.map((inverter) => <InverterBlock inverter={inverter} />)}
     </View>
   );
 };
