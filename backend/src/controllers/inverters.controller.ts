@@ -3,8 +3,6 @@ import { Container } from 'typedi';
 import { InvertersService } from '@/services/inverters.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
-import { HttpException } from '@/exceptions/httpException';
-
 export class InvertersController {
   public inversor = Container.get(InvertersService);
 
@@ -24,10 +22,14 @@ export class InvertersController {
   public updateInverter = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const inverterData: UpdateInvertersDto = req.body;
-      const inverterName = String(req.params.name);
+      const inverterId = String(req.params.id);
       const userId = String(req.user._id);
 
-      const inverter = await this.inversor.updateInverter(inverterData, inverterName, userId);
+      const inverter = await this.inversor.updateInverter(inverterData, inverterId, userId);
+
+      if (!inverter) {
+        throw new Error('Error to update inverter.');
+      }
 
       res.status(201).json({ inverter, message: 'Inverter successfully updated' });
     } catch (error) {

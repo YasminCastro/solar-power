@@ -40,7 +40,7 @@ export class InvertersService {
     return findUserInversors;
   }
 
-  public async updateInverter(inverterData: UpdateInvertersDto, inverterName: string, userId: string): Promise<any> {
+  public async updateInverter(inverterData: UpdateInvertersDto, inverterId: string, userId: string): Promise<any> {
     let password = null;
     if (inverterData.password) {
       password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
@@ -51,16 +51,13 @@ export class InvertersService {
     if (inverterData.active !== undefined || inverterData.active !== null) itemsToUpdate['inverters.$.active'] = inverterData.active;
     if (inverterData.maxRealTimePower) itemsToUpdate['inverters.$.maxRealTimePower'] = inverterData.maxRealTimePower;
     if (inverterData.username) itemsToUpdate['inverters.$.username'] = inverterData.username;
+    if (inverterData.name) itemsToUpdate['inverters.$.name'] = inverterData.name;
     if (inverterData.cep) itemsToUpdate['inverters.$.cep'] = inverterData.cep;
     if (inverterData.lat) itemsToUpdate['inverters.$.lat'] = inverterData.lat;
     if (inverterData.long) itemsToUpdate['inverters.$.long'] = inverterData.long;
     if (password) itemsToUpdate['inverters.$.password'] = password;
 
-    const updateInverterData = await UserModel.findOneAndUpdate(
-      { _id: userId, 'inverters.name': inverterName },
-      { $set: itemsToUpdate },
-      { new: true },
-    );
+    const updateInverterData = await UserModel.findOneAndUpdate({ _id: userId, 'inverters._id': inverterId }, { $set: itemsToUpdate }, { new: true });
 
     return updateInverterData;
   }
