@@ -17,7 +17,7 @@ interface IProps {
 
 //TODO: arrumar css
 // TODO: Procurar um icone de lupa para colocar na pesquisa dsos inversores
-// TODO: Procurar uma forma melhor de adicionar um novo inversor
+// TODO: Arrumar botão de adicionar um novo inversor
 
 const ListInverters: React.FC<IProps> = ({
   setCardActive,
