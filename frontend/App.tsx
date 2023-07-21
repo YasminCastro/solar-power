@@ -18,6 +18,7 @@ import React from "react";
 
 import { AuthProvider } from "./src/contexts/auth";
 import Routes from "./src/routes";
+import { InverterProvider } from "./src/contexts/inverter";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -35,7 +36,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <AuthProvider>
-        <Routes />
+        <InverterProvider>
+          <Routes />
+        </InverterProvider>
       </AuthProvider>
     </NavigationContainer>
   );

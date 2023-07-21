@@ -5,9 +5,9 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import { useState } from "react";
 import { IStepSettings } from "../../../../../screens/Settings";
-import { useAuth } from "../../../../../contexts/auth";
 import InverterBlock from "./InverterBlock/Index";
 import { IStepInverter } from "../Index";
+import { useInverter } from "../../../../../contexts/inverter";
 
 interface IProps {
   setCardActive: React.Dispatch<React.SetStateAction<IStepSettings>>;
@@ -24,8 +24,7 @@ const ListInverters: React.FC<IProps> = ({
   setInverterCardActive,
   setInverterId,
 }) => {
-  const { user } = useAuth();
-  const inverters = user?.inverters;
+  const { inverters } = useInverter();
   const [search, setSearch] = useState("");
 
   const filteredInverters = inverters?.filter((el) => {

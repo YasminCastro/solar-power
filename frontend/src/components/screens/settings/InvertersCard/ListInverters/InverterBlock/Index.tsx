@@ -3,6 +3,7 @@ import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
 import { IInverter } from "../../../../../../interfaces/inverter";
 import { IStepInverter } from "../../Index";
+import { editInverterStatus } from "../../../../../../services/inverters";
 
 interface IProps {
   inverter: IInverter;
@@ -17,6 +18,19 @@ const InverterBlock: React.FC<IProps> = ({
 }) => {
   const [active, setActive] = useState(inverter.active);
   const [loading, setLoading] = useState(false);
+
+  const handleEditInverter = async () => {
+    try {
+      setLoading(true);
+
+      setActive(!active);
+      await editInverterStatus(inverter._id, active);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View className=" mx-8 my-4 h-24 w-80 rounded-md bg-white">
@@ -41,7 +55,7 @@ const InverterBlock: React.FC<IProps> = ({
               }}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => console.log("edit")}>
+          <TouchableOpacity onPress={handleEditInverter}>
             {loading ? (
               <ActivityIndicator size="small" color="#FEBE3D" />
             ) : (

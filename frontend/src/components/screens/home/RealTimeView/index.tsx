@@ -1,8 +1,13 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
+import { useAuth } from "../../../../contexts/auth";
+import { useInverter } from "../../../../contexts/inverter";
 
 export default function RealTimeView() {
+  const { user } = useAuth();
+  const { activeInverters } = useInverter();
+
   const hour = moment().hour();
 
   let welcomeMessage = "Olá";
