@@ -3,8 +3,13 @@ import { useMemo, useState } from "react";
 import SettingsCard from "../../components/screens/settings/SettingsCard/Index";
 import ProfileCard from "../../components/screens/settings/ProfileCard/Index";
 import InverterCard from "../../components/screens/settings/InvertersCard/Index";
+import NotificationsCard from "../../components/screens/settings/NotificationsCard/Index";
 
-export type IStepSettings = "settings" | "profile" | "inverter";
+export type IStepSettings =
+  | "settings"
+  | "profile"
+  | "inverter"
+  | "notifications";
 
 const Settings: React.FC = () => {
   const [cardActive, setCardActive] = useState<IStepSettings>("settings");
@@ -14,6 +19,7 @@ const Settings: React.FC = () => {
       settings: () => <SettingsCard setCardActive={setCardActive} />,
       profile: () => <ProfileCard setCardActive={setCardActive} />,
       inverter: () => <InverterCard setCardActive={setCardActive} />,
+      notifications: () => <NotificationsCard setCardActive={setCardActive} />,
     }),
     []
   );

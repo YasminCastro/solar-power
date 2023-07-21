@@ -30,7 +30,7 @@ const SettingsCard: React.FC<IProps> = ({ setCardActive }) => {
           />
           <SettingsButtons
             setCardActive={setCardActive}
-            cardName="inverter"
+            cardName="notifications"
             buttonName="Notificações"
             icon={<FontAwesome5 name="bell" size={24} color="black" />}
           />
