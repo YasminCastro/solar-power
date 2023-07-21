@@ -8,8 +8,10 @@ export async function getPowerGeneratedRealTime(invertersId: string) {
   return data;
 }
 
-export async function getAllInverters(userId: string) {
-  const { data } = await api.get(`/users/${userId}`);
+export async function getToday(inverterId: string) {
+  const { data } = await api.get(`/power-generated/day`, {
+    params: { inverterId },
+  });
 
-  return data.inverters;
+  return data;
 }

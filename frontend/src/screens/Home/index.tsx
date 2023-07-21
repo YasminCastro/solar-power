@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import WelcomeView from "../../components/screens/home/WelcomeView";
 import RealTimeView from "../../components/screens/home/RealTimeView";
+import TodayGraph from "../../components/screens/home/TodayGraph";
 
 const Home: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const Home: React.FC = () => {
       <ScrollView>
         <WelcomeView />
         <RealTimeView />
+        <TodayGraph />
       </ScrollView>
     </SafeAreaView>
   );
