@@ -7,6 +7,8 @@ interface IProps {
   setInverterCardActive: React.Dispatch<React.SetStateAction<IStepInverter>>;
 }
 
+//TODO: implementar um form stepper pra criar o inversor
+
 const CreateInverter = ({ setInverterCardActive }: IProps) => {
   return (
     <View>
