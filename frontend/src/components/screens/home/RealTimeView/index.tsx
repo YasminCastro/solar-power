@@ -1,40 +1,67 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import moment from "moment";
-import { useAuth } from "../../../../contexts/auth";
+import { useEffect } from "react";
 import { useInverter } from "../../../../contexts/inverter";
+import { useState } from "react";
+import { IPowerGenerated } from "../../../../interfaces/powerGenerated";
+import { getPowerGeneratedRealTime } from "../../../../services/powerGenerated";
+import CircleChart from "./CircleChart";
+import SemiCircleText from "./SemiCircleText";
+import { Entypo } from "@expo/vector-icons";
 
 export default function RealTimeView() {
-  const { user } = useAuth();
   const { activeInverters } = useInverter();
+  const [powerGenerated, setPowerGenerated] = useState<IPowerGenerated | null>(
+    null
+  );
+  const [maxValue, setMaxValue] = useState<number>(100);
 
-  console.log(activeInverters);
+  async function loadPowerGenerated() {
+    if (activeInverters[0]) {
+      let maxPower = activeInverters
+        .map((inverter) => inverter.maxRealTimePower)
+        .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-  const hour = moment().hour();
+      setMaxValue(maxPower);
 
-  let welcomeMessage = "Olá";
-  if (hour < 12) {
-    welcomeMessage = "Bom dia";
-  } else if (hour < 18) {
-    welcomeMessage = "Boa tarde";
-  } else {
-    welcomeMessage = "Boa noite";
+      const data = await getPowerGeneratedRealTime(activeInverters[0]._id);
+      setPowerGenerated(data);
+    }
   }
 
-  return (
-    <View className="m-7 flex flex-row items-center justify-between">
-      <View className="flex-row items-center gap-3">
-        <Text className="font-title text-3xl text-white">
-          {welcomeMessage}!
-        </Text>
+  useEffect(() => {
+    loadPowerGenerated();
+  }, [activeInverters]);
+
+  if (powerGenerated) {
+    return (
+      <View className="m-8">
+        <CircleChart
+          realTimePower={powerGenerated.powerInRealTime}
+          maxValue={maxValue}
+        />
+        <View className="mt-8 flex flex-row justify-around">
+          <View className="flex flex-row">
+            <SemiCircleText
+              number={`${powerGenerated.tempC}°`}
+              text="Temperatura"
+            />
+            <TouchableOpacity onPress={() => console.log("Info temp")}>
+              <Entypo name="info-with-circle" size={16} color="white" />
+            </TouchableOpacity>
+          </View>
+          <View className="flex flex-row">
+            <SemiCircleText
+              number={`${powerGenerated.powerToday}kWh`}
+              text="Produção hoje"
+            />
+            <TouchableOpacity onPress={() => console.log("Info produção")}>
+              <Entypo name="info-with-circle" size={16} color="white" />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-      <View>
-        <TouchableOpacity
-          onPress={() => console.log("ativar ou desativar notificação")}
-        >
-          <Ionicons name="notifications" size={24} color="#FEBE3D" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+    );
+  }
+
+  return <Text className="text-white">Nenhum dado encontrado.</Text>;
 }
