@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { IStepSettings } from "../../../../screens/Settings";
 
 interface IProps {
@@ -8,6 +8,8 @@ interface IProps {
   icon: any;
 }
 
+//TODO: fazer os botões igual no figma
+
 export default function SettingsButtons({
   setCardActive,
   cardName,
@@ -16,7 +18,7 @@ export default function SettingsButtons({
 }: IProps) {
   return (
     <TouchableOpacity
-      className="flex h-9 w-36 items-center justify-center rounded-sm bg-solar-100 "
+      className="flex h-16 w-36 items-center justify-center rounded-sm bg-solar-100 "
       onPress={() => setCardActive(cardName)}
     >
       {icon}

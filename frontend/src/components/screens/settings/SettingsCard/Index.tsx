@@ -1,4 +1,4 @@
-import { Text, Touchable, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../../../contexts/auth";
 import ProfileIcon from "./ProfileIcon";
 import { IStepSettings } from "../../../../screens/Settings";
@@ -21,12 +21,36 @@ const SettingsCard: React.FC<IProps> = ({ setCardActive }) => {
       <ProfileIcon setCardActive={setCardActive} />
 
       <View className="mt-5">
-        <SettingsButtons
-          setCardActive={setCardActive}
-          cardName="inverter"
-          buttonName="Inversor"
-          icon={<FontAwesome5 name="solar-panel" size={24} color="black" />}
-        />
+        <View className="flex flex-row justify-around">
+          <SettingsButtons
+            setCardActive={setCardActive}
+            cardName="inverter"
+            buttonName="Inversor"
+            icon={<FontAwesome5 name="solar-panel" size={24} color="black" />}
+          />
+          <SettingsButtons
+            setCardActive={setCardActive}
+            cardName="inverter"
+            buttonName="Notificações"
+            icon={<FontAwesome5 name="bell" size={24} color="black" />}
+          />
+        </View>
+      </View>
+      <View className="mt-5">
+        <View className="flex flex-row justify-around">
+          <SettingsButtons
+            setCardActive={setCardActive}
+            cardName="inverter"
+            buttonName="Conquistas"
+            icon={<FontAwesome5 name="medal" size={24} color="black" />}
+          />
+          <SettingsButtons
+            setCardActive={setCardActive}
+            cardName="inverter"
+            buttonName="Outros"
+            icon={<FontAwesome5 name="bezier-curve" size={24} color="black" />}
+          />
+        </View>
       </View>
     </View>
   );
