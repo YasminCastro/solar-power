@@ -14,7 +14,7 @@ export class PowerGeneratedService {
         userId,
         inverterId,
         createdAt: { $gte: startOfDay },
-      }).sort({ createdAt: 1 });
+      }).sort({ createdAt: -1 });
 
       return realTime;
     } catch (error) {
@@ -30,7 +30,7 @@ export class PowerGeneratedService {
         userId,
         inverterId,
         createdAt: { $gte: startOfDay },
-      }).sort({ createdAt: 1 });
+      }).sort({ createdAt: -1 });
 
       return day;
     } catch (error) {
@@ -47,7 +47,7 @@ export class PowerGeneratedService {
         userId,
         inverterId,
         createdAt: { $gte: startOfMonth, $lte: endOfMonth },
-      }).sort({ createdAt: 1 });
+      }).sort({ createdAt: -1 });
 
       return month;
     } catch (error) {
@@ -64,7 +64,7 @@ export class PowerGeneratedService {
         userId,
         inverterId,
         createdAt: { $gte: startOfYear, $lte: endOfYear },
-      }).sort({ createdAt: 1 });
+      }).sort({ createdAt: -1 });
 
       return year;
     } catch (error) {

@@ -5,13 +5,12 @@ import { logger } from '@/utils/logger';
 import { ElginDataInterface, HauweiDataInterface, WeatherInterface, PowerGenerated } from '@/interfaces/powerGenerated.interface';
 import moment from 'moment';
 import { PowerGeneratedModel } from '@/models/powerGenerated.models';
-import { InverterModel } from '@/models/inverters.models';
 import { Inverter } from '@/interfaces/inverter.interface';
-import { ElginDataDto, HauweiDataDto } from '@/dtos/solarData';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
 import { Container } from 'typedi';
 import { UtilsService } from './utils.service';
+import { convertToKWh } from '@/utils/convertPower';
 
 @Service()
 export class SolarDataService {
@@ -74,14 +73,6 @@ export class SolarDataService {
     }
   }
 
-  public async getAllInveters(): Promise<Inverter[]> {
-    try {
-      return await InverterModel.find();
-    } catch (error: any) {
-      throw new HttpException(400, error.message);
-    }
-  }
-
   //COMUM
 
   private async goToPage(url: string): Promise<{ browser: Browser; page: Page }> {
@@ -89,7 +80,7 @@ export class SolarDataService {
 
     const browser = await puppeteer.launch({
       headless: 'new',
-      args: ['--window-size=1400,1080', '--disable-setuid-sandbox', '--no-sandbox'],
+      args: ['--disable-setuid-sandbox', '--no-sandbox'],
       ignoreHTTPSErrors: true,
     });
 
@@ -227,14 +218,14 @@ export class SolarDataService {
       const treeValue = await page.evaluate(el => el.textContent, treeElement);
       const tree = treeValue.match(getNumbers)[0];
 
-      logger.debug(`Environmental benefits data OK...`);
+      logger.info(`Environmental benefits data OK...`);
 
       return {
-        powerInRealTime: powerGenerationData[0].startsWith('0') ? '0kW' : powerGenerationData[0],
-        powerToday: powerGenerationData[1],
-        powerMonth: powerGenerationData[2],
-        powerYear: powerGenerationData[3],
-        allPower: powerGenerationData[4],
+        powerInRealTime: powerGenerationData[0],
+        powerToday: convertToKWh(powerGenerationData[1]).toString(),
+        powerMonth: convertToKWh(powerGenerationData[2]).toString(),
+        powerYear: convertToKWh(powerGenerationData[3]).toString(),
+        allPower: convertToKWh(powerGenerationData[4]).toString(),
         co2,
         coal,
         tree,
@@ -300,10 +291,10 @@ export class SolarDataService {
       let coalValue = await page.evaluate(el => el.textContent, coalValueElement);
 
       return {
-        powerToday: todayPerformance,
-        powerMonth: monthPerformace,
-        powerYear: yearPerformace,
-        allPower: allPerformace,
+        powerToday: convertToKWh(todayPerformance).toString(),
+        powerMonth: convertToKWh(monthPerformace).toString(),
+        powerYear: convertToKWh(yearPerformace).toString(),
+        allPower: convertToKWh(allPerformace).toString(),
         co2: coalValue,
       };
     } catch (error) {
