@@ -11,61 +11,63 @@ export class SolarDataController {
   public inverters = Container.get(InvertersService);
   public utils = Container.get(UtilsService);
 
-  public saveAllData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const inveters = await this.solarData.getAllInveters();
+  // public saveAllData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  //   try {
+  //     const inveters = await this.solarData.getAllInveters();
 
-      for (let inverter of inveters) {
-        switch (inverter.model) {
-          case 'hauwei':
-            try {
-              logger.info(`Searching Hauwei data...`);
-              await this.solarData.saveHauweiData({
-                inverterId: inverter._id,
-                userId: inverter.userId,
-                lat: inverter.lat,
-                long: inverter.long,
-                url: inverter.url,
-              });
-              logger.info(`Hauwei data saved: ${inverter._id}`);
-            } catch (error) {
-              logger.error(error);
-            }
+  //     for (let inverter of inveters) {
+  //       switch (inverter.model) {
+  //         case 'hauwei':
+  //           try {
+  //             logger.info(`Searching Hauwei data...`);
+  //             await this.solarData.saveHauweiData({
+  //               inverterId: inverter._id,
+  //               userId: inverter.userId,
+  //               lat: inverter.lat,
+  //               long: inverter.long,
+  //               url: inverter.url,
+  //             });
+  //             logger.info(`Hauwei data saved: ${inverter._id}`);
+  //           } catch (error) {
+  //             logger.error(error);
+  //           }
 
-            break;
+  //           break;
 
-          case 'elgin':
-            try {
-              logger.info(`Searching Elgin data...`);
-              await this.solarData.saveElginData({
-                inverterId: inverter._id,
-                userId: inverter.userId,
-                lat: inverter.lat,
-                long: inverter.long,
-                password: inverter.password,
-                username: inverter.username,
-                passwordIsEncrypted: true,
-              });
-              logger.info(`Elgin data saved: ${inverter._id}`);
-            } catch (error) {
-              logger.error(error);
-            }
+  //         case 'elgin':
+  //           try {
+  //             logger.info(`Searching Elgin data...`);
+  //             await this.solarData.saveElginData({
+  //               inverterId: inverter._id,
+  //               userId: inverter.userId,
+  //               lat: inverter.lat,
+  //               long: inverter.long,
+  //               password: inverter.password,
+  //               username: inverter.username,
+  //               passwordIsEncrypted: true,
+  //             });
+  //             logger.info(`Elgin data saved: ${inverter._id}`);
+  //           } catch (error) {
+  //             logger.error(error);
+  //           }
 
-            break;
-        }
-      }
+  //           break;
+  //       }
+  //     }
 
-      res.status(201).json({ message: 'ok' });
-    } catch (error) {
-      next(error);
-    }
-  };
+  //     res.status(201).json({ message: 'ok' });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 
   public saveHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const hauweiLoginInfo: HauweiDataDto = req.body;
+      const inverterId = String(req.params.id);
 
-      const hauweiData = await this.solarData.saveHauweiData(hauweiLoginInfo);
+      const inverterData = await this.inverters.getInverter(inverterId);
+      if (!inverterData) throw new Error('Inverter not found');
+      const hauweiData = await this.solarData.saveHauweiData(inverterData.inverter, inverterData.userId.toString());
 
       res.status(201).json(hauweiData);
     } catch (error) {
@@ -76,8 +78,12 @@ export class SolarDataController {
   public saveElginData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const elginLoginInfo: ElginDataDto = req.body;
+      const inverterId = String(req.params.id);
 
-      const elginData = await this.solarData.saveElginData(elginLoginInfo);
+      const inverterData = await this.inverters.getInverter(inverterId);
+      if (!inverterData) throw new Error('Inverter not found');
+
+      const elginData = await this.solarData.saveElginData(inverterData.inverter, inverterData.userId.toString());
 
       res.status(201).json(elginData);
     } catch (error) {

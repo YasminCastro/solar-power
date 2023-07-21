@@ -1,7 +1,5 @@
 import { Router } from 'express';
 import { Routes } from '@interfaces/routes.interface';
-import { ValidationMiddleware } from '@/middlewares/validation.middleware';
-import { ElginDataDto, HauweiDataDto } from '@/dtos/solarData';
 import { SolarDataController } from '@/controllers/solarData.controller';
 
 export class SolarDataRoute implements Routes {
@@ -14,8 +12,8 @@ export class SolarDataRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, this.solarData.saveAllData);
-    this.router.post(`${this.path}/hauwei`, ValidationMiddleware(HauweiDataDto), this.solarData.saveHauweiData);
-    this.router.post(`${this.path}/elgin`, ValidationMiddleware(ElginDataDto), this.solarData.saveElginData);
+    // this.router.post(`${this.path}`, this.solarData.saveAllData);
+    this.router.post(`${this.path}/hauwei/:id`, this.solarData.saveHauweiData);
+    this.router.post(`${this.path}/elgin/:id`, this.solarData.saveElginData);
   }
 }

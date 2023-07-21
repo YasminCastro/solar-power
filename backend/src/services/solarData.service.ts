@@ -17,22 +17,13 @@ import { UtilsService } from './utils.service';
 export class SolarDataService {
   private utils = Container.get(UtilsService);
 
-  public async saveElginData({
-    inverterId,
-    lat,
-    long,
-    userId,
-    passwordIsEncrypted,
-    password: rawPassword,
-    username,
-  }: ElginDataDto): Promise<PowerGenerated | { message: string }> {
+  public async saveElginData(
+    { password: rawPassword, lat, long, _id: inverterId, username }: Inverter,
+    userId: string,
+  ): Promise<PowerGenerated | { message: string }> {
     try {
-      let password = rawPassword;
-
-      if (passwordIsEncrypted) {
-        const bytes = Crypto.AES.decrypt(rawPassword, CRYPTO_KEY);
-        password = bytes.toString(Crypto.enc.Utf8);
-      }
+      const bytes = Crypto.AES.decrypt(rawPassword, CRYPTO_KEY);
+      const password = bytes.toString(Crypto.enc.Utf8);
 
       const url = 'https://elgin.shinemonitor.com';
       const { page, browser } = await this.goToPage(url);
@@ -43,14 +34,10 @@ export class SolarDataService {
         lat,
         long,
         userId,
-        inverterId,
+        inverterId: inverterId.toString(),
       };
 
-      console.log(elginData);
-
       const weather = await this.utils.getWeatherData(lat, long);
-      console.log('weather');
-      console.log(weather);
 
       const powerInRealTime = await this.calculateRealTimePower(parseFloat(inverterId), parseFloat(elginData.powerToday));
 
@@ -65,7 +52,7 @@ export class SolarDataService {
     }
   }
 
-  public async saveHauweiData({ inverterId, lat, long, url, userId }: HauweiDataDto): Promise<PowerGenerated | { message: string }> {
+  public async saveHauweiData({ url, lat, long, _id: inverterId }: Inverter, userId: string): Promise<PowerGenerated | { message: string }> {
     try {
       const { page, browser } = await this.goToPage(url);
 
@@ -77,7 +64,7 @@ export class SolarDataService {
         lat,
         long,
         userId,
-        inverterId,
+        inverterId: inverterId.toString(),
       };
 
       return await this.saveInversorData(hauweiData, weather, userInfo);
