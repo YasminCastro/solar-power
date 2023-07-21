@@ -11,9 +11,6 @@ import { LineChart } from "react-native-chart-kit";
 
 export default function TodayGraph() {
   const { activeInverters } = useInverter();
-  const [powerGenerated, setPowerGenerated] = useState<IPowerGenerated | null>(
-    null
-  );
   const [label, setLabel] = useState<string[]>([]);
   const [dataset, setDataset] = useState<number[]>([]);
 
@@ -45,6 +42,15 @@ export default function TodayGraph() {
   if (label.length > 0 && dataset.length > 0) {
     return (
       <View className="mt-4 items-center">
+        <View className="flex flex-row gap-4">
+          <Text className="font-body text-sm text-gray-50">
+            Rendimento hoje
+          </Text>
+
+          <TouchableOpacity onPress={() => console.log("Info produção")}>
+            <Entypo name="info-with-circle" size={16} color="white" />
+          </TouchableOpacity>
+        </View>
         <LineChart
           data={{
             labels: label,
@@ -78,7 +84,6 @@ export default function TodayGraph() {
             borderRadius: 16,
           }}
         />
-        <Text className="font-body text-sm text-gray-50">Rendimento hoje</Text>
       </View>
     );
   }
