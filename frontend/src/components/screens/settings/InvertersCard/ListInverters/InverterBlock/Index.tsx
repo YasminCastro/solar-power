@@ -1,14 +1,20 @@
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
-import { IInverter } from "../../../../../interfaces/inverter";
+import { IInverter } from "../../../../../../interfaces/inverter";
+import { IStepInverter } from "../../Index";
 
 interface IProps {
   inverter: IInverter;
-  setEditItem: React.Dispatch<React.SetStateAction<any>>;
+  setInverterCardActive: React.Dispatch<React.SetStateAction<IStepInverter>>;
+  setInverterId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const InverterBlock: React.FC<IProps> = ({ inverter, setEditItem }) => {
+const InverterBlock: React.FC<IProps> = ({
+  inverter,
+  setInverterCardActive,
+  setInverterId,
+}) => {
   const [active, setActive] = useState(inverter.active);
   const [loading, setLoading] = useState(false);
 
@@ -29,9 +35,10 @@ const InverterBlock: React.FC<IProps> = ({ inverter, setEditItem }) => {
               name="edit"
               size={24}
               color="black"
-              onPress={() =>
-                setEditItem({ edit: true, inverterId: inverter._id })
-              }
+              onPress={() => {
+                setInverterCardActive("edit");
+                setInverterId(inverter._id);
+              }}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => console.log("edit")}>

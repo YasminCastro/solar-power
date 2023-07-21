@@ -5,15 +5,12 @@ import { IStepInverter } from "../Index";
 
 interface IProps {
   setInverterCardActive: React.Dispatch<React.SetStateAction<IStepInverter>>;
-  inverterId: string;
 }
 
-const EditInverter = ({ setInverterCardActive, inverterId }: IProps) => {
-  console.log(inverterId);
-
+const CreateInverter = ({ setInverterCardActive }: IProps) => {
   return (
     <View className="">
-      <Text className="font-regular text-gray-200">Editar inversor</Text>
+      <Text className="font-regular text-gray-200">Criar inversor</Text>
       <TouchableOpacity>
         <Feather
           name="x"
@@ -26,4 +23,4 @@ const EditInverter = ({ setInverterCardActive, inverterId }: IProps) => {
   );
 };
 
-export default EditInverter;
+export default CreateInverter;

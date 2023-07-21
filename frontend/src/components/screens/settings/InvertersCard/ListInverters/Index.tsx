@@ -1,22 +1,40 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 import { useState } from "react";
 import { IStepSettings } from "../../../../../screens/Settings";
 import { useAuth } from "../../../../../contexts/auth";
-import InverterBlock from "../InverterBlock/Index";
+import InverterBlock from "./InverterBlock/Index";
+import { IStepInverter } from "../Index";
 
 interface IProps {
   setCardActive: React.Dispatch<React.SetStateAction<IStepSettings>>;
-  setEditItem: React.Dispatch<React.SetStateAction<any>>;
+  setInverterCardActive: React.Dispatch<React.SetStateAction<IStepInverter>>;
+  setInverterId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ListInverters: React.FC<IProps> = ({ setCardActive, setEditItem }) => {
+//TODO: arrumar css
+// TODO: Procurar um icone de lupa para colocar na pesquisa dsos inversores
+// TODO: Procurar uma forma melhor de adicionar um novo inversor
+
+const ListInverters: React.FC<IProps> = ({
+  setCardActive,
+  setInverterCardActive,
+  setInverterId,
+}) => {
   const { user } = useAuth();
   const inverters = user?.inverters;
   const [search, setSearch] = useState("");
+
+  const filteredInverters = inverters?.filter((el) => {
+    if (!search) {
+      return inverters;
+    }
+
+    return el.name.toLocaleLowerCase().includes(search.toLocaleLowerCase());
+  });
 
   return (
     <View>
@@ -33,24 +51,45 @@ const ListInverters: React.FC<IProps> = ({ setCardActive, setEditItem }) => {
           </Text>
         </View>
         <FontAwesome5 name="solar-panel" size={30} color="#febe3d" />
+        <TouchableOpacity onPress={() => setInverterCardActive("create")}>
+          <MaterialIcons name="my-library-add" size={30} color="#febe3d" />
+        </TouchableOpacity>
       </View>
-      <View className="mt-4">
-        <TextInput
-          className="mb-4 h-12 w-full rounded-sm border border-white bg-transparent px-4 font-regular text-white"
-          placeholderTextColor="#ffff"
-          placeholder="Buscar Inversores"
-          autoCapitalize="none"
-          onChangeText={(text) => setSearch(text)}
-        />
-        {inverters &&
-          inverters.map((inverter) => (
-            <InverterBlock
-              key={inverter.name}
-              inverter={inverter}
-              setEditItem={setEditItem}
-            />
-          ))}
-      </View>
+
+      {filteredInverters && (
+        <View className="mt-4">
+          <TextInput
+            className="mb-4 h-12 w-full rounded-sm border border-white bg-transparent px-4 font-regular text-white"
+            placeholderTextColor="#ffff"
+            placeholder="Buscar Inversores"
+            autoCapitalize="none"
+            onChangeText={(text) => setSearch(text)}
+          />
+          {filteredInverters.length > 0 ? (
+            filteredInverters.map((inverter) => (
+              <InverterBlock
+                key={inverter.name}
+                inverter={inverter}
+                setInverterCardActive={setInverterCardActive}
+                setInverterId={setInverterId}
+              />
+            ))
+          ) : (
+            <Text className="mt-4 text-xl text-white">
+              Nenhum inversor encontrado.
+            </Text>
+          )}
+        </View>
+      )}
+
+      {!inverters && (
+        <Text className="mt-4 text-xl text-white">
+          Nenhum inversor cadastrado.
+          <TouchableOpacity onPress={() => setInverterCardActive("create")}>
+            <MaterialIcons name="my-library-add" size={30} color="#febe3d" />
+          </TouchableOpacity>
+        </Text>
+      )}
     </View>
   );
 };
