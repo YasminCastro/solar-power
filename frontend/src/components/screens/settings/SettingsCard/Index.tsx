@@ -20,8 +20,8 @@ const SettingsCard: React.FC<IProps> = ({ setCardActive }) => {
       </TouchableOpacity>
       <ProfileIcon setCardActive={setCardActive} />
 
-      <View className="mt-5">
-        <View className="flex flex-row justify-around">
+      <View className="mt-14">
+        <View className="m-2 flex flex-row justify-around">
           <SettingsButtons
             setCardActive={setCardActive}
             cardName="inverter"
@@ -35,9 +35,7 @@ const SettingsCard: React.FC<IProps> = ({ setCardActive }) => {
             icon={<FontAwesome5 name="bell" size={24} color="black" />}
           />
         </View>
-      </View>
-      <View className="mt-5">
-        <View className="flex flex-row justify-around">
+        <View className="m-2 flex flex-row justify-around">
           <SettingsButtons
             setCardActive={setCardActive}
             cardName="inverter"
