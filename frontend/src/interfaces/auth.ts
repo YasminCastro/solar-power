@@ -1,13 +1,10 @@
-import { StackNavigationProp } from "@react-navigation/stack";
+export interface ILoginData {
+  email: string;
+  password: string;
+}
 
-type AuthStackParamList = {
-  Login: undefined;
-  SignUp: undefined;
-  Inverter: undefined;
-};
-
-export type AuthScreenNavigationProp = StackNavigationProp<
-  AuthStackParamList,
-  "Login",
-  "Inverter"
->;
+export interface ISignUpData {
+  email: string;
+  password: string;
+  name: string;
+}

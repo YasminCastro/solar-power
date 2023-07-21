@@ -1,9 +1,8 @@
-export default interface PowerGenerated {
+export interface IPowerGenerated {
   _id: string;
   createdAt: string;
-  inversor: number;
-  inversorId: number;
-  userId: number;
+  inverterId: string;
+  userId: string;
   powerInRealTime: string;
   powerToday: string;
   powerMonth: string;
