@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { IStepInverter } from "../Index";
@@ -9,16 +9,18 @@ interface IProps {
 
 const CreateInverter = ({ setInverterCardActive }: IProps) => {
   return (
-    <View className="">
-      <Text className="font-regular text-gray-200">Criar inversor</Text>
-      <TouchableOpacity>
+    <View>
+      <View className="flex flex-row items-center justify-between">
+        <Text className="font-title text-2xl text-yellow-300">
+          Criar inversor
+        </Text>
         <Feather
           name="x"
           size={24}
           color="white"
           onPress={() => setInverterCardActive("list")}
         />
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };
