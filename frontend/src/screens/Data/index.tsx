@@ -1,16 +1,14 @@
-import { Button, View } from "react-native";
-import { useAuth } from "../../contexts/auth";
+import { Text } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 const Data: React.FC = () => {
-  const { signOut } = useAuth();
-
-  function handleSingOut() {
-    signOut();
-  }
   return (
-    <View className="flex-1 justify-center">
-      <Button title="Sign out" onPress={handleSingOut} />
-    </View>
+    <SafeAreaView className="flex-1 bg-blueDark-500 pt-1">
+      <StatusBar style="light" />
+      <Text className="m-10 text-2xl text-white">Prediction</Text>
+    </SafeAreaView>
   );
 };
 
