@@ -27,7 +27,7 @@ export const InverterProvider: React.FC<any> = ({ children }) => {
       if (user?._id) {
         const response = await invertersApi.getAllInverters(user._id);
         setInverters(response);
-        const active = inverters.filter((o) => o.active === true);
+        const active = response.filter((o: IInverter) => o.active === true);
         setActiveInverters(active);
       }
 

@@ -8,6 +8,8 @@ export default function RealTimeView() {
   const { user } = useAuth();
   const { activeInverters } = useInverter();
 
+  console.log(activeInverters);
+
   const hour = moment().hour();
 
   let welcomeMessage = "Olá";

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { IInverter } from "../../../../../../interfaces/inverter";
 import { IStepInverter } from "../../Index";
 import { editInverterStatus } from "../../../../../../services/inverters";
+import { useInverter } from "../../../../../../contexts/inverter";
 
 interface IProps {
   inverter: IInverter;
@@ -18,13 +19,15 @@ const InverterBlock: React.FC<IProps> = ({
 }) => {
   const [active, setActive] = useState(inverter.active);
   const [loading, setLoading] = useState(false);
+  const { getAllInverters } = useInverter();
 
   const handleEditInverter = async () => {
     try {
       setLoading(true);
 
       setActive(!active);
-      await editInverterStatus(inverter._id, active);
+      await editInverterStatus(inverter._id, !active);
+      await getAllInverters();
     } catch (error) {
       console.log(error);
     } finally {

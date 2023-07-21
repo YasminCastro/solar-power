@@ -1,4 +1,3 @@
-import { ILoginData } from "../interfaces/auth";
 import api from "./api";
 
 export async function editInverterStatus(inverterId: string, active: boolean) {
