@@ -29,6 +29,18 @@ export class InvertersController {
     }
   };
 
+  public getInverterById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const inverterId = String(req.params.id);
+
+      const inverter = await this.inverter.getInverter(inverterId);
+
+      res.status(201).json(inverter);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updateInverter = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const inverterData: UpdateInvertersDto = req.body;

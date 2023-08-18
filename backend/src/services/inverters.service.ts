@@ -3,10 +3,10 @@ import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
 import { UtilsService } from './utils.service';
-import { UserModel } from '@/models/users.models';
 import { logger } from '@utils/logger';
 import { Inverter } from '@/interfaces/inverter.interface';
 import { InverterModel } from '@/models/inverters.models';
+import { HttpException } from '@/exceptions/httpException';
 
 @Service()
 export class InvertersService {
@@ -24,16 +24,12 @@ export class InvertersService {
     return createInverterData;
   }
 
-  public async getInverter(inverterId: string): Promise<{ inverter: Inverter; userId: string }> {
-    const findUserInverters = await UserModel.findOne({ 'inverters._id': inverterId });
+  public async getInverter(inverterId: string): Promise<Inverter> {
+    const inverterFound = await InverterModel.findById(inverterId);
 
-    if (!findUserInverters) {
-      logger.info(`Nenhum usuário encontrado com o inverter ID: ${inverterId}}`);
-      return;
-    }
+    if (!inverterFound) throw new HttpException(404, `Inverter: ${inverterId} not found.`);
 
-    const inverter = findUserInverters.inverters.find(inverter => inverter._id == inverterId);
-    return { inverter, userId: findUserInverters._id };
+    return inverterFound;
   }
 
   public async getInverters(): Promise<Inverter[]> {
