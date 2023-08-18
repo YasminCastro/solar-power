@@ -107,7 +107,7 @@ export class App {
 
         try {
           const allInverters = await InverterModel.find({});
-          console.log(allInverters);
+          logger.info(`${allInverters.length} inverters found.`);
 
           for (const inverter of allInverters) {
             switch (inverter.model) {
