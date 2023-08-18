@@ -19,6 +19,7 @@ import Queue from './libs/queue';
 import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { createBullBoard } from '@bull-board/api';
 import { ExpressAdapter } from '@bull-board/express';
+import { InverterModel } from './models/inverters.models';
 
 export class App {
   public app: express.Application;
@@ -35,26 +36,7 @@ export class App {
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
     this.initializeQueues();
-
-    // let job = new CronJob(
-    //   '0 */5 6-18 * * *',
-    //   async function () {
-    //     logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
-
-    //     try {
-    //       await cronjobApi.post(`/solar-data`);
-    //     } catch (error) {
-    //       logger.error('Cronjob Error to update data');
-    //       logger.error(error);
-    //     }
-    //   },
-    //   null,
-    //   true,
-    //   'America/Sao_Paulo',
-    // );
-
-    // job.start();
-    // logger.info(`is job running? ${job.running} `);
+    this.initializeCronJob();
   }
 
   public listen() {
@@ -115,5 +97,41 @@ export class App {
     this.app.use('/admin/queues', serverAdapter.getRouter());
 
     Queue.process();
+  }
+
+  private initializeCronJob() {
+    let job = new CronJob(
+      '0 */5 6-18 * * *',
+      async function () {
+        logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
+
+        try {
+          const allInverters = await InverterModel.find({});
+          console.log(allInverters);
+
+          for (const inverter of allInverters) {
+            switch (inverter.model) {
+              case 'hauwei':
+                await Queue.add('Hauwei', { inverter });
+                break;
+
+              case 'elgin':
+                await Queue.add('Elgin', { inverter });
+                break;
+            }
+          }
+
+          logger.info('All inverters added to the queue for processing.');
+        } catch (error) {
+          logger.error('Error adding inverters to the queue:', error);
+        }
+      },
+      null,
+      true,
+      'America/Sao_Paulo',
+    );
+
+    job.start();
+    logger.info(`is cronjob running? ${job.running} `);
   }
 }
