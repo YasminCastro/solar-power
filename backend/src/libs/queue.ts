@@ -35,7 +35,7 @@ export default {
       queue.bull.process(queue.handle);
 
       queue.bull.on('failed', (job, err) => {
-        logger.error(`Job ${queue.name} failed`);
+        logger.error(`Job ${queue.name} failed`, err);
       });
     });
   },
