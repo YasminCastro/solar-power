@@ -6,7 +6,11 @@ import * as Crypto from 'crypto-js';
 
 export default {
   key: 'Elgin',
-  options: {},
+  options: {
+    limiter: {
+      max: 10,
+    },
+  },
   async handle({ data }) {
     const solarData = Container.get(SolarDataService);
     const { username, password: rawPassword, _id }: Inverter = data.inverter;

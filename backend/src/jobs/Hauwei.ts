@@ -4,7 +4,11 @@ import { Container } from 'typedi';
 
 export default {
   key: 'Hauwei',
-  options: {},
+  options: {
+    limiter: {
+      max: 10,
+    },
+  },
   async handle({ data }) {
     const solarData = Container.get(SolarDataService);
     const { url, _id }: Inverter = data.inverter;
