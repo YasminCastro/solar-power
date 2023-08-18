@@ -12,7 +12,6 @@ export class SolarDataRoute implements Routes {
   }
 
   private initializeRoutes() {
-    // this.router.post(`${this.path}`, this.solarData.saveAllData);
     this.router.post(`${this.path}/hauwei/:id`, this.solarData.saveHauweiData);
     this.router.post(`${this.path}/elgin/:id`, this.solarData.saveElginData);
   }

@@ -14,10 +14,10 @@ export class SolarDataController {
     try {
       const inverterId = String(req.params.id);
 
-      const inverterData = await this.inverters.getInverterById(inverterId);
-      if (!inverterData) throw new Error('Inverter not found');
+      const inverter = await this.inverters.getInverterById(inverterId);
+      if (!inverter) throw new Error('Inverter not found');
 
-      await Queue.add('Hauwei', { inverter: inverterData.inverter, userId: inverterData.userId.toString() });
+      await Queue.add('Hauwei', { inverter });
       res.status(204).json({
         message: 'Adicionado na fila!',
       });
@@ -30,10 +30,10 @@ export class SolarDataController {
     try {
       const inverterId = String(req.params.id);
 
-      const inverterData = await this.inverters.getInverterById(inverterId);
-      if (!inverterData) throw new Error('Inverter not found');
+      const inverter = await this.inverters.getInverterById(inverterId);
+      if (!inverter) throw new Error('Inverter not found');
 
-      await Queue.add('Elgin', { inverter: inverterData.inverter, userId: inverterData.userId.toString() });
+      await Queue.add('Elgin', { inverter });
       res.status(204).json({
         message: 'Adicionado na fila!',
       });

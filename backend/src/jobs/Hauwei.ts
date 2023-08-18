@@ -7,7 +7,7 @@ export default {
   options: {},
   async handle({ data }) {
     const solarData = Container.get(SolarDataService);
-    const { url, _id, userId, lat, long }: Inverter = data.inverter;
+    const { url, _id }: Inverter = data.inverter;
 
     try {
       if (!url) {
@@ -19,14 +19,9 @@ export default {
 
       // const weather = await this.utils.getWeatherData(lat, long);
 
-      const userInfo = {
-        lat,
-        long,
-        userId,
-        inverterId: _id.toString(),
-      };
+      console.log(hauweiData);
 
-      const result = await solarData.saveInverterData(hauweiData, userInfo);
+      const result = await solarData.saveInverterData(hauweiData, _id);
 
       console.log(result);
       return Promise.resolve(result);
