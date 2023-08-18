@@ -19,8 +19,6 @@ export default {
 
       // const weather = await this.utils.getWeatherData(lat, long);
 
-      console.log(hauweiData);
-
       const result = await solarData.saveInverterData(hauweiData, _id);
 
       console.log(result);
