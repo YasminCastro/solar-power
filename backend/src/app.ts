@@ -14,6 +14,11 @@ import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import { dbConnection } from './database';
 import { connect, set } from 'mongoose';
+import Queue from './libs/queue';
+
+import { BullAdapter } from '@bull-board/api/bullAdapter';
+import { createBullBoard } from '@bull-board/api';
+import { ExpressAdapter } from '@bull-board/express';
 
 export class App {
   public app: express.Application;
@@ -29,6 +34,7 @@ export class App {
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
+    this.initializeQueues();
 
     // let job = new CronJob(
     //   '0 */5 6-18 * * *',
@@ -91,5 +97,23 @@ export class App {
 
   private initializeErrorHandling() {
     this.app.use(ErrorMiddleware);
+  }
+
+  private initializeQueues() {
+    const queues = Queue.queues.map(queue => {
+      return new BullAdapter(queue.bull);
+    });
+
+    const serverAdapter = new ExpressAdapter();
+
+    createBullBoard({
+      queues,
+      serverAdapter: serverAdapter,
+    });
+
+    serverAdapter.setBasePath('/admin/queues');
+    this.app.use('/admin/queues', serverAdapter.getRouter());
+
+    Queue.process();
   }
 }

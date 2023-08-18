@@ -16,9 +16,12 @@
     "deploy:dev": "pm2 start ecosystem.config.js --only dev"
   },
   "dependencies": {
+    "@bull-board/api": "^5.8.0",
+    "@bull-board/express": "^5.8.0",
     "@types/mongoose": "^5.11.97",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
+    "bull": "^4.11.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "compression": "^1.7.4",

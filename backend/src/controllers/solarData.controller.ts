@@ -5,6 +5,7 @@ import { InvertersService } from '@/services/inverters.service';
 import { UtilsService } from '@/services/utils.service';
 import { SolarDataService } from '@/services/solarData.service';
 import { logger } from '@/utils/logger';
+import Queue from '../libs/queue';
 
 export class SolarDataController {
   public solarData = Container.get(SolarDataService);
@@ -65,11 +66,14 @@ export class SolarDataController {
     try {
       const inverterId = String(req.params.id);
 
-      const inverterData = await this.inverters.getInverter(inverterId);
-      if (!inverterData) throw new Error('Inverter not found');
-      const hauweiData = await this.solarData.saveHauweiData(inverterData.inverter, inverterData.userId.toString());
+      // const inverterData = await this.inverters.getInverter(inverterId);
+      // if (!inverterData) throw new Error('Inverter not found');
+      // const hauweiData = await this.solarData.saveHauweiData(inverterData.inverter, inverterData.userId.toString());
 
-      res.status(201).json(hauweiData);
+      await Queue.add('SolarData', { inverterId });
+      res.status(204).json({
+        message: 'Adicionado na fila!',
+      });
     } catch (error) {
       next(error);
     }
