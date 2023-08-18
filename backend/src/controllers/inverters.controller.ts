@@ -33,7 +33,19 @@ export class InvertersController {
     try {
       const inverterId = String(req.params.id);
 
-      const inverter = await this.inverter.getInverter(inverterId);
+      const inverter = await this.inverter.getInverterById(inverterId);
+
+      res.status(201).json(inverter);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getInverterByUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = String(req.params.id);
+
+      const inverter = await this.inverter.getInverterByUser(userId);
 
       res.status(201).json(inverter);
     } catch (error) {

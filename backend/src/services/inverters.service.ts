@@ -24,12 +24,20 @@ export class InvertersService {
     return createInverterData;
   }
 
-  public async getInverter(inverterId: string): Promise<Inverter> {
+  public async getInverterById(inverterId: string): Promise<Inverter> {
     const inverterFound = await InverterModel.findById(inverterId);
 
     if (!inverterFound) throw new HttpException(404, `Inverter: ${inverterId} not found.`);
 
     return inverterFound;
+  }
+
+  public async getInverterByUser(userId: string): Promise<Inverter[]> {
+    const inverters = await InverterModel.find({ users: userId });
+
+    if (!inverters || inverters.length === 0) throw new HttpException(404, `No inverters found for user: ${userId}.`);
+
+    return inverters;
   }
 
   public async getInverters(): Promise<Inverter[]> {

@@ -14,7 +14,7 @@ export class SolarDataController {
     try {
       const inverterId = String(req.params.id);
 
-      const inverterData = await this.inverters.getInverter(inverterId);
+      const inverterData = await this.inverters.getInverterById(inverterId);
       if (!inverterData) throw new Error('Inverter not found');
 
       await Queue.add('Hauwei', { inverter: inverterData.inverter, userId: inverterData.userId.toString() });
@@ -30,7 +30,7 @@ export class SolarDataController {
     try {
       const inverterId = String(req.params.id);
 
-      const inverterData = await this.inverters.getInverter(inverterId);
+      const inverterData = await this.inverters.getInverterById(inverterId);
       if (!inverterData) throw new Error('Inverter not found');
 
       await Queue.add('Elgin', { inverter: inverterData.inverter, userId: inverterData.userId.toString() });
