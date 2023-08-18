@@ -1,1 +1,2 @@
-export { default as SolarData } from './SolarData';
+export { default as Hauwei } from './Hauwei';
+export { default as Elgin } from './Elgin';
