@@ -1,6 +1,5 @@
 import Container, { Service } from 'typedi';
 import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
-import { HttpException } from '@/exceptions/httpException';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
 import { UtilsService } from './utils.service';
@@ -14,7 +13,11 @@ export class InvertersService {
   public utils = Container.get(UtilsService);
 
   public async createInverter(inverterData: CreateInvertersDto, userId: string): Promise<any> {
-    //CHECK IF INVERTER ALREADY EXISTS
+    let password = null;
+    if (inverterData.password) {
+      password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
+      inverterData.password = password;
+    }
 
     const createInverterData: Inverter = await InverterModel.create({ ...inverterData, users: [userId] });
 
@@ -33,31 +36,37 @@ export class InvertersService {
     return { inverter, userId: findUserInverters._id };
   }
 
-  public async updateInverter(inverterData: UpdateInvertersDto, inverterId: string, userId: string): Promise<any> {
+  public async getInverters(): Promise<Inverter[]> {
+    const invertersFound = await InverterModel.find();
+
+    return invertersFound;
+  }
+
+  public async updateInverter(inverterData: UpdateInvertersDto): Promise<any> {
     let password = null;
     if (inverterData.password) {
       password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
+      inverterData.password = password;
     }
 
-    let itemsToUpdate = {};
-
-    if (inverterData.active !== undefined || inverterData.active !== null) itemsToUpdate['inverters.$.active'] = inverterData.active;
-    if (inverterData.maxRealTimePower) itemsToUpdate['inverters.$.maxRealTimePower'] = inverterData.maxRealTimePower;
-    if (inverterData.username) itemsToUpdate['inverters.$.username'] = inverterData.username;
-    if (inverterData.name) itemsToUpdate['inverters.$.name'] = inverterData.name;
-    if (inverterData.cep) itemsToUpdate['inverters.$.cep'] = inverterData.cep;
-    if (inverterData.lat) itemsToUpdate['inverters.$.lat'] = inverterData.lat;
-    if (inverterData.long) itemsToUpdate['inverters.$.long'] = inverterData.long;
-    if (password) itemsToUpdate['inverters.$.password'] = password;
-
-    const updateInverterData = await UserModel.findOneAndUpdate({ _id: userId, 'inverters._id': inverterId }, { $set: itemsToUpdate }, { new: true });
+    const updateInverterData = await InverterModel.findOneAndUpdate({ _id: inverterData.inverterId }, { $set: inverterData }, { new: true });
 
     return updateInverterData;
   }
 
-  public async deleteInverter(inverterName: string, userId: string): Promise<any> {
-    const deleteInverterData = await UserModel.findByIdAndUpdate(userId, { $pull: { inverters: { name: inverterName } } });
+  public async deleteInverter(inverterId: string, userId: string, deleteForAll: boolean): Promise<any> {
+    if (deleteForAll) {
+      const deleteInverterData = await InverterModel.findByIdAndDelete(inverterId);
+      return deleteInverterData;
+    }
 
-    return deleteInverterData;
+    const updatedInverter = await InverterModel.findByIdAndUpdate(inverterId, { $pull: { users: userId } }, { new: true });
+
+    // Se depois da atualização, o array de users estiver vazio, deleta o inversor inteiro
+    if (updatedInverter.users.length === 0) {
+      await InverterModel.findByIdAndDelete(inverterId);
+    }
+
+    return updatedInverter;
   }
 }

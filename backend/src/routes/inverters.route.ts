@@ -15,8 +15,9 @@ export class InvertersRoute implements Routes {
   }
 
   private initializeRoutes() {
+    this.router.get(`${this.path}`, AuthMiddleware, this.inverter.getInverters);
     this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateInvertersDto), this.inverter.createInverter);
-    this.router.put(`${this.path}/:id`, AuthMiddleware, ValidationMiddleware(UpdateInvertersDto), this.inverter.updateInverter);
+    this.router.put(`${this.path}`, AuthMiddleware, ValidationMiddleware(UpdateInvertersDto), this.inverter.updateInverter);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.inverter.deleteInverter);
   }
 }

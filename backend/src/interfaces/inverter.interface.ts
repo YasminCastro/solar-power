@@ -1,6 +1,6 @@
 export interface Inverter {
   _id: string;
-  userId: string;
+  users: string[];
   name: string;
   model: string;
   url?: string;
