@@ -95,6 +95,7 @@ export class App {
 
     serverAdapter.setBasePath('/admin/queues');
     this.app.use('/admin/queues', serverAdapter.getRouter());
+    logger.info(`Bull dashboard running at http://localhost:${this.port}/admin/queues`);
 
     Queue.process();
   }

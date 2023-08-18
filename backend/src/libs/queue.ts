@@ -7,7 +7,7 @@ import { logger } from '@/utils/logger';
 const queues = Object.values(jobs).map(job => {
   const queueName = job.key;
 
-  console.log(chalk.blue(`Creating queue ${queueName}...`));
+  console.log(chalk.gray(`Creating queue ${queueName}...`));
 
   return {
     bull: new Queue(queueName, { redis: redisConfig }),
@@ -30,7 +30,7 @@ export default {
   },
   process() {
     return this.queues.forEach(queue => {
-      console.log(chalk.blue(`Processing queue ${queue.name}...`));
+      console.log(chalk.gray(`Processing queue ${queue.name}...`));
 
       queue.bull.process(queue.handle);
 
@@ -41,13 +41,13 @@ export default {
   },
   pause() {
     return this.queues.forEach(queue => {
-      console.log(chalk.blue(`Pausing queue ${queue.name}...`));
+      console.log(chalk.gray(`Pausing queue ${queue.name}...`));
       queue.bull.pause();
     });
   },
   resumeAll() {
     return this.queues.forEach(queue => {
-      console.log(chalk.blue(`Resuming queue ${queue.name}...`));
+      console.log(chalk.gray(`Resuming queue ${queue.name}...`));
 
       queue.bull.resume();
     });
@@ -76,7 +76,7 @@ export default {
 
     if (queue) {
       const count = await queue.bull.count();
-      console.log(chalk.blue(`Queue ${name} has ${count} jobs...`));
+      console.log(chalk.gray(`Queue ${name} has ${count} jobs...`));
       return count;
     }
 
@@ -89,7 +89,7 @@ export default {
 
     if (queue) {
       const numberReturn = await queue.bull.clean(1000, 'paused');
-      console.log(chalk.blue(`Cleaning queue ${queue.name}: ${numberReturn} items cleaned.`));
+      console.log(chalk.gray(`Cleaning queue ${queue.name}: ${numberReturn} items cleaned.`));
 
       return true;
     }
