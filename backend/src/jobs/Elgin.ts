@@ -12,6 +12,9 @@ export default {
     const { username, password: rawPassword, _id }: Inverter = data.inverter;
 
     try {
+      if (!username || !rawPassword) {
+        throw new Error(`Inverter ${_id} ursername or password not found!`);
+      }
       const bytes = Crypto.AES.decrypt(rawPassword, CRYPTO_KEY);
       const password = bytes.toString(Crypto.enc.Utf8);
 
