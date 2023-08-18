@@ -1,12 +1,13 @@
 import { redisConfig } from '@/config';
 import * as jobs from '../jobs';
 import Queue from 'bull';
+import chalk from 'chalk';
 import { logger } from '@/utils/logger';
 
 const queues = Object.values(jobs).map(job => {
   const queueName = job.key;
 
-  logger.info(`Criando fila ${queueName}`);
+  console.log(chalk.blue(`Creating queue ${queueName}...`));
 
   return {
     bull: new Queue(queueName, { redis: redisConfig }),
@@ -29,23 +30,25 @@ export default {
   },
   process() {
     return this.queues.forEach(queue => {
-      console.log(`Processing queue ${queue.name}...`);
+      console.log(chalk.blue(`Processing queue ${queue.name}...`));
+
       queue.bull.process(queue.handle);
 
       queue.bull.on('failed', (job, err) => {
-        console.log(`Job ${queue.name} failed`);
+        logger.error(`Job ${queue.name} failed`);
       });
     });
   },
   pause() {
     return this.queues.forEach(queue => {
-      console.log(`Pausando fila ${queue.name}...`);
+      console.log(chalk.blue(`Pausing queue ${queue.name}...`));
       queue.bull.pause();
     });
   },
   resumeAll() {
     return this.queues.forEach(queue => {
-      console.log(`Voltando fila ${queue.name}...`);
+      console.log(chalk.blue(`Resuming queue ${queue.name}...`));
+
       queue.bull.resume();
     });
   },
@@ -73,7 +76,7 @@ export default {
 
     if (queue) {
       const count = await queue.bull.count();
-      console.log(`Na fila ${name} tem ${count} jobs...`);
+      console.log(chalk.blue(`Queue ${name} has ${count} jobs...`));
       return count;
     }
 
@@ -85,9 +88,9 @@ export default {
     });
 
     if (queue) {
-      console.log(`Limpando fila ${queue.name}...`);
       const numberReturn = await queue.bull.clean(1000, 'paused');
-      console.log(numberReturn);
+      console.log(chalk.blue(`Cleaning queue ${queue.name}: ${numberReturn} items cleaned.`));
+
       return true;
     }
 

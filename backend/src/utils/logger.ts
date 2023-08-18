@@ -7,6 +7,15 @@ import { LOG_DIR } from '@config';
 // logs dir
 const logDir: string = join(__dirname, LOG_DIR);
 
+const customColors = {
+  error: 'red',
+  warn: 'yellow',
+  info: 'white',
+  debug: 'magenta',
+};
+
+winston.addColors(customColors);
+
 if (!existsSync(logDir)) {
   mkdirSync(logDir);
 }
@@ -23,6 +32,8 @@ const logger = winston.createLogger({
     winston.format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
     }),
+    winston.format.colorize({ all: true }),
+    winston.format.splat(),
     logFormat,
   ),
   transports: [

@@ -672,11 +672,6 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@moebius/http-graceful-shutdown@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@moebius/http-graceful-shutdown/-/http-graceful-shutdown-1.1.0.tgz#b9d33e63358aa77b2103a577ea7ccdeae3e3c6d5"
-  integrity sha512-cjODgYTIGuCwgsuVMZNDh8RBK697ULAoQAmLqMVpqnqF3nOlPaJHqtGrdLooyn81l83wzHYwG6kPvEIv+Fo+sQ==
-
 "@mole-inc/bin-wrapper@^8.0.1":
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/@mole-inc/bin-wrapper/-/bin-wrapper-8.0.1.tgz#d7fd0ceb1cfa8a855293a3ed9d7d135f4d442f0e"
@@ -1957,6 +1952,14 @@ chalk@3.0.0, chalk@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-3.0.0.tgz#3f73c2bf526591f574cc492c51e2456349f844e4"
   integrity sha512-4D3B6Wf41KOYRFdszmDqMCGq5VV/uMAB273JILmO+3jAlh8X4qDtdtgCR3fxtbLEMzSx22QdhnDcJvu2u1fVwg==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
+chalk@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.0.0.tgz#6e98081ed2d17faab615eb52ac66ec1fe6209e72"
+  integrity sha512-N9oWFcegS0sFr9oh1oz2d7Npos6vNoWW9HvtCg5N1KRFpUhaAhvTv5Y58g880fZaEYSNm3qDz8SU1UrGvp+n7A==
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
