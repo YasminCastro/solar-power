@@ -7,6 +7,7 @@ import { UtilsService } from './utils.service';
 import { UserModel } from '@/models/users.models';
 import { logger } from '@utils/logger';
 import { Inverter } from '@/interfaces/inverter.interface';
+import { InverterModel } from '@/models/inverters.models';
 
 @Service()
 export class InvertersService {
@@ -14,21 +15,8 @@ export class InvertersService {
 
   public async createInverter(inverterData: CreateInvertersDto, userId: string): Promise<any> {
     //CHECK IF INVERTER ALREADY EXISTS
-    const userFound = await UserModel.findById(userId);
-    for (let i = 0; i < userFound.inverters.length; i++) {
-      if (userFound.inverters[i].name === inverterData.name) {
-        throw new HttpException(409, 'Inverter name must be unique');
-      }
-    }
 
-    let password = null;
-    if (inverterData.password) {
-      password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
-    }
-
-    const { lat, long } = await this.utils.getCepData(inverterData.cep);
-
-    const createInverterData = await UserModel.findByIdAndUpdate(userId, { $push: { inverters: { ...inverterData, password, lat, long } } });
+    const createInverterData: Inverter = await InverterModel.create({ ...inverterData, users: [userId] });
 
     return createInverterData;
   }
