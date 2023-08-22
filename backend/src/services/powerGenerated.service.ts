@@ -37,13 +37,12 @@ export class PowerGeneratedService {
     }
   }
 
-  public async allMonth(userId: string, inverterId: string, selectDate: string): Promise<PowerGenerated[]> {
+  public async allMonth(inverterId: string, selectDate: string): Promise<PowerGenerated[]> {
     try {
       const startOfMonth = moment(selectDate, 'MM-YYYY').startOf('month').toDate();
       const endOfMonth = moment(selectDate, 'MM-YYYY').endOf('month').toDate();
 
       const month = await PowerGeneratedModel.find({
-        userId,
         inverterId,
         createdAt: { $gte: startOfMonth, $lte: endOfMonth },
       }).sort({ createdAt: -1 });
