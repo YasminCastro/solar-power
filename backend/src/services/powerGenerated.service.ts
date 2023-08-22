@@ -6,14 +6,10 @@ import { PowerGeneratedModel } from '@/models/powerGenerated.models';
 
 @Service()
 export class PowerGeneratedService {
-  public async lastRegister(userId: string, inverterId: string): Promise<PowerGenerated> {
+  public async lastRegister(inverterId: string): Promise<PowerGenerated> {
     try {
-      const startOfDay = moment().startOf('day').toDate();
-
       const realTime = await PowerGeneratedModel.findOne({
-        userId,
         inverterId,
-        createdAt: { $gte: startOfDay },
       }).sort({ createdAt: -1 });
 
       return realTime;

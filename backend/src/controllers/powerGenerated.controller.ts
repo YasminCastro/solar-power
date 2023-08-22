@@ -16,27 +16,15 @@ export class PowerGeneratedController {
 
   public getRealTimeData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.user._id;
-      const invertersIdString = req.query.invertersId as string;
+      const inverterId = req.params.id as string;
 
-      if (!invertersIdString) {
-        throw new HttpException(409, 'invertersId is required');
+      console.log(inverterId);
+
+      if (!inverterId) {
+        throw new HttpException(409, 'inverterId is required');
       }
 
-      let invertersId: string[] = invertersIdString.split(',');
-      let data: PowerGenerated[] = [];
-
-      for (let inverterId of invertersId) {
-        const powerGenerated = await this.powerGenerated.lastRegister(userId, inverterId);
-        if (powerGenerated) data.push(powerGenerated);
-      }
-
-      if (data.length === 1 || data.length === 0) {
-        res.status(200).json(data[0]);
-        return;
-      }
-
-      const powerGenerated = await this.powerGenerated.joinData(data);
+      const powerGenerated = await this.powerGenerated.lastRegister(inverterId);
 
       res.status(200).json(powerGenerated);
     } catch (error) {
