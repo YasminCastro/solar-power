@@ -12,9 +12,7 @@ export async function getToday(inverterId: string) {
   return data;
 }
 export async function getMonth(inverterId: string) {
-  const { data } = await api.get(`/power-generated/day`, {
-    params: { inverterId },
-  });
+  const { data } = await api.get(`/power-generated/month/${inverterId}`);
 
   return data;
 }

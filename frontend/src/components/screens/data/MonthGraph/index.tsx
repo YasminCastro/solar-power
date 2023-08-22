@@ -4,7 +4,7 @@ import { useInverter } from "../../../../contexts/inverter";
 import { useState } from "react";
 import { IPowerGenerated } from "../../../../interfaces/powerGenerated";
 import * as powerGeneratedApi from "../../../../services/powerGenerated";
-import { filterByHour } from "../../../../utils/dataFilter";
+import { filterByDay } from "../../../../utils/dataFilter";
 import moment from "moment";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -28,12 +28,10 @@ export default function MonthGraph() {
       setLabel([]);
       setDataset([]);
 
-      const dataFilterd = filterByHour(data);
+      const dataFilterd = filterByDay(data);
 
       dataFilterd.forEach((element: IPowerGenerated) => {
-        const parsedDate = moment(element.localtime, "YYYY-MM-DD HH:mm").format(
-          "HH"
-        );
+        const parsedDate = moment(element.createdAt).format("HH");
         const parseData = parseFloat(element.powerInRealTime);
         setAllMonth(element.powerMonth);
 
@@ -100,16 +98,16 @@ export default function MonthGraph() {
         <View className="mt-10 flex flex-row justify-around">
           <CircleData
             text="Rendimento do mês"
-            data={allMonth}
+            data={`${allMonth} kWh`}
             icon={<MaterialIcons name="highlight" size={50} color="#0F1E44" />}
           />
-          <CircleData
+          {/* <CircleData
             text="Economias"
             data="R$300"
             icon={
               <MaterialIcons name="attach-money" size={50} color="#0F1E44" />
             }
-          />
+          /> */}
         </View>
       </View>
     );
