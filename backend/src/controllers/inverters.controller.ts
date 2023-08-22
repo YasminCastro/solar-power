@@ -4,16 +4,50 @@ import { InvertersService } from '@/services/inverters.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
 export class InvertersController {
-  public inversor = Container.get(InvertersService);
+  public inverter = Container.get(InvertersService);
 
   public createInverter = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inversorData: CreateInvertersDto = req.body;
+      const inverterData: CreateInvertersDto = req.body;
       const userId = req.user._id;
 
-      const inverter = await this.inversor.createInverter(inversorData, userId);
+      const inverter = await this.inverter.createInverter(inverterData, userId);
 
-      res.status(201).json({ message: 'Inverter successfully created' });
+      res.status(201).json({ message: 'Inverter successfully created', inverter });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getInverters = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const inverters = await this.inverter.getInverters();
+
+      res.status(201).json(inverters);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getInverterById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const inverterId = String(req.params.id);
+
+      const inverter = await this.inverter.getInverterById(inverterId);
+
+      res.status(201).json(inverter);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getInverterByUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = String(req.params.id);
+
+      const inverter = await this.inverter.getInverterByUser(userId);
+
+      res.status(201).json(inverter);
     } catch (error) {
       next(error);
     }
@@ -22,10 +56,8 @@ export class InvertersController {
   public updateInverter = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const inverterData: UpdateInvertersDto = req.body;
-      const inverterId = String(req.params.id);
-      const userId = String(req.user._id);
 
-      const inverter = await this.inversor.updateInverter(inverterData, inverterId, userId);
+      const inverter = await this.inverter.updateInverter(inverterData);
 
       if (!inverter) {
         throw new Error('Error to update inverter.');
@@ -39,10 +71,11 @@ export class InvertersController {
 
   public deleteInverter = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inverterName = String(req.params.name);
+      const inverterId = String(req.params.id);
+      const deleteForAll = Boolean(req.query.deleteForAll);
       const userId = String(req.user._id);
 
-      const deleted = await this.inversor.deleteInverter(inverterName, userId);
+      await this.inverter.deleteInverter(inverterId, userId, deleteForAll);
 
       res.status(201).json({ message: 'Inverter successfully deleted' });
     } catch (error) {

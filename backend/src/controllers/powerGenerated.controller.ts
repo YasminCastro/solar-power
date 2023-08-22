@@ -16,27 +16,15 @@ export class PowerGeneratedController {
 
   public getRealTimeData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.user._id;
-      const invertersIdString = req.query.invertersId as string;
+      const inverterId = req.params.id as string;
 
-      if (!invertersIdString) {
-        throw new HttpException(409, 'invertersId is required');
+      console.log(inverterId);
+
+      if (!inverterId) {
+        throw new HttpException(409, 'inverterId is required');
       }
 
-      let invertersId: string[] = invertersIdString.split(',');
-      let data: PowerGenerated[] = [];
-
-      for (let inverterId of invertersId) {
-        const powerGenerated = await this.powerGenerated.lastRegister(userId, inverterId);
-        if (powerGenerated) data.push(powerGenerated);
-      }
-
-      if (data.length === 1 || data.length === 0) {
-        res.status(200).json(data[0]);
-        return;
-      }
-
-      const powerGenerated = await this.powerGenerated.joinData(data);
+      const powerGenerated = await this.powerGenerated.lastRegister(inverterId);
 
       res.status(200).json(powerGenerated);
     } catch (error) {
@@ -46,8 +34,7 @@ export class PowerGeneratedController {
 
   public getDayData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.user._id;
-      const inverterId = req.query.inverterId as string;
+      const inverterId = req.params.id as string;
       const selectDate = (req.query.date as string) || moment().format('DD-MM-YYYY');
 
       if (!inverterId) {
@@ -58,7 +45,7 @@ export class PowerGeneratedController {
         throw new HttpException(409, 'date must follow the format DD-MM-YYYY');
       }
 
-      const powerGenerated = await this.powerGenerated.allDay(userId, inverterId, selectDate);
+      const powerGenerated = await this.powerGenerated.allDay(inverterId, selectDate);
 
       res.status(201).json(powerGenerated);
     } catch (error) {
@@ -68,8 +55,7 @@ export class PowerGeneratedController {
 
   public getMonthData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.user._id;
-      const inverterId = req.query.inverterId as string;
+      const inverterId = req.params.id as string;
       const selectDate = (req.query.date as string) || moment().format('MM-YYYY');
 
       if (!inverterId) {
@@ -80,7 +66,7 @@ export class PowerGeneratedController {
         throw new HttpException(409, 'date must follow the format MM-YYYY');
       }
 
-      const powerGenerated = await this.powerGenerated.allMonth(userId, inverterId, selectDate);
+      const powerGenerated = await this.powerGenerated.allMonth(inverterId, selectDate);
 
       res.status(201).json(powerGenerated);
     } catch (error) {
@@ -90,8 +76,7 @@ export class PowerGeneratedController {
 
   public getYearData = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.user._id;
-      const inverterId = req.query.inverterId as string;
+      const inverterId = req.params.id as string;
       const selectDate = (req.query.date as string) || moment().format('YYYY');
 
       if (!inverterId) {
@@ -102,7 +87,7 @@ export class PowerGeneratedController {
         throw new HttpException(409, 'date must follow the format YYYY');
       }
 
-      const powerGenerated = await this.powerGenerated.allYear(userId, inverterId, selectDate);
+      const powerGenerated = await this.powerGenerated.lastRecordOfEachMonth(inverterId, selectDate);
 
       res.status(201).json(powerGenerated);
     } catch (error) {

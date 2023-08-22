@@ -1,6 +1,6 @@
 export interface Inverter {
   _id: string;
-  userId: string;
+  users: string[];
   name: string;
   model: string;
   url?: string;
@@ -8,8 +8,6 @@ export interface Inverter {
   username?: string;
   active: boolean;
   cep: string;
-  lat: string;
-  long: string;
   maxRealTimePower: number;
   createdAt: Date;
 }

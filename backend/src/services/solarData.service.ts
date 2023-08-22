@@ -11,72 +11,15 @@ import { CRYPTO_KEY } from '@/config';
 import { Container } from 'typedi';
 import { UtilsService } from './utils.service';
 import { convertToKWh } from '@/utils/convertPower';
+import chalk from 'chalk';
 
 @Service()
 export class SolarDataService {
-  private utils = Container.get(UtilsService);
-
-  public async saveElginData(
-    { password: rawPassword, lat, long, _id: inverterId, username }: Inverter,
-    userId: string,
-  ): Promise<PowerGenerated | { message: string }> {
-    try {
-      const bytes = Crypto.AES.decrypt(rawPassword, CRYPTO_KEY);
-      const password = bytes.toString(Crypto.enc.Utf8);
-
-      const url = 'https://elgin.shinemonitor.com';
-      const { page, browser } = await this.goToPage(url);
-
-      const elginData = await this.elginInterface(page, browser, username, password);
-
-      const userInfo = {
-        lat,
-        long,
-        userId,
-        inverterId: inverterId.toString(),
-      };
-
-      const weather = await this.utils.getWeatherData(lat, long);
-
-      const powerInRealTime = await this.calculateRealTimePower(parseFloat(inverterId), parseFloat(elginData.powerToday));
-
-      elginData.powerInRealTime = `${powerInRealTime}kW`;
-
-      if (!powerInRealTime) elginData.powerInRealTime = `0kW`;
-
-      return await this.saveInversorData(elginData, weather, userInfo);
-    } catch (error: any) {
-      logger.error(`Not able to save elgin data: ${error.message}`);
-      throw new HttpException(400, error.message);
-    }
-  }
-
-  public async saveHauweiData({ url, lat, long, _id: inverterId }: Inverter, userId: string): Promise<PowerGenerated | { message: string }> {
-    try {
-      const { page, browser } = await this.goToPage(url);
-
-      const hauweiData = await this.hauweiInterface(page, browser);
-
-      const weather = await this.utils.getWeatherData(lat, long);
-
-      const userInfo = {
-        lat,
-        long,
-        userId,
-        inverterId: inverterId.toString(),
-      };
-
-      return await this.saveInversorData(hauweiData, weather, userInfo);
-    } catch (error: any) {
-      logger.error(`Not able to save elgin data: ${error.message}`);
-      throw new HttpException(400, error.message);
-    }
-  }
+  public utils = Container.get(UtilsService);
 
   //COMUM
-
-  private async goToPage(url: string): Promise<{ browser: Browser; page: Page }> {
-    logger.debug(`Lauching puppeteer browser...`);
+  public async goToPage(url: string): Promise<{ browser: Browser; page: Page }> {
+    console.log(chalk.bgMagenta(`Lauching puppeteer browser...`));
 
     const browser = await puppeteer.launch({
       headless: 'new',
@@ -94,7 +37,7 @@ export class SolarDataService {
         : request.continue(),
     );
 
-    logger.debug(`Going to page ${url}...`);
+    console.log(chalk.magentaBright(`Going to page ${url}...`));
 
     await page.goto(url, {
       waitUntil: 'networkidle0',
@@ -103,55 +46,48 @@ export class SolarDataService {
     return { browser, page };
   }
 
-  private async saveInversorData(
-    inversorData: HauweiDataInterface | ElginDataInterface,
-    weather: WeatherInterface,
-    userInfo: { lat: string; long: string; userId: string; inverterId: string },
+  public async saveInverterData(
+    solarData: HauweiDataInterface | ElginDataInterface,
+    inverterId: string,
+    weather?: WeatherInterface,
   ): Promise<PowerGenerated | { message: string }> {
+    console.log(chalk.yellow('Saving solar data...'));
     try {
-      if (inversorData.powerInRealTime === '0kW') {
-        const startOfDay = moment().startOf('day').toDate();
-        //se ja tiver um registro com 0kw não precisa salvar dnv
-        const findData: PowerGenerated = await PowerGeneratedModel.findOne({
-          userId: userInfo.userId,
-          inverterId: userInfo.inverterId,
-          powerInRealTime: '0kW',
-          createdAt: {
-            $gte: startOfDay,
-          },
-        }).sort({ createdAt: -1 });
+      const data: Partial<HauweiDataInterface & ElginDataInterface & { weather?: WeatherInterface; inverterId: string }> = {
+        ...solarData,
+        inverterId,
+      };
 
-        if (findData) return { message: 'Data already saved' };
+      if (weather) {
+        data.weather = weather;
       }
 
-      const createPowerGenerated: PowerGenerated = await PowerGeneratedModel.create({
-        ...userInfo,
-        ...inversorData,
-        ...weather,
-      });
+      const createPowerGenerated: PowerGenerated = await PowerGeneratedModel.create(data);
+      console.log(chalk.green('Solar data saved!'));
 
       return createPowerGenerated;
     } catch (error) {
+      console.log(error);
       throw new HttpException(400, error.message);
     }
   }
 
-  private async calculateRealTimePower(inverterId: number, nowEnergy: number): Promise<string> {
+  public async calculateRealTimePower(inverterId: string, nowEnergy: number): Promise<string | null> {
+    console.log(chalk.yellow('Calculanting real time power...'));
     try {
-      const previousEnergyFound: PowerGenerated = await PowerGeneratedModel.findOne({
+      const previousEnergyFound = await PowerGeneratedModel.findOne({
         inverterId: inverterId,
       }).sort({ _id: -1 });
 
-      console.log(previousEnergyFound);
-
-      if (!previousEnergyFound) return `${nowEnergy}`;
+      if (!previousEnergyFound) return null;
 
       const previousEnergy = parseFloat(previousEnergyFound.powerToday);
 
-      const rawPower = (nowEnergy - previousEnergy) / (1 / 12);
+      const TIME_INTERVAL_IN_HOURS = 1 / 12;
 
-      const power = rawPower.toFixed(1);
-      return power;
+      const power = (nowEnergy - previousEnergy) / TIME_INTERVAL_IN_HOURS;
+
+      return power.toFixed(1);
     } catch (error: any) {
       logger.error(`Not able to calculate power: ${error.message}`);
       throw new HttpException(400, error.message);
@@ -160,20 +96,20 @@ export class SolarDataService {
 
   //HAUWEI
 
-  private async hauweiInterface(page: Page, browser: Browser): Promise<HauweiDataInterface> {
+  public async hauweiInterface(page: Page, browser: Browser): Promise<HauweiDataInterface> {
     const POWER_REAL_DATA_SELECTOR = '.nco-kiosk-overview-data';
     const C02_SELECTOR = '.social-co2-item';
     const COAL_SELECTOR = '.social-coal-item';
     const TREE_SELECTOR = '.social-trees-item';
 
     try {
-      logger.debug(`POWER GENERATION DATA...`);
+      console.log(chalk.yellow(`HAUWEI POWER GENERATION DATA...`));
 
       // POWER GENERATION DATA
       await page.waitForSelector(POWER_REAL_DATA_SELECTOR, { timeout: 5000 });
       let powerGenerationDataEval = await page.$$(POWER_REAL_DATA_SELECTOR);
 
-      logger.debug(`Creating powerGenerationDataPromise...`);
+      console.log(chalk.yellow(`Creating powerGenerationDataPromise...`));
 
       const powerGenerationDataPromise = new Promise<string[]>(async resolve => {
         let data = [];
@@ -192,11 +128,10 @@ export class SolarDataService {
         throw new HttpException(404, 'Power generation data not found');
       }
 
-      logger.debug(`Power generation data OK...`);
+      console.log(chalk.green(`Power generation data OK...`));
 
       //ENVIRONMENTAL BENEFITS
 
-      logger.debug(`ENVIRONMENT BENEFITS...`);
       const separeteValueFromText = /\d+(\.\d+)?\(t\)/;
       const removeParanthesis = /(\d+(\.\d+)?)(\(t\))/;
       const getNumbers = /\d+/;
@@ -218,7 +153,7 @@ export class SolarDataService {
       const treeValue = await page.evaluate(el => el.textContent, treeElement);
       const tree = treeValue.match(getNumbers)[0];
 
-      logger.info(`Environmental benefits data OK...`);
+      console.log(chalk.green(`Environmental benefits data OK...`));
 
       return {
         powerInRealTime: powerGenerationData[0],
@@ -239,7 +174,7 @@ export class SolarDataService {
 
   //ELGIN
 
-  private async elginInterface(page: Page, browser: Browser, username: string, password: string): Promise<ElginDataInterface> {
+  public async elginInterface(page: Page, browser: Browser, username: string, password: string): Promise<ElginDataInterface> {
     const USERNAME_INPUT = '#loginusr > input';
     const PASSWORD_INPUT = '#loginpow > input';
     const LOGIN_BUTTON = '#loginbtn';
@@ -253,7 +188,7 @@ export class SolarDataService {
     const SOLAR_IRRADIANCE = '#stats07';
 
     try {
-      logger.debug(`LOGIN ELGIN MONITOR...`);
+      console.log(chalk.yellow(`ELGIN LOGIN TO PLATAFORM...`));
 
       // LOGIN
       await page.waitForSelector(USERNAME_INPUT, { timeout: 10000 });
@@ -268,7 +203,7 @@ export class SolarDataService {
       await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
       // POWER GENERATION DATA
-      logger.debug(`GETTING TOTAL_ENERGY...`);
+      console.log(chalk.yellow(`ELGIN POWER GENERATION DATA...`));
 
       await page.waitForSelector(TODAY_ENERGY, { timeout: 10000 });
       let todayPerformanceElement = await page.$(TODAY_ENERGY);
@@ -289,6 +224,8 @@ export class SolarDataService {
       await page.waitForSelector(COAL_SELECTOR);
       let coalValueElement = await page.$(COAL_SELECTOR);
       let coalValue = await page.evaluate(el => el.textContent, coalValueElement);
+
+      console.log(chalk.green(`Power generation data OK...`));
 
       return {
         powerToday: convertToKWh(todayPerformance).toString(),

@@ -2,8 +2,8 @@ import { model, Schema, Document } from 'mongoose';
 import { Inverter } from '@/interfaces/inverter.interface';
 
 const InverterSchema: Schema = new Schema({
-  userId: {
-    type: String,
+  users: {
+    type: [String],
     required: true,
   },
   name: {
@@ -32,14 +32,6 @@ const InverterSchema: Schema = new Schema({
     default: true,
   },
   cep: {
-    type: String,
-    required: true,
-  },
-  lat: {
-    type: String,
-    required: true,
-  },
-  long: {
     type: String,
     required: true,
   },
