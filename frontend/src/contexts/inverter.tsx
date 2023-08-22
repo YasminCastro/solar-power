@@ -24,7 +24,6 @@ export const InverterProvider: React.FC<any> = ({ children }) => {
 
   async function getUserInvertes() {
     try {
-      console.log(user?._id);
       if (user?._id) {
         const response = await invertersApi.getUserInverters(user._id);
         setInverters(response);
