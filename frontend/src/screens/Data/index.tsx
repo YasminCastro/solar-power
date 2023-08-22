@@ -26,14 +26,14 @@ const Data: React.FC = () => {
         </View>
         <View>
           <Text className="font-title text-base text-white">
-            Botões para ir direto para o topico que quer ir ouu fazer igual nas
-            configurações!
+            TODO: Botões para ir direto para o topico que quer ir ouu fazer
+            igual nas configurações!
           </Text>
         </View>
         <MonthGraph />
-        <Stripes />
+        {/* <Stripes /> */}
         <YearGraph />
-        <Stripes />
+        {/* <Stripes /> */}
         {/* <Prediction /> */}
       </ScrollView>
     </SafeAreaView>
