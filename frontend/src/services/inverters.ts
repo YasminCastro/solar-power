@@ -6,8 +6,8 @@ export async function editInverterStatus(inverterId: string, active: boolean) {
   return data;
 }
 
-export async function getAllInverters(userId: string) {
-  const { data } = await api.get(`/users/${userId}`);
+export async function getUserInverters(userId: string) {
+  const { data } = await api.get(`/inverters/user/${userId}`);
 
-  return data.inverters;
+  return data;
 }

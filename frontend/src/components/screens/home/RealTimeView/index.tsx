@@ -42,19 +42,20 @@ export default function RealTimeView() {
         <View className="mt-8 flex flex-row justify-around">
           <View className="flex flex-row">
             <SemiCircleText
-              number={`${powerGenerated.tempC}°`}
-              text="Temperatura"
-            />
-            <TouchableOpacity onPress={() => console.log("Info temp")}>
-              <Entypo name="info-with-circle" size={16} color="white" />
-            </TouchableOpacity>
-          </View>
-          <View className="flex flex-row">
-            <SemiCircleText
               number={`${powerGenerated.powerToday}kWh`}
               text="Produção hoje"
             />
             <TouchableOpacity onPress={() => console.log("Info produção")}>
+              <Entypo name="info-with-circle" size={16} color="white" />
+            </TouchableOpacity>
+          </View>
+
+          <View className="flex flex-row">
+            <SemiCircleText
+              number={`${powerGenerated.powerMonth}kWh`}
+              text="Produção mensal"
+            />
+            <TouchableOpacity onPress={() => console.log("Info temp")}>
               <Entypo name="info-with-circle" size={16} color="white" />
             </TouchableOpacity>
           </View>

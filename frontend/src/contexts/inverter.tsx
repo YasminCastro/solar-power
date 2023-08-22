@@ -6,7 +6,7 @@ import { IInverter } from "../interfaces/inverter";
 interface InverterContextData {
   inverters: IInverter[];
   activeInverters: IInverter[];
-  getAllInverters(): Promise<{ error: boolean }>;
+  getUserInvertes(): Promise<{ error: boolean }>;
 }
 
 const InverterContext = createContext<InverterContextData>(
@@ -39,7 +39,7 @@ export const InverterProvider: React.FC<any> = ({ children }) => {
 
   return (
     <InverterContext.Provider
-      value={{ inverters, getAllInverters: getUserInvertes, activeInverters }}
+      value={{ inverters, getUserInvertes, activeInverters }}
     >
       {children}
     </InverterContext.Provider>

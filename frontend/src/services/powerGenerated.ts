@@ -1,9 +1,7 @@
 import api from "./api";
 
-export async function getPowerGeneratedRealTime(invertersId: string) {
-  const { data } = await api.get(`/power-generated/real-time`, {
-    params: { invertersId },
-  });
+export async function getPowerGeneratedRealTime(inverterId: string) {
+  const { data } = await api.get(`/power-generated/real-time/${inverterId}`);
 
   return data;
 }

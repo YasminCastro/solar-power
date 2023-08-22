@@ -19,7 +19,7 @@ const InverterBlock: React.FC<IProps> = ({
 }) => {
   const [active, setActive] = useState(inverter.active);
   const [loading, setLoading] = useState(false);
-  const { getAllInverters } = useInverter();
+  const { getUserInvertes } = useInverter();
 
   const handleEditInverter = async () => {
     try {
@@ -27,7 +27,7 @@ const InverterBlock: React.FC<IProps> = ({
 
       setActive(!active);
       await editInverterStatus(inverter._id, !active);
-      await getAllInverters();
+      await getUserInvertes();
     } catch (error) {
       console.log(error);
     } finally {
