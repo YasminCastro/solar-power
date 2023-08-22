@@ -18,14 +18,17 @@ export class PowerGeneratedService {
     }
   }
 
-  public async allDay(userId: string, inverterId: string, selectDate: string): Promise<PowerGenerated[]> {
+  public async allDay(inverterId: string, selectDate: string): Promise<PowerGenerated[]> {
     try {
       const startOfDay = moment(selectDate, 'DD-MM-YYYY').startOf('day').toDate();
+      const endOfDay = moment(selectDate, 'DD-MM-YYYY').endOf('day').toDate();
 
       const day = await PowerGeneratedModel.find({
-        userId,
         inverterId,
-        createdAt: { $gte: startOfDay },
+        createdAt: {
+          $gte: startOfDay,
+          $lte: endOfDay,
+        },
       }).sort({ createdAt: -1 });
 
       return day;
