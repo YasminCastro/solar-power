@@ -24,7 +24,6 @@ module.exports = {
         PORT: 4000,
         NODE_ENV: 'production',
         CREDENTIALS: true,
-        WEATHER_API_KEY: process.env.WEATHER_API_KEY,
         CRYPTO_KEY: process.env.CRYPTO_KEY,
         DATABASE_URL: process.env.DATABASE_URL,
         SECRET_KEY: process.env.SECRET_KEY,
