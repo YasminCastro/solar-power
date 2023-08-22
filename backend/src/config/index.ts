@@ -21,10 +21,6 @@ export const {
 
 export const EXPIRES_IN = 604800; //7 days in seconds
 
-export const cepAbertoApi = axios.create({
-  baseURL: `https://www.cepaberto.com/api/v3/`,
-  headers: { Authorization: 'Token token=0dcdb8a287bfb377319a8a24edba2ee1' },
-});
 export const redisConfig = { host: REDIS_HOST, posrt: REDIS_PORT };
 
 let projectURL = NODE_ENV === 'production' ? 'http://5.189.152.65:4000' : `http://localhost:4000`;
