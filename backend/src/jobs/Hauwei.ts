@@ -25,7 +25,6 @@ export default {
 
       const result = await solarData.saveInverterData(hauweiData, _id);
 
-      console.log(result);
       return Promise.resolve(result);
     } catch (error) {
       return Promise.reject(new Error());
