@@ -16,3 +16,11 @@ export async function getMonth(inverterId: string) {
 
   return data;
 }
+
+export async function getYear(inverterId: string) {
+  const { data } = await api.get(`/power-generated/year/${inverterId}`);
+
+  console.log(data);
+
+  return data;
+}

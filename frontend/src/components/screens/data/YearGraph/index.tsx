@@ -20,23 +20,20 @@ export default function YearGraph() {
   const { activeInverters } = useInverter();
   const [label, setLabel] = useState<string[]>([]);
   const [dataset, setDataset] = useState<number[]>([]);
-  const [allMonth, setAllMonth] = useState<string>("");
-  const [month, setMonth] = useState<string>(moment().format("MMMM"));
+  const [allYear, setAllYear] = useState<string>("");
 
   async function loadPowerGenerated() {
     if (activeInverters[0]) {
-      const data = await powerGeneratedApi.getMonth(activeInverters[0]._id);
+      const data = await powerGeneratedApi.getYear(activeInverters[0]._id);
       setLabel([]);
       setDataset([]);
 
       const dataFilterd = filterByHour(data);
 
       dataFilterd.forEach((element: IPowerGenerated) => {
-        const parsedDate = moment(element.localtime, "YYYY-MM-DD HH:mm").format(
-          "HH"
-        );
-        const parseData = parseFloat(element.powerInRealTime);
-        setAllMonth(element.powerMonth);
+        const parsedDate = moment(element.createdAt).format("MM");
+        const parseData = parseFloat(element.powerMonth);
+        setAllYear(element.powerYear);
 
         setLabel((prev) => [...prev, parsedDate]);
 
@@ -54,7 +51,7 @@ export default function YearGraph() {
       <View className="mt-4 items-center">
         <View className="m-4 flex flex-row justify-between">
           <Text className="font-title text-2xl text-yellow-300">
-            Produção mensal
+            Produção anual
           </Text>
           <TouchableOpacity>
             <AntDesign name="calendar" size={24} color="grey" />
@@ -95,22 +92,22 @@ export default function YearGraph() {
             }}
           />
           <Text className="font-body text-sm text-gray-50">
-            Rendimento {month}
+            Rendimento {moment().format("YYYY")}
           </Text>
         </View>
         <View className="mt-10 flex flex-row justify-around">
           <CircleData
-            text="Rendimento do mês"
-            data={allMonth}
+            text="Rendimento do ano"
+            data={`${allYear} kWh`}
             icon={<MaterialIcons name="highlight" size={50} color="#0F1E44" />}
           />
-          <CircleData
+          {/* <CircleData
             text="Economias"
             data="R$300"
             icon={
               <MaterialIcons name="attach-money" size={50} color="#0F1E44" />
             }
-          />
+          /> */}
         </View>
       </View>
     );
