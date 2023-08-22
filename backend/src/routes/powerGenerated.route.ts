@@ -16,6 +16,6 @@ export class PowerGeneratedRoute implements Routes {
     this.router.get(`${this.path}/real-time/:id`, AuthMiddleware, this.powerGenerated.getRealTimeData);
     this.router.get(`${this.path}/day/:id`, AuthMiddleware, this.powerGenerated.getDayData);
     this.router.get(`${this.path}/month/:id`, AuthMiddleware, this.powerGenerated.getMonthData);
-    this.router.get(`${this.path}/year`, AuthMiddleware, this.powerGenerated.getYearData);
+    this.router.get(`${this.path}/year/:id`, AuthMiddleware, this.powerGenerated.getYearData);
   }
 }
