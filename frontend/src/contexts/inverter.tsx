@@ -19,13 +19,14 @@ export const InverterProvider: React.FC<any> = ({ children }) => {
   const { user } = useAuth();
 
   useEffect(() => {
-    getAllInverters();
+    getUserInvertes();
   }, [user]);
 
-  async function getAllInverters() {
+  async function getUserInvertes() {
     try {
+      console.log(user?._id);
       if (user?._id) {
-        const response = await invertersApi.getAllInverters(user._id);
+        const response = await invertersApi.getUserInverters(user._id);
         setInverters(response);
         const active = response.filter((o: IInverter) => o.active === true);
         setActiveInverters(active);
@@ -39,7 +40,7 @@ export const InverterProvider: React.FC<any> = ({ children }) => {
 
   return (
     <InverterContext.Provider
-      value={{ inverters, getAllInverters, activeInverters }}
+      value={{ inverters, getAllInverters: getUserInvertes, activeInverters }}
     >
       {children}
     </InverterContext.Provider>
