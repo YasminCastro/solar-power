@@ -23,9 +23,7 @@ export default function TodayGraph() {
       const dataFilterd = filterByHour(data);
 
       dataFilterd.forEach((element: IPowerGenerated) => {
-        const parsedDate = moment(element.localtime, "YYYY-MM-DD HH:mm").format(
-          "HH"
-        );
+        const parsedDate = moment(element.createdAt).format("HH");
         const parseData = parseFloat(element.powerInRealTime);
 
         setLabel((prev) => [...prev, parsedDate]);

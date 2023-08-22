@@ -55,7 +55,7 @@ export default function RealTimeView() {
               number={`${powerGenerated.powerMonth}kWh`}
               text="Produção mensal"
             />
-            <TouchableOpacity onPress={() => console.log("Info temp")}>
+            <TouchableOpacity onPress={() => console.log("Info produção")}>
               <Entypo name="info-with-circle" size={16} color="white" />
             </TouchableOpacity>
           </View>
