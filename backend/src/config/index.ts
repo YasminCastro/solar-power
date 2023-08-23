@@ -17,6 +17,8 @@ export const {
   CEP_ABERTO_TOKEN,
   REDIS_HOST,
   REDIS_PORT,
+  DB_USER,
+  DB_PASSWORD,
 } = process.env;
 
 export const EXPIRES_IN = 604800; //7 days in seconds
