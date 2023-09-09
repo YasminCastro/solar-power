@@ -2,6 +2,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { IStepSettings } from "../../../../screens/Settings";
 import { AntDesign } from "@expo/vector-icons";
 import Notification from "./Notification/Index";
+import { INotification } from "../../../../interfaces/notifications";
 
 interface IProps {
   setCardActive: React.Dispatch<React.SetStateAction<IStepSettings>>;
@@ -27,10 +28,11 @@ const NotificationsCard: React.FC<IProps> = ({ setCardActive }) => {
 
 export default NotificationsCard;
 
-const notificationsData = [
+const notificationsData: INotification[] = [
   {
     title: "Limpeza das placas",
     description:
       "É recomendado fazer a limpeza dos painés solares a cada 6 meses.",
+    recallTimeInMonths: 6,
   },
 ];

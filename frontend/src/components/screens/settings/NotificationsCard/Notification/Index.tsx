@@ -4,12 +4,10 @@ import {
   isNotificationActive,
   updateNotifications,
 } from "../../../../../utils/storage/notifications";
+import { INotification } from "../../../../../interfaces/notifications";
 
 interface IProps {
-  notification: {
-    title: string;
-    description: string;
-  };
+  notification: INotification;
 }
 
 const Notification: React.FC<IProps> = ({ notification }) => {
@@ -18,7 +16,7 @@ const Notification: React.FC<IProps> = ({ notification }) => {
   const toggleSwitch = async () => {
     setIsEnabled((previousState) => !previousState);
     await updateNotifications({
-      title: notification.title,
+      ...notification,
       active: !isEnabled,
     });
   };
@@ -45,8 +43,8 @@ const Notification: React.FC<IProps> = ({ notification }) => {
                 {notification.title}
               </Text>
               <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                trackColor={{ false: "#767577", true: "#010B2B" }}
+                thumbColor={isEnabled ? "#5E9EFF" : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitch}
                 value={isEnabled}
