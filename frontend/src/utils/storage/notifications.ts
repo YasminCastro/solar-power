@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export interface INotification {
   title: string;
   active: boolean;
-  recallTimeInMonths: number;
+  recallTimeInDays: number;
 }
 
 export async function getNotifications() {

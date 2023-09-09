@@ -33,6 +33,6 @@ const notificationsData: INotification[] = [
     title: "Limpeza das placas",
     description:
       "É recomendado fazer a limpeza dos painés solares a cada 6 meses.",
-    recallTimeInMonths: 6,
+    recallTimeInDays: 182,
   },
 ];
