@@ -4,6 +4,7 @@ import ProfileIcon from "./ProfileIcon";
 import { IStepSettings } from "../../../../screens/Settings";
 import SettingsButtons from "./SettingsButtons";
 import { LinearGradient } from "expo-linear-gradient";
+import { Feather } from '@expo/vector-icons'; 
 
 
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -17,12 +18,13 @@ const SettingsCard: React.FC<IProps> = ({ setCardActive }) => {
 
   return (
     <View>
-      <TouchableOpacity onPress={() => signOut()}>
+      <TouchableOpacity className="mb-10" onPress={() => signOut()}>
         <Text className="font-body text-base text-gray-200 text-right">Sair da conta</Text>
       </TouchableOpacity>
       <ProfileIcon setCardActive={setCardActive} />
+      
 
-      <View className="mt-14">
+      <View className="my-14">
         <View className="m-2 flex flex-row justify-around">
           <SettingsButtons
             setCardActive={setCardActive}
@@ -43,8 +45,9 @@ const SettingsCard: React.FC<IProps> = ({ setCardActive }) => {
       </View>
 
 
-      <TouchableOpacity onPress={() => signOut()}>
-        <Text className="font-body text-base text-white text-center mt-12">Configurações</Text>
+      <TouchableOpacity className="mt-12 justify-center items-center flex flex-row space-x-4" onPress={() => signOut()}>
+        <Feather name="settings" size={15} color="white" />
+        <Text className="font-body text-base text-white ">Configurações</Text>
       </TouchableOpacity>
     </View>
   );
