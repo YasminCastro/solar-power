@@ -14,7 +14,7 @@ export default function ProfileIcon({ setCardActive }: IProps) {
       {user && (
         <View className="items-center">
           <Pressable
-            className="h-20 w-20 items-center justify-center rounded-full bg-yellow-300"
+            className="h-20 w-20 items-center justify-center rounded-full bg-orange-250"
             onPress={() => {
               setCardActive("profile");
             }}
@@ -23,7 +23,7 @@ export default function ProfileIcon({ setCardActive }: IProps) {
               {user.name.charAt(0).toUpperCase()}
             </Text>
           </Pressable>
-          <Text className="mt-2 text-xl text-white">{user.name}</Text>
+          <Text className="mt-2 text-xl font-body text-white">{user.name}</Text>
         </View>
       )}
     </View>

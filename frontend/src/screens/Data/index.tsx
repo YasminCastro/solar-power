@@ -16,19 +16,19 @@ const Data: React.FC = () => {
     <SafeAreaView className="flex-1 bg-blueDark-500 pt-1">
       <StatusBar style="light" />
       <ScrollView>
-        <View className="m-7 flex flex-row items-center justify-between">
-          <View className="flex-row items-center gap-3">
-            <Logo width={40} height={40} />
-            <Text className="font-title text-3xl text-white">
-              Geração de energia
+        <View className="m-4">
+            <Text className="font-title text-2xl text-yellow-300">
+              Previsão de geração
             </Text>
-          </View>
+          <Text className="font-body text-base/3 text-gray-200">
+              Previsão de geração para os próximos dias.
+          </Text>
         </View>
         <View>
-          <Text className="font-title text-base text-white">
+          {/* <Text className="font-title text-base text-white">
             TODO: Botões para ir direto para o topico que quer ir ouu fazer
             igual nas configurações!
-          </Text>
+          </Text> */}
         </View>
         <MonthGraph />
         {/* <Stripes /> */}

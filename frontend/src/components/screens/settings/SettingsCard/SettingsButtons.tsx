@@ -1,5 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { IStepSettings } from "../../../../screens/Settings";
+import { LinearGradient } from "expo-linear-gradient";
+
 
 interface IProps {
   setCardActive: React.Dispatch<React.SetStateAction<IStepSettings>>;
@@ -17,12 +19,19 @@ export default function SettingsButtons({
   icon,
 }: IProps) {
   return (
-    <TouchableOpacity
-      className="flex h-16 w-36 items-center justify-center rounded-sm bg-solar-100 "
-      onPress={() => setCardActive(cardName)}
+    <LinearGradient  
+    className=" rounded-lg py-4 "
+        colors={["#192137", "#1C3985"]}
+        start={[0, 0]}
     >
-      {icon}
-      <Text>{buttonName}</Text>
-    </TouchableOpacity>
+      <TouchableOpacity
+        className="flex h-16 w-36 items-center justify-center rounded-sm "
+        onPress={() => setCardActive(cardName)}
+      >
+        {icon}
+        <Text className="text-white mt-3 font-body">{buttonName}</Text>
+      </TouchableOpacity>
+
+    </LinearGradient>
   );
 }
