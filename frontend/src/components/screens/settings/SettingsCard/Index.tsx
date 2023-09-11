@@ -29,7 +29,7 @@ const SettingsCard: React.FC<IProps> = ({ setCardActive }) => {
           <SettingsButtons
             setCardActive={setCardActive}
             cardName="inverter"
-            buttonName="Inversor"
+            buttonName="Inversores"
             icon={<FontAwesome5 name="solar-panel" size={30} color="#FEBE3D" />}
           />
           <SettingsButtons

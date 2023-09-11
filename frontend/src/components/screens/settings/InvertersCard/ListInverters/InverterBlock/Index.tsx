@@ -36,39 +36,41 @@ const InverterBlock: React.FC<IProps> = ({
   };
 
   return (
-    <View className=" mx-8 my-4 h-24 w-80 rounded-md bg-white">
-      <View className="flex flex-row justify-between p-4">
-        <View>
-          <Text className="font-title text-2xl text-blueDark-300">
-            {inverter.name}
-          </Text>
-          <Text className="text-base font-medium uppercase text-blueDark-300">
-            {inverter.model}
-          </Text>
-        </View>
-        <View className="flex flex-col justify-evenly gap-3">
-          <TouchableOpacity>
-            <Feather
-              name="edit"
-              size={24}
-              color="black"
-              onPress={() => {
-                setInverterCardActive("edit");
-                setInverterId(inverter._id);
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleEditInverter}>
-            {loading ? (
-              <ActivityIndicator size="small" color="#FEBE3D" />
-            ) : (
+    <View className="items-center">
+      <View className=" mx-8 my-4 h-24 w-80 rounded-md bg-white">
+        <View className="flex flex-row justify-between p-4">
+          <View>
+            <Text className="font-title text-2xl text-blueDark-300">
+              {inverter.name}
+            </Text>
+            <Text className="text-base font-medium uppercase text-blueDark-300">
+              {inverter.model}
+            </Text>
+          </View>
+          <View className="flex flex-col justify-evenly gap-3">
+            <TouchableOpacity>
               <Feather
-                name={active ? "eye" : "eye-off"}
+                name="edit"
                 size={24}
                 color="black"
+                onPress={() => {
+                  setInverterCardActive("edit");
+                  setInverterId(inverter._id);
+                }}
               />
-            )}
-          </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleEditInverter}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#FEBE3D" />
+              ) : (
+                <Feather
+                  name={active ? "eye" : "eye-off"}
+                  size={24}
+                  color="black"
+                />
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
