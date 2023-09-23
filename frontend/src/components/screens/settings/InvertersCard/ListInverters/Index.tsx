@@ -41,18 +41,22 @@ const ListInverters: React.FC<IProps> = ({
         <AntDesign name="arrowleft" size={30} color="white" />
       </TouchableOpacity>
       <View className="flex flex-row items-center justify-between">
-        <View>
-          <Text className="font-title text-3xl text-yellow-300">
-            Inversores
-          </Text>
-          <Text className="font-regular text-gray-200">
-            Inversores cadastrados no app
-          </Text>
+        <View className="flex flex-row items-center gap-3">
+          <FontAwesome5 name="solar-panel" size={30} color="#febe3d" />
+          <View>
+            <Text className="font-title text-3xl text-yellow-300">
+              Inversores
+            </Text>
+            <Text className="font-regular text-gray-200">
+              Inversores cadastrados no app
+            </Text>
+          </View>
         </View>
-        <FontAwesome5 name="solar-panel" size={30} color="#febe3d" />
-        <TouchableOpacity onPress={() => setInverterCardActive("create")}>
-          <MaterialIcons name="my-library-add" size={30} color="#febe3d" />
-        </TouchableOpacity>
+        <View className="flex flex-row gap-4">
+          <TouchableOpacity onPress={() => setInverterCardActive("create")}>
+            <MaterialIcons name="my-library-add" size={30} color="#febe3d" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {filteredInverters && (
