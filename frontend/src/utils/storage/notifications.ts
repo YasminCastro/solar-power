@@ -1,9 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { INotification } from "../../interfaces/notifications";
 
-export interface INotification {
-  title: string;
+interface INotificationData extends INotification {
   active: boolean;
-  recallTimeInDays: number;
 }
 
 export async function getNotifications() {
@@ -16,7 +15,9 @@ export async function getNotifications() {
   return JSON.parse(notifications);
 }
 
-export async function updateNotifications(updateNotification: INotification) {
+export async function updateNotifications(
+  updateNotification: INotificationData
+) {
   let notifications = await getNotifications();
 
   const index = notifications.findIndex(
@@ -28,12 +29,6 @@ export async function updateNotifications(updateNotification: INotification) {
     notifications.push(updateNotification);
   } else {
     notifications[index] = updateNotification;
-  }
-
-  if (updateNotification.active) {
-    console.log("schedule update notification");
-  } else {
-    console.log("cancel schedule update notification");
   }
 
   await AsyncStorage.setItem(
@@ -54,4 +49,22 @@ export async function isNotificationActive(notificationTitle: string) {
   }
 
   return false;
+}
+
+export async function setNotificationId(id: string | null, title: string) {
+  if (!id) {
+    await AsyncStorage.removeItem(`@solarpower/notifications/${title}`);
+
+    return;
+  }
+
+  await AsyncStorage.setItem(`@solarpower/notifications/${title}`, id);
+}
+
+export async function getNotificationId(title: string) {
+  const notificationId = await AsyncStorage.getItem(
+    `@solarpower/notifications/${title}`
+  );
+
+  return notificationId;
 }

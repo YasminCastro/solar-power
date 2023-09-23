@@ -33,6 +33,10 @@ const notificationsData: INotification[] = [
     title: "Limpeza das placas",
     description:
       "É recomendado fazer a limpeza dos painés solares a cada 6 meses.",
-    recallTimeInDays: 182,
+    notificationData: {
+      title: "Mantenha suas placas solares brilhando! ☀️",
+      body: "Limpe suas placas solares para otimizar a produção de energia e aumentar a eficiência.",
+      timeInMinutes: 1,
+    },
   },
 ];

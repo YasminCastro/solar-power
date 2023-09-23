@@ -1,24 +1,63 @@
 import { Switch, Text, View } from "react-native";
 import { useEffect, useState } from "react";
+
 import {
+  getNotificationId,
   isNotificationActive,
+  setNotificationId,
   updateNotifications,
 } from "../../../../../utils/storage/notifications";
-import { INotification } from "../../../../../interfaces/notifications";
+import {
+  INotification,
+  IScheduleNotification,
+} from "../../../../../interfaces/notifications";
+import * as Notifications from "expo-notifications";
+
+// Apenas notificações locais
 
 interface IProps {
   notification: INotification;
 }
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
 const Notification: React.FC<IProps> = ({ notification }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEnabled, setIsEnabled] = useState(false);
+
   const toggleSwitch = async () => {
-    setIsEnabled((previousState) => !previousState);
+    let enabledStatus = isEnabled;
+
+    setIsEnabled((previousState) => {
+      enabledStatus = !previousState;
+      return !previousState;
+    });
     await updateNotifications({
       ...notification,
       active: !isEnabled,
     });
+
+    if (enabledStatus) {
+      const notificationId = await schedulePushNotification({
+        title: notification.notificationData.title,
+        body: notification.notificationData.body,
+        timeInMinutes: notification.notificationData.timeInMinutes,
+      });
+
+      await setNotificationId(notificationId, notification.title);
+    } else {
+      const notificationId = await getNotificationId(notification.title);
+      if (notificationId) {
+        await Notifications.cancelScheduledNotificationAsync(notificationId);
+        await setNotificationId(null, notification.title);
+      }
+    }
   };
 
   async function getNotification() {
@@ -65,3 +104,20 @@ const Notification: React.FC<IProps> = ({ notification }) => {
 };
 
 export default Notification;
+
+async function schedulePushNotification({
+  title,
+  body,
+  timeInMinutes,
+}: IScheduleNotification) {
+  const minutesInSecods = timeInMinutes * 60;
+  const identifier = await Notifications.scheduleNotificationAsync({
+    content: {
+      title,
+      body,
+    },
+    trigger: { seconds: minutesInSecods, repeats: true },
+  });
+
+  return identifier;
+}
