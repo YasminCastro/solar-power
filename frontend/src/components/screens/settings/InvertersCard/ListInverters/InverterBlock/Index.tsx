@@ -1,10 +1,7 @@
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { useState } from "react";
 import { IInverter } from "../../../../../../interfaces/inverter";
 import { IStepInverter } from "../../Index";
-import { editInverterStatus } from "../../../../../../services/inverters";
-import { useInverter } from "../../../../../../contexts/inverter";
 
 interface IProps {
   inverter: IInverter;
@@ -17,27 +14,9 @@ const InverterBlock: React.FC<IProps> = ({
   setInverterCardActive,
   setInverterId,
 }) => {
-  const [active, setActive] = useState(inverter.active);
-  const [loading, setLoading] = useState(false);
-  const { getUserInvertes } = useInverter();
-
-  const handleEditInverter = async () => {
-    try {
-      setLoading(true);
-
-      setActive(!active);
-      await editInverterStatus(inverter._id, !active);
-      await getUserInvertes();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <View className="items-center">
-      <View className=" mx-8 my-4 h-24 w-80 rounded-md bg-white">
+      <View className="mx-8 my-4 h-24 w-80 rounded-md bg-white">
         <View className="flex flex-row justify-between p-4">
           <View>
             <Text className="font-title text-2xl text-blueDark-300">
@@ -58,17 +37,6 @@ const InverterBlock: React.FC<IProps> = ({
                   setInverterId(inverter._id);
                 }}
               />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleEditInverter}>
-              {loading ? (
-                <ActivityIndicator size="small" color="#FEBE3D" />
-              ) : (
-                <Feather
-                  name={active ? "eye" : "eye-off"}
-                  size={24}
-                  color="black"
-                />
-              )}
             </TouchableOpacity>
           </View>
         </View>
