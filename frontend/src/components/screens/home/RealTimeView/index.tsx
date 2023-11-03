@@ -32,7 +32,7 @@ export default function RealTimeView() {
     loadPowerGenerated();
   }, [activeInverters]);
 
-  if (powerGenerated) {
+  if (powerGenerated && powerGenerated.powerInRealTime) {
     return (
       <View className="m-8">
         <CircleChart
