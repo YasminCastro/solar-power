@@ -6,9 +6,18 @@ import { InvertersRoute } from './routes/inverters.route';
 import { PowerGeneratedRoute } from './routes/powerGenerated.route';
 import { UtilsRoute } from './routes/utils.route';
 import { SolarDataRoute } from './routes/solarData';
+import { AchivementsRoute } from './routes/achivements.route';
 
 ValidateEnv();
 
-const app = new App([new UserRoute(), new AuthRoute(), new InvertersRoute(), new PowerGeneratedRoute(), new UtilsRoute(), new SolarDataRoute()]);
+const app = new App([
+  new UserRoute(),
+  new AuthRoute(),
+  new InvertersRoute(),
+  new PowerGeneratedRoute(),
+  new UtilsRoute(),
+  new SolarDataRoute(),
+  new AchivementsRoute(),
+]);
 
 app.listen();
