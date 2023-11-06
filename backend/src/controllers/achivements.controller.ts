@@ -5,6 +5,7 @@ import { User } from '@/interfaces/users.interface';
 import { UpdateUserDto } from '@/dtos/users.dto';
 import { AchivementsService } from '@/services/achivements.service';
 import { CreateAchivementsDto } from '@/dtos/achivements.dto';
+import { Achivement } from '@/interfaces/achivements.interface';
 
 export class AchivementsController {
   public achivements = Container.get(AchivementsService);
@@ -21,11 +22,11 @@ export class AchivementsController {
     }
   };
 
-  public getUsers = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public getAchivements = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const findAllUsersData: User[] = await this.achivements.findAllUser();
+      const findAllAchivementsData: Achivement[] = await this.achivements.findAllAchivement();
 
-      res.status(200).json(findAllUsersData);
+      res.status(200).json(findAllAchivementsData);
     } catch (error) {
       next(error);
     }

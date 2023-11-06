@@ -17,8 +17,8 @@ export class AchivementsService {
     const createAchivementData: Achivement = await AchivementsModel.create(achivementData);
     return createAchivementData;
   }
-  public async findAllUser(): Promise<User[]> {
-    const users: User[] = await UserModel.find();
+  public async findAllAchivement(): Promise<Achivement[]> {
+    const users: Achivement[] = await AchivementsModel.find();
     return users;
   }
 
