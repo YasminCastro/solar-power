@@ -1,10 +1,9 @@
-import { Service } from 'typedi';
+import { Service, Container } from 'typedi';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { HttpException } from '@/exceptions/httpException';
 import { logger } from '@/utils/logger';
 import { ElginDataInterface, HauweiDataInterface, WeatherInterface, PowerGenerated } from '@/interfaces/powerGenerated.interface';
 import { PowerGeneratedModel } from '@/models/powerGenerated.models';
-import { Container } from 'typedi';
 import { UtilsService } from './utils.service';
 import { convertToKWh } from '@/utils/convertPower';
 import chalk from 'chalk';

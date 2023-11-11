@@ -6,7 +6,6 @@ import { HttpException } from '@/exceptions/httpException';
 import { UtilsService } from '@/services/utils.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import moment from 'moment';
-import { PowerGenerated } from '@/interfaces/powerGenerated.interface';
 import { isValidDateDay, isValidDateMonth, isValidDateYear } from '@/utils/isValidDate';
 
 export class PowerGeneratedController {

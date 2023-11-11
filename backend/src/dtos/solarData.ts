@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsUrl, IsBoolean, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsUrl, IsBoolean, IsOptional } from 'class-validator';
 
 export class HauweiDataDto {
   @IsString()
