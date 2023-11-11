@@ -36,7 +36,7 @@ export class App {
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
     this.initializeQueues();
-    // this.initializeCronJob();
+    this.initializeCronJob();
   }
 
   public listen() {
