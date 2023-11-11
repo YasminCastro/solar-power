@@ -107,18 +107,16 @@ export class SolarDataService {
 
       console.log(chalk.yellow(`Creating powerGenerationDataPromise...`));
 
-      const powerGenerationDataPromise = new Promise<string[]>(async resolve => {
+      const getPowerGenerationDataPromise = async () => {
         let data = [];
         for (let textData of powerGenerationDataEval) {
           const text = await (await textData.getProperty('innerText')).jsonValue();
-
           data.push(text);
         }
+        return data;
+      };
 
-        resolve(data);
-      });
-
-      const powerGenerationData = await powerGenerationDataPromise;
+      const powerGenerationData = await getPowerGenerationDataPromise();
 
       if (!powerGenerationData || powerGenerationData.length !== 5) {
         throw new HttpException(404, 'Power generation data not found');
