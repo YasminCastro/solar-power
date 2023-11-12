@@ -12,8 +12,10 @@ describe('Inverters Router', () => {
   let invertersRoute: InvertersRoute;
   const email = 'test@example.com';
   const password = '123456789';
-  const inverterName = `Teste Jest`;
+  const inverterNameElgin = `Elgin Test Jest`;
+  const inverterHauweiElgin = `Hauwei Test Jest`;
   let token: string;
+  let inverterId: string;
 
   beforeAll(async () => {
     invertersRoute = new InvertersRoute();
@@ -28,7 +30,8 @@ describe('Inverters Router', () => {
     };
 
     await UserModel.deleteOne({ email });
-    await InverterModel.deleteOne({ name: inverterName });
+    await InverterModel.deleteOne({ name: inverterNameElgin });
+    await InverterModel.deleteOne({ name: inverterHauweiElgin });
 
     const response = await request(app.getServer()).post('/signup').send(userData);
     token = response.body.token;
@@ -42,7 +45,7 @@ describe('Inverters Router', () => {
   describe('[POST] /inverters', () => {
     it('should create an ELGIN inverter and return the inverter data', async () => {
       const inverterData = {
-        name: inverterName,
+        name: inverterNameElgin,
         model: 'elgin',
         username: 'Teste',
         password: 'teste123',
@@ -52,10 +55,35 @@ describe('Inverters Router', () => {
 
       const response = await request(app.getServer()).post('/inverters').send(inverterData).set('Authorization', `Bearer ${token}`);
 
+      inverterId = response.body.inverter._id;
+
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('Inverter successfully created');
       expect(response.body.inverter).toBeDefined();
       expect(response.body.inverter.model).toBe('elgin');
+      expect(response.body.inverter.name).toBe(inverterData.name);
+    });
+  });
+
+  describe('[POST] /inverters', () => {
+    it('should create an HAUWEI inverter and return the inverter data', async () => {
+      const inverterData = {
+        name: inverterHauweiElgin,
+        model: 'hauwei',
+        username: 'Teste',
+        password: 'teste123',
+        cep: '74000000',
+        maxRealTimePower: 3,
+      };
+
+      const response = await request(app.getServer()).post('/inverters').send(inverterData).set('Authorization', `Bearer ${token}`);
+
+      inverterId = response.body.inverter._id;
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Inverter successfully created');
+      expect(response.body.inverter).toBeDefined();
+      expect(response.body.inverter.model).toBe('hauwei');
       expect(response.body.inverter.name).toBe(inverterData.name);
     });
   });
@@ -66,6 +94,16 @@ describe('Inverters Router', () => {
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBeTruthy();
+    });
+  });
+
+  describe('[GET] /inverters/inverter/:id', () => {
+    it('response should return status 200 and the inverter data', async () => {
+      const response = await request(app.getServer()).get(`/inverters/inverter/${inverterId}`).set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(response.body._id).toBe(inverterId);
     });
   });
 });
