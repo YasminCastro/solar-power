@@ -38,7 +38,12 @@
         "tags": ["Users"],
         "responses": {
           "$ref": "/api/components/Users/Get/Responses.json"
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
 
       "put": {
@@ -79,6 +84,42 @@
         "responses": {
           "$ref": "/api/components/Users/GetOne/Responses.json"
         }
+      }
+    },
+
+    "/inverter": {
+      "post": {
+        "summary": "Criar Inversor",
+        "operationId": "createInverter",
+        "tags": ["Inverters"],
+        "requestBody": {
+          "$ref": "/api/components/Inverter/Create/RequestBody.json"
+        },
+        "responses": {
+          "$ref": "/api/components/Inverter/Create/Responses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+
+      "put": {
+        "summary": "Atualizar usuário",
+        "operationId": "updateUser",
+        "tags": ["Users"],
+        "requestBody": {
+          "$ref": "/api/components/Users/Update/RequestBody.json"
+        },
+        "responses": {
+          "$ref": "/api/components/Users/Update/Responses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
 

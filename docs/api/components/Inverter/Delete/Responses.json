@@ -1,0 +1,34 @@
+{
+  "200": {
+    "description": "Usuário excluído com sucesso.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Mensagem indicando que o usuário foi excluído com sucesso."
+            }
+          }
+        }
+      }
+    }
+  },
+  "409": {
+    "description": "Usuário não existe.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Mensagem indicando que o usuário não existe."
+            }
+          }
+        }
+      }
+    }
+  }
+}
