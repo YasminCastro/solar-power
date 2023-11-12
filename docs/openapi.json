@@ -7,7 +7,7 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "summary": "Signup",
+        "summary": "Cadastro",
         "operationId": "signup",
         "tags": ["Auth"],
         "requestBody": {
@@ -28,6 +28,38 @@
         },
         "responses": {
           "$ref": "/api/components/Login/Responses.json"
+        }
+      }
+    },
+
+    "/users": {
+      "get": {
+        "summary": "Buscar todos usuários",
+        "operationId": "getUsers",
+        "tags": ["Users"],
+        "responses": {
+          "$ref": "/api/components/Users/GetUsers/Responses.json"
+        }
+      },
+
+      "post": {
+        "summary": "Create a pet",
+        "operationId": "createPets",
+        "tags": ["pets"],
+        "responses": {
+          "201": {
+            "description": "Null response"
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       }
     },

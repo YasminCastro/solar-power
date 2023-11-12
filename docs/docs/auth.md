@@ -1,7 +1,7 @@
 ---
-sidebar_position: 1
-id: intro
-title: Introdução
+sidebar_position: 2
+id: auth
+title: Autenticação
 tags:
   - routes
   - auth
