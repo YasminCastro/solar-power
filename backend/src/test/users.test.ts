@@ -39,7 +39,7 @@ describe('Users Router', () => {
 
   describe('[GET] /users', () => {
     it('response should return status 200 and an array of users', async () => {
-      const response = await request(app.getServer()).get('/users');
+      const response = await request(app.getServer()).get('/users').set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBeTruthy();
