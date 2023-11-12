@@ -126,20 +126,6 @@
     },
 
     "/inverter": {
-      "get": {
-        "summary": "Buscar Inversores",
-        "operationId": "getInverters",
-        "tags": ["Inverters"],
-        "responses": {
-          "$ref": "/api/components/Inverter/Get/Responses.json"
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      },
-
       "post": {
         "summary": "Criar Inversor",
         "operationId": "createInverter",
@@ -149,6 +135,19 @@
         },
         "responses": {
           "$ref": "/api/components/Inverter/Create/Responses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "Buscar Inversores",
+        "operationId": "getInverters",
+        "tags": ["Inverters"],
+        "responses": {
+          "$ref": "/api/components/Inverter/Get/Responses.json"
         },
         "security": [
           {

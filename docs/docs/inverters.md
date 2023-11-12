@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 id: inverters
 title: Inversores
 tags:
@@ -9,22 +9,21 @@ tags:
 
 # Inversores
 
-Nossa aplicação permite a gestão de inversores solares. Inversor de energia fotovoltaica, também conhecido como inversor solar, é um dispositivo que converte a energia do sol, captada pelos painéis solares, de corrente contínua (DC) para corrente alternada (AC). Esta é a forma de energia que usamos em nossas casas e empresas.
-
-Fornecemos vários endpoints para facilitar operações como criação, busca, atualização e exclusão de inversores.
+Os inversores são componentes cruciais em sistemas de energia solar, convertendo energia solar de corrente contínua (DC) em corrente alternada (AC), a forma de energia utilizada em residências e empresas. A nossa aplicação facilita a gestão desses inversores solares, permitindo operações como criação, busca, atualização e exclusão.
 
 ## Endpoints
 
-- `POST /inverters`: Este endpoint permite criar um novo inversor. O corpo da solicitação deve conter os detalhes do inversor.
+:::info
 
-- `GET /inverters`: Este endpoint retorna os detalhes de um ou mais inversores. Ele aceita dois parâmetros opcionais, `userId` e `inverterId`. O parâmetro `userId` retorna todos os inversores de um usuário específico, enquanto o parâmetro `inverterId` retorna os detalhes de um inversor específico.
-
-- `PUT /inverters/:id`: Este endpoint permite atualizar os detalhes de um inversor específico. O parâmetro `:id` deve ser substituído pelo ID do inversor que você deseja atualizar. O corpo da solicitação deve conter os detalhes atualizados do inversor.
-
-- `DELETE /inverters/:id`: Este endpoint permite excluir um inversor específico. O parâmetro `:id` deve ser substituído pelo ID do inversor que você deseja excluir. Esteja ciente de que essa operação é irreversível.
-
-:::note
-
-Lembre-se de que todos esses endpoints requerem autenticação. Portanto, certifique-se de incluir o token JWT no cabeçalho de autorização de suas solicitações.
+Antes de prosseguir, lembre-se de que todos esses endpoints requerem autenticação. É fundamental incluir o token JWT no cabeçalho de autorização (`Authorization: Bearer <token>`) em todas as suas solicitações.
 
 :::
+
+- [`POST /inverters`](/api/criar-inversor): Cria um novo inversor no sistema.
+- [`GET /inverters`](/api/buscar-inversores): Obtém uma lista de todos os inversores cadastrados.
+- [`GET /inverters/inverter/:inverterId`](/api/buscar-inversor-por-id): Retorna detalhes de um inversor específico, usando seu ID.
+- [`GET /inverters/user/:userId`](/api/buscar-inversores-por-usuario): Lista inversores associados a um usuário específico.
+- [`PUT /inverters/:id`](/api/atualizar-inversors): Atualiza as informações de um inversor específico.
+- [`DELETE /inverters/:id`](/api/excluir-inversor): Remove um inversor do sistema.
+
+Para informações mais detalhadas, como parâmetros de requisição e exemplos de respostas, consulte nossa [Documentação das APIs](/api).
