@@ -42,25 +42,21 @@
         }
       },
 
-      "post": {
-        "summary": "Create a pet",
-        "operationId": "createPets",
-        "tags": ["pets"],
+      "put": {
+        "summary": "Atualizar usuário",
+        "operationId": "updateUser",
+        "tags": ["Users"],
+        "requestBody": {
+          "$ref": "/api/components/Users/UpdateUserRequestBody.json"
+        },
         "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+          "$ref": "/api/components/Users/UpdateUserResponses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
           }
-        }
+        ]
       }
     },
 
