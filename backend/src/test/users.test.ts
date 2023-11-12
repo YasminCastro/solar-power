@@ -55,4 +55,20 @@ describe('Auth Router', () => {
       expect(response.body._id).toBe(userId);
     });
   });
+
+  describe('[PUT] /users/:id', () => {
+    it('response should return status 200 and the updated user data', async () => {
+      const updatedUserData = {
+        name: 'Updated Name',
+      };
+
+      const response = await request(app.getServer()).put(`/users`).send(updatedUserData).set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(response.body.user._id).toBe(userId);
+      expect(response.body.user.name).toBe(updatedUserData.name);
+      expect(response.body.message).toBe('User successfully updated');
+    });
+  });
 });
