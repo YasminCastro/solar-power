@@ -71,4 +71,14 @@ describe('Auth Router', () => {
       expect(response.body.message).toBe('User successfully updated');
     });
   });
+
+  describe('[DELETE] /users/:id', () => {
+    it('response should return status 200 and the success message', async () => {
+      const response = await request(app.getServer()).delete(`/users/${userId}`).set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(response.body.message).toBe('User successfully deleted');
+    });
+  });
 });
