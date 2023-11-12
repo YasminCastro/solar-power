@@ -1,5 +1,5 @@
 {
-  "required": false,
+  "required": true,
   "content": {
     "application/json": {
       "schema": {
@@ -7,19 +7,35 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Novo nome do usuário."
+            "description": "Nome do inversor."
           },
-          "email": {
+          "model": {
             "type": "string",
-            "format": "email",
-            "description": "Novo e-mail do usuário."
+            "enum": ["elgin", "hauwei"],
+            "description": "Modelo do inversor (pode ser 'elgin' ou 'hauwei')."
+          },
+          "username": {
+            "type": "string",
+            "description": "Nome de usuário para acesso ao inversor Elgin."
           },
           "password": {
             "type": "string",
-            "format": "password",
-            "description": "Nova senha do usuário."
+            "description": "Senha para acesso ao inversor Elgin."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL para acesso ao inversor Hauwei."
+          },
+          "cep": {
+            "type": "string",
+            "description": "CEP onde o inversor está localizado."
+          },
+          "maxRealTimePower": {
+            "type": "integer",
+            "description": "Potência máxima em tempo real do inversor."
           }
-        }
+        },
+        "required": ["name", "model", "cep", "maxRealTimePower"]
       }
     }
   }

@@ -106,14 +106,14 @@
       },
 
       "put": {
-        "summary": "Atualizar usuário",
-        "operationId": "updateUser",
-        "tags": ["Users"],
+        "summary": "Atualizar Inversor",
+        "operationId": "updateInverter",
+        "tags": ["Inverters"],
         "requestBody": {
-          "$ref": "/api/components/Users/Update/RequestBody.json"
+          "$ref": "/api/components/Inverter/Update/RequestBody.json"
         },
         "responses": {
-          "$ref": "/api/components/Users/Update/Responses.json"
+          "$ref": "/api/components/Inverter/Update/Responses.json"
         },
         "security": [
           {

@@ -1,38 +1,28 @@
 {
   "200": {
-    "description": "Usuário atualizado com sucesso.",
+    "description": "Inversor atualizado com sucesso.",
     "content": {
       "application/json": {
         "schema": {
           "type": "object",
           "properties": {
-            "user": {
+            "message": {
+              "type": "string",
+              "description": "Mensagem indicando a atualização bem-sucedida do inversor."
+            },
+            "inverter": {
               "type": "object",
               "properties": {
                 "_id": {
                   "type": "string",
-                  "description": "ID único do usuário"
+                  "description": "ID único do inversor."
                 },
-                "name": { "type": "string", "description": "Nome do usuário" },
-                "email": {
-                  "type": "string",
-                  "format": "email",
-                  "description": "E-mail do usuário"
-                },
-                "password": {
-                  "type": "string",
-                  "description": "Senha do usuário"
-                },
-                "createdAt": {
-                  "type": "string",
-                  "format": "date-time",
-                  "description": "Data e hora da criação do usuário"
+                "users": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "IDs dos usuários associados ao inversor."
                 }
               }
-            },
-            "message": {
-              "type": "string",
-              "description": "Mensagem indicando que o usuário foi atualizado com sucesso."
             }
           }
         }
