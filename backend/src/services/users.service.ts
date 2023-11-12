@@ -35,7 +35,7 @@ export class UserService {
       data.name = userData.name;
     }
 
-    const updateUserById: User = await UserModel.findByIdAndUpdate(userId, { userData });
+    const updateUserById: User = await UserModel.findByIdAndUpdate(userId, userData, { new: true });
     return updateUserById;
   }
 
