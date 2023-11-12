@@ -38,7 +38,7 @@
         "operationId": "getUsers",
         "tags": ["Users"],
         "responses": {
-          "$ref": "/api/components/Users/GetUsersResponses.json"
+          "$ref": "/api/components/Users/Get/Responses.json"
         }
       },
 
@@ -47,10 +47,25 @@
         "operationId": "updateUser",
         "tags": ["Users"],
         "requestBody": {
-          "$ref": "/api/components/Users/UpdateUserRequestBody.json"
+          "$ref": "/api/components/Users/Update/RequestBody.json"
         },
         "responses": {
-          "$ref": "/api/components/Users/UpdateUserResponses.json"
+          "$ref": "/api/components/Users/Update/Responses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}": {
+      "delete": {
+        "summary": "Excluir Usuário",
+        "operationId": "deleteUser",
+        "tags": ["Users"],
+        "responses": {
+          "$ref": "/api/components/Users/Delete/Responses.json"
         },
         "security": [
           {
