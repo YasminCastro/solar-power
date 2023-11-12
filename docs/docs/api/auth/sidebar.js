@@ -1,4 +1,5 @@
 module.exports = [
+  { type: "doc", id: "api/auth/auth-introduction" },
   {
     type: "category",
     label: "Pets",
