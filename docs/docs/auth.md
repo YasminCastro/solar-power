@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 id: auth
 title: Autenticação
 tags:
@@ -9,7 +9,7 @@ tags:
 
 # Autenticação
 
-A autenticação é um aspecto crucial da nossa aplicação. Utilizamos o JSON Web Token (JWT) para autenticar os usuários. O JWT é um padrão (RFC-7519) que define como transmitir informações seguras entre partes usando um token. Essas informações são verificadas e confiáveis porque são assinadas digitalmente.
+A autenticação é um aspecto crucial da nossa aplicação. Utilizamos o JSON Web Token (JWT) para autenticar os usuários. O JWT é um padrão que define como transmitir informações seguras entre partes usando um token. Essas informações são verificadas e confiáveis porque são assinadas digitalmente.
 
 ## JSON Web Token (JWT)
 
@@ -25,5 +25,7 @@ Usamos o Bcrypt para fazer o hash das senhas dos usuários antes de armazená-la
 
 ## Endpoints
 
-- `POST /auth/login`: Endpoint para autenticar um usuário existente.
-- `POST /auth/signup`: Endpoint para registrar um novo usuário.
+[Documentação das APIs](/api)
+
+- [`POST /auth/signup`](/api/cadastro): Registrar um novo usuário.
+- [`POST /auth/login`](/api): Autenticar usuários.
