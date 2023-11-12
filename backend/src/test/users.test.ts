@@ -62,7 +62,7 @@ describe('Auth Router', () => {
         name: 'Updated Name',
       };
 
-      const response = await request(app.getServer()).put(`/users`).send(updatedUserData).set('Authorization', `Bearer ${token}`);
+      const response = await request(app.getServer()).put(`/users/${userId}`).send(updatedUserData).set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
