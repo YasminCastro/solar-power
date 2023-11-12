@@ -15,7 +15,8 @@ describe('Inverters Router', () => {
   const inverterHauweiElgin = `Hauwei Test Jest`;
   let token: string;
   let userId: string;
-  let inverterId: string;
+  let inverterElginId: string;
+  let inverterHauweiId: string;
 
   beforeAll(async () => {
     invertersRoute = new InvertersRoute();
@@ -56,7 +57,7 @@ describe('Inverters Router', () => {
 
       const response = await request(app.getServer()).post('/inverters').send(inverterData).set('Authorization', `Bearer ${token}`);
 
-      inverterId = response.body.inverter._id;
+      inverterElginId = response.body.inverter._id;
 
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('Inverter successfully created');
@@ -79,7 +80,7 @@ describe('Inverters Router', () => {
 
       const response = await request(app.getServer()).post('/inverters').send(inverterData).set('Authorization', `Bearer ${token}`);
 
-      inverterId = response.body.inverter._id;
+      inverterHauweiId = response.body.inverter._id;
 
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('Inverter successfully created');
@@ -100,11 +101,11 @@ describe('Inverters Router', () => {
 
   describe('[GET] /inverters/inverter/:id', () => {
     it('response should return status 200 and the inverter data', async () => {
-      const response = await request(app.getServer()).get(`/inverters/inverter/${inverterId}`).set('Authorization', `Bearer ${token}`);
+      const response = await request(app.getServer()).get(`/inverters/inverter/${inverterElginId}`).set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
-      expect(response.body._id).toBe(inverterId);
+      expect(response.body._id).toBe(inverterElginId);
     });
   });
 
@@ -124,15 +125,31 @@ describe('Inverters Router', () => {
       };
 
       const response = await request(app.getServer())
-        .put(`/inverters/${inverterId}`)
+        .put(`/inverters/${inverterElginId}`)
         .send(updatedInverterData)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
-      expect(response.body.inverter._id).toBe(inverterId);
+      expect(response.body.inverter._id).toBe(inverterElginId);
       expect(response.body.inverter.name).toBe(updatedInverterData.name);
       expect(response.body.message).toBe('Inverter successfully updated');
+    });
+  });
+
+  describe('[DELETE] /inverters/:id', () => {
+    it('response should return status 200 and the success message', async () => {
+      const responseElgin = await request(app.getServer()).delete(`/inverters/${inverterElginId}`).set('Authorization', `Bearer ${token}`);
+
+      expect(responseElgin.status).toBe(200);
+      expect(responseElgin.body).toBeDefined();
+      expect(responseElgin.body.message).toBe('Inverter successfully deleted');
+
+      const responseHauwei = await request(app.getServer()).delete(`/inverters/${inverterHauweiId}`).set('Authorization', `Bearer ${token}`);
+
+      expect(responseHauwei.status).toBe(200);
+      expect(responseHauwei.body).toBeDefined();
+      expect(responseHauwei.body.message).toBe('Inverter successfully deleted');
     });
   });
 });
