@@ -34,7 +34,7 @@
 
     "/users": {
       "get": {
-        "summary": "Buscar todos usuários",
+        "summary": "Buscar Usuários",
         "operationId": "getUsers",
         "tags": ["Users"],
         "responses": {
@@ -45,10 +45,11 @@
             "bearerAuth": []
           }
         ]
-      },
-
+      }
+    },
+    "/users/{userId}": {
       "put": {
-        "summary": "Atualizar usuário",
+        "summary": "Atualizar Usuário",
         "operationId": "updateUser",
         "tags": ["Users"],
         "requestBody": {
@@ -61,10 +62,19 @@
           {
             "bearerAuth": []
           }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID único do usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
         ]
-      }
-    },
-    "/users/{userId}": {
+      },
       "delete": {
         "summary": "Excluir Usuário",
         "operationId": "deleteUser",
@@ -90,7 +100,7 @@
         ]
       },
       "get": {
-        "summary": "Buscar usuário por ID",
+        "summary": "Buscar Usuário por ID",
         "operationId": "getUser",
         "tags": ["Users"],
         "responses": {

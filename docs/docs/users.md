@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 id: users
 title: Usuários
 tags:
@@ -13,16 +13,15 @@ Nossa aplicação permite a gestão de usuários. Fornecemos vários endpoints p
 
 ## Endpoints
 
-- `GET /users`: Este endpoint retorna uma lista de todos os usuários. É útil quando você precisa de uma visão geral de todos os usuários registrados na aplicação.
+:::info
 
-- `GET /users/:id`: Este endpoint retorna os detalhes de um usuário específico. O parâmetro `:id` deve ser substituído pelo ID do usuário que você deseja buscar. Este endpoint é útil quando você precisa de informações detalhadas sobre um único usuário.
-
-- `PUT /users/:id`: Este endpoint permite atualizar os detalhes de um usuário específico. O parâmetro `:id` deve ser substituído pelo ID do usuário que você deseja atualizar. O corpo da solicitação deve conter os detalhes atualizados do usuário.
-
-- `DELETE /users/:id`: Este endpoint permite excluir um usuário específico. O parâmetro `:id` deve ser substituído pelo ID do usuário que você deseja excluir. Esteja ciente de que essa operação é irreversível.
-
-:::note
-
-Lembre-se de que todos esses endpoints requerem autenticação. Portanto, certifique-se de incluir o token JWT no cabeçalho de autorização de suas solicitações.
+Antes de prosseguir, lembre-se de que todos esses endpoints requerem autenticação. É fundamental incluir o token JWT no cabeçalho de autorização (`Authorization: Bearer <token>`) em todas as suas solicitações.
 
 :::
+
+- [`GET /users`](/api/buscar-usuarios): Retorna uma lista de todos os usuários cadastrados na plataforma.
+- [`GET /users/:id`](/api/buscar-usuario-por-id): Permite a busca de informações de um usuário específico, usando seu ID como parâmetro.
+- [`PUT /users/:id`](/api/atualizar-usuario): Este endpoint é usado para atualizar os dados de um usuário específico.
+- [`DELETE /users/:id`](/api/excluir-usuario): Remove um usuário específico da base de dados.
+
+Para informações mais detalhadas, como parâmetros de requisição e exemplos de respostas, consulte nossa [Documentação das APIs](/api).
