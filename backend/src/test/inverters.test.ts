@@ -116,4 +116,23 @@ describe('Inverters Router', () => {
       expect(Array.isArray(response.body)).toBeTruthy();
     });
   });
+
+  describe('[PUT] /inverters/:id', () => {
+    it('response should return status 200 and the updated user data', async () => {
+      const updatedInverterData = {
+        name: 'Updated Name',
+      };
+
+      const response = await request(app.getServer())
+        .put(`/inverters/${inverterId}`)
+        .send(updatedInverterData)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(response.body.inverter._id).toBe(inverterId);
+      expect(response.body.inverter.name).toBe(updatedInverterData.name);
+      expect(response.body.message).toBe('Inverter successfully updated');
+    });
+  });
 });
