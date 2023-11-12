@@ -31,7 +31,6 @@
         }
       }
     },
-
     "/users": {
       "get": {
         "summary": "Buscar todos usuários",
@@ -72,6 +71,14 @@
             "bearerAuth": []
           }
         ]
+      },
+      "get": {
+        "summary": "Buscar usuário por ID",
+        "operationId": "getUser",
+        "tags": ["Users"],
+        "responses": {
+          "$ref": "/api/components/Users/GetOne/Responses.json"
+        }
       }
     },
 
