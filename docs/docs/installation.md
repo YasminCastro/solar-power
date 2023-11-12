@@ -1,36 +1,108 @@
 ---
-sidebar_position: 1
-id: intro
-title: Introdução
+sidebar_position: 2
+id: installation
+title: Instalação
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+# Instalação
+
+Esta seção irá guiá-lo através da instalação e configuração do projeto Solar Power.
+
 ## Começando
 
-Comece clonando o repositório do
-**[Github](https://github.com/YasminCastro/solar-power)**.
+Para começar, clone o repositório do **[Github](https://github.com/YasminCastro/solar-power)**.
 
 ### O que você vai precisar
 
 - [Node.js](https://nodejs.org/en/download/)
-- [Npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm/) ou [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/)
-- [Android Studio](#android-studio) ou [Expo](#expo)
+- [Expo](#expo) ou [Android Studio](#android-studio)
+- [Docker](https://www.docker.com)
 - Arquivo **.env**
 
 ## Rodando o projeto
 
 ### Back-end
 
-1. Dentro da pasta `backend` rode o comando `npm install` ou `yarn`, para instalar as dependências.
-2. Certifique que o arquivo `.env.development.local` está na raiz da pasta `backend`.
-   1. A backend deve rodar sempre na porta **4000**.
-3. Rode o comando `yarn dev` ou `npm dev`.
+Para configurar o back-end do projeto, siga estes passos:
+
+1. Dentro da pasta `backend`, instale as dependências:
+
+<Tabs
+defaultValue="npm"
+values={[
+{ label: 'Npm', value: 'npm' },
+{ label: 'Yarn', value: 'yarn' },
+]}>
+<TabItem value="npm">
+
+```powershell
+npm install
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```powershell
+yarn
+```
+
+</TabItem>
+</Tabs>
+
+2. Certifique-se de que o arquivo `.env.development.local` está na raiz da pasta backend. A backend deve rodar sempre na porta 4000.
+3. Inicie o servidor de desenvolvimento:
+
+<Tabs
+defaultValue="npm"
+values={[
+{ label: 'Npm', value: 'npm' },
+{ label: 'Yarn', value: 'yarn' },
+]}>
+<TabItem value="npm">
+
+```powershell
+npm run dev
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```powershell
+yarn dev
+```
+
+</TabItem>
+</Tabs>
 
 ### Front-end
 
-1. Dentro da pasta `front` rode o comando `npm install` ou `yarn`, para instalar as dependências.
+1. Dentro da pasta front, instale as dependências utilizando o mesmo método descrito acima.
+2. Inicie o servidor de desenvolvimento:
+
+<Tabs
+defaultValue="npm"
+values={[
+{ label: 'Npm', value: 'npm' },
+{ label: 'Yarn', value: 'yarn' },
+]}>
+<TabItem value="npm">
+
+```powershell
+npm run start
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```powershell
+yarn start
+```
+
+</TabItem>
+</Tabs>
 
 ## Configurações
 
@@ -75,3 +147,7 @@ O front-end e o seu celular devem estar na mesma rede wi-fi.
 
 9. Rode o front-end do projeto como descrito acima e aperte a letra `a` no terminal para abrir o android:
    ![Tutorial Android](/img/intro/expo-tutorial.png)
+
+```
+
+```
