@@ -18,6 +18,18 @@ const sidebars = {
   openApiSidebar: [
     {
       type: "category",
+      label: "Auth",
+      link: {
+        type: "generated-index",
+        title: "Auth",
+        description: "Autenticação Solar Power.",
+        slug: "/api/auth",
+      },
+      // @ts-ignore
+      items: require("./docs/api/auth/sidebar.js"),
+    },
+    {
+      type: "category",
       label: "API",
       link: {
         type: "generated-index",
