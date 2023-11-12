@@ -347,6 +347,58 @@
           }
         ]
       }
+    },
+    "/power-generated/month/{inverterId}": {
+      "get": {
+        "summary": "Obter Dados de Geração de Energia Mensal",
+        "operationId": "getMonthPowerGenerated",
+        "tags": ["Power Generated"],
+        "responses": {
+          "$ref": "/api/components/PowerGenerated/Common/Responses.json"
+        },
+        "parameters": [
+          {
+            "name": "inverterId",
+            "in": "path",
+            "required": true,
+            "description": "ID do inversor para o qual os dados de geração de energia são solicitados",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/power-generated/year/{inverterId}": {
+      "get": {
+        "summary": "Obter Dados de Geração de Energia Anual",
+        "operationId": "getYearPowerGenerated",
+        "tags": ["Power Generated"],
+        "responses": {
+          "$ref": "/api/components/PowerGenerated/Common/Responses.json"
+        },
+        "parameters": [
+          {
+            "name": "inverterId",
+            "in": "path",
+            "required": true,
+            "description": "ID do inversor para o qual os dados de geração de energia são solicitados",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   }
 }
