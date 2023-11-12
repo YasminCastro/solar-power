@@ -89,7 +89,7 @@
 
     "/inverter": {
       "get": {
-        "summary": "Buscar Todos os Inversores",
+        "summary": "Buscar Inversores",
         "operationId": "getInverters",
         "tags": ["Inverters"],
         "responses": {
@@ -154,12 +154,28 @@
     },
 
     "/inverter/inverter/{inverterId}": {
-      "delete": {
-        "summary": "Excluir Inversor",
-        "operationId": "deleteInverter",
+      "get": {
+        "summary": "Buscar Inversor por ID",
+        "operationId": "getInverterById",
         "tags": ["Inverters"],
         "responses": {
-          "$ref": "/api/components/Inverter/Delete/Responses.json"
+          "$ref": "/api/components/Inverter/GetOne/Responses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+
+    "/inverter/user/{userId}": {
+      "get": {
+        "summary": "Buscar Inversores por Usuário ",
+        "operationId": "getInverterByUser",
+        "tags": ["Inverters"],
+        "responses": {
+          "$ref": "/api/components/Inverter/Get/Responses.json"
         },
         "security": [
           {
