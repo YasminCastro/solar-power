@@ -56,14 +56,15 @@ export class InvertersController {
   public updateInverter = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const inverterData: UpdateInvertersDto = req.body;
+      const inverterId = String(req.params.id);
 
-      const inverter = await this.inverter.updateInverter(inverterData);
+      const inverter = await this.inverter.updateInverter(inverterData, inverterId);
 
       if (!inverter) {
         throw new Error('Error to update inverter.');
       }
 
-      res.status(201).json({ inverter, message: 'Inverter successfully updated' });
+      res.status(200).json({ inverter, message: 'Inverter successfully updated' });
     } catch (error) {
       next(error);
     }
