@@ -59,11 +59,10 @@ const config = {
             position: "left",
             label: "Tutorial",
           },
-
           {
-            label: "Petstore API",
+            label: "API",
             position: "left",
-            to: "/docs/category/petstore-api",
+            to: "/docs/api",
           },
           {
             position: "right",

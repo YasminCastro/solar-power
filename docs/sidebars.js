@@ -18,18 +18,17 @@ const sidebars = {
   openApiSidebar: [
     {
       type: "category",
-      label: "Petstore",
+      label: "API",
       link: {
         type: "generated-index",
-        title: "Petstore API",
-        description:
-          "This is a sample server Petstore server. You can find out more about Swagger at http://swagger.io or on irc.freenode.net, #swagger. For this sample, you can use the api key special-key to test the authorization filters.",
-        slug: "/category/petstore-api"
+        title: "API",
+        description: "Documentação Solar Power",
+        slug: "/api",
       },
       // @ts-ignore
-      items: require("./docs/petstore/sidebar.js")
-    }
-  ]
+      items: require("./docs/api/sidebar.js"),
+    },
+  ],
 
   // But you can create a sidebar manually
   /*
