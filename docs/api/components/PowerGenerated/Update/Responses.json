@@ -1,0 +1,32 @@
+{
+  "200": {
+    "description": "Inversor atualizado com sucesso.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Mensagem indicando a atualização bem-sucedida do inversor."
+            },
+            "inverter": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "ID único do inversor."
+                },
+                "users": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "IDs dos usuários associados ao inversor."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

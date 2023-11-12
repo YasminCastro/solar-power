@@ -1,0 +1,18 @@
+{
+  "200": {
+    "description": "Inversor excluído com sucesso.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Mensagem indicando a exclusão bem-sucedida do inversor."
+            }
+          }
+        }
+      }
+    }
+  }
+}

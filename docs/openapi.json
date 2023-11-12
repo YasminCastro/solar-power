@@ -31,6 +31,7 @@
         }
       }
     },
+
     "/users": {
       "get": {
         "summary": "Buscar todos usuários",
@@ -163,7 +164,6 @@
         ]
       }
     },
-
     "/inverter/{inverterId}": {
       "delete": {
         "summary": "Excluir Inversor",
@@ -190,7 +190,6 @@
         ]
       }
     },
-
     "/inverter/inverter/{inverterId}": {
       "get": {
         "summary": "Buscar Inversor por ID",
@@ -217,7 +216,6 @@
         ]
       }
     },
-
     "/inverter/user/{userId}": {
       "get": {
         "summary": "Buscar Inversores por Usuário ",
@@ -245,7 +243,7 @@
       }
     },
 
-    "/solarData/hauwei/{inverterId}": {
+    "/solar-data/hauwei/{inverterId}": {
       "get": {
         "summary": "Iniciar Web Scraping para Inversor Huawei",
         "operationId": "scrapeHuaweiInverter",
@@ -271,7 +269,7 @@
         ]
       }
     },
-    "/solarData/elgin/{inverterId}": {
+    "/solar-data/elgin/{inverterId}": {
       "get": {
         "summary": "Iniciar Web Scraping para Elgin Huawei",
         "operationId": "scrapeElginInverter",
@@ -285,6 +283,33 @@
             "in": "path",
             "required": true,
             "description": "ID único do inversor Elgin a ser processado",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+
+    "/power-generated/real-time/{inverterId}": {
+      "get": {
+        "summary": "Obter Dados de Geração de Energia em Tempo Real",
+        "operationId": "getRealTimePowerGenerated",
+        "tags": ["Power Generated"],
+        "responses": {
+          "$ref": "/api/components/PowerGenerated/RealTime/Responses.json"
+        },
+        "parameters": [
+          {
+            "name": "inverterId",
+            "in": "path",
+            "required": true,
+            "description": "ID do inversor para o qual os dados de geração de energia são solicitados",
             "schema": {
               "type": "string"
             }
