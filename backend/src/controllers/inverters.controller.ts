@@ -78,7 +78,7 @@ export class InvertersController {
 
       await this.inverter.deleteInverter(inverterId, userId, deleteForAll);
 
-      res.status(201).json({ message: 'Inverter successfully deleted' });
+      res.status(200).json({ message: 'Inverter successfully deleted' });
     } catch (error) {
       next(error);
     }
