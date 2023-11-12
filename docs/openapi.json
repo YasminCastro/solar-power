@@ -2,17 +2,23 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Swagger Petstore",
-    "license": {
-      "name": "MIT"
-    }
+    "title": "Swagger Solar Power"
   },
-  "servers": [
-    {
-      "url": "http://petstore.swagger.io/v1"
-    }
-  ],
   "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Login",
+        "operationId": "login",
+        "tags": ["Auth"],
+        "requestBody": {
+          "$ref": "/api/components/Login/RequestBody.json"
+        },
+        "responses": {
+          "$ref": "/api/components/Login/Responses.json"
+        }
+      }
+    },
+
     "/pets": {
       "get": {
         "summary": "List all pets",
