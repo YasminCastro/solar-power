@@ -75,6 +75,17 @@
           {
             "bearerAuth": []
           }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID único do usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
         ]
       },
       "get": {
@@ -83,7 +94,23 @@
         "tags": ["Users"],
         "responses": {
           "$ref": "/api/components/Users/GetOne/Responses.json"
-        }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID único do usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
 
@@ -145,6 +172,17 @@
         "responses": {
           "$ref": "/api/components/Inverter/Delete/Responses.json"
         },
+        "parameters": [
+          {
+            "name": "inverterId",
+            "in": "path",
+            "required": true,
+            "description": "ID único do Inversor.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -161,6 +199,17 @@
         "responses": {
           "$ref": "/api/components/Inverter/GetOne/Responses.json"
         },
+        "parameters": [
+          {
+            "name": "inverterId",
+            "in": "path",
+            "required": true,
+            "description": "ID único do Inversor.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -177,6 +226,70 @@
         "responses": {
           "$ref": "/api/components/Inverter/Get/Responses.json"
         },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID único do usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+
+    "/solarData/hauwei/{inverterId}": {
+      "get": {
+        "summary": "Iniciar Web Scraping para Inversor Huawei",
+        "operationId": "scrapeHuaweiInverter",
+        "tags": ["SolarData"],
+        "responses": {
+          "$ref": "/api/components/SolarData/Get/Responses.json"
+        },
+        "parameters": [
+          {
+            "name": "inverterId",
+            "in": "path",
+            "required": true,
+            "description": "ID único do inversor Huawei a ser processado",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/solarData/elgin/{inverterId}": {
+      "get": {
+        "summary": "Iniciar Web Scraping para Elgin Huawei",
+        "operationId": "scrapeElginInverter",
+        "tags": ["SolarData"],
+        "responses": {
+          "$ref": "/api/components/SolarData/Get/Responses.json"
+        },
+        "parameters": [
+          {
+            "name": "inverterId",
+            "in": "path",
+            "required": true,
+            "description": "ID único do inversor Elgin a ser processado",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
