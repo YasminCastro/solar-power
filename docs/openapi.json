@@ -5,6 +5,19 @@
     "title": "Swagger Solar Power"
   },
   "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "Signup",
+        "operationId": "signup",
+        "tags": ["Auth"],
+        "requestBody": {
+          "$ref": "/api/components/Signup/RequestBody.json"
+        },
+        "responses": {
+          "$ref": "/api/components/Signup/Responses.json"
+        }
+      }
+    },
     "/auth/login": {
       "post": {
         "summary": "Login",
