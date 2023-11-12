@@ -45,14 +45,14 @@ export class InvertersService {
     return invertersFound;
   }
 
-  public async updateInverter(inverterData: UpdateInvertersDto): Promise<any> {
+  public async updateInverter(inverterData: UpdateInvertersDto, inverterId: string): Promise<any> {
     let password = null;
     if (inverterData.password) {
       password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
       inverterData.password = password;
     }
 
-    const updateInverterData = await InverterModel.findOneAndUpdate({ _id: inverterData.inverterId }, { $set: inverterData }, { new: true });
+    const updateInverterData = await InverterModel.findOneAndUpdate({ _id: inverterId }, { $set: inverterData }, { new: true });
 
     return updateInverterData;
   }
