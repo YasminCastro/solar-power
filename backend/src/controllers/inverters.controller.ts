@@ -35,7 +35,7 @@ export class InvertersController {
 
       const inverter = await this.inverter.getInverterById(inverterId);
 
-      res.status(201).json(inverter);
+      res.status(200).json(inverter);
     } catch (error) {
       next(error);
     }
