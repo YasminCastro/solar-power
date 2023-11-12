@@ -4,7 +4,6 @@ import { InverterModel } from '@/models/inverters.models';
 import { AuthRoute } from '@/routes/auth.route';
 import { InvertersRoute } from '@/routes/inverters.route';
 import request from 'supertest';
-import moment from 'moment';
 
 describe('Inverters Router', () => {
   let app: App;
@@ -15,6 +14,7 @@ describe('Inverters Router', () => {
   const inverterNameElgin = `Elgin Test Jest`;
   const inverterHauweiElgin = `Hauwei Test Jest`;
   let token: string;
+  let userId: string;
   let inverterId: string;
 
   beforeAll(async () => {
@@ -35,6 +35,7 @@ describe('Inverters Router', () => {
 
     const response = await request(app.getServer()).post('/signup').send(userData);
     token = response.body.token;
+    userId = response.body.user._id;
   });
 
   afterAll(async () => {
@@ -104,6 +105,15 @@ describe('Inverters Router', () => {
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
       expect(response.body._id).toBe(inverterId);
+    });
+  });
+
+  describe('[GET] /inverters/user/:id', () => {
+    it('response should return status 200 and all user inverter', async () => {
+      const response = await request(app.getServer()).get(`/inverters/user/${userId}`).set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBeTruthy();
     });
   });
 });
