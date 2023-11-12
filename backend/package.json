@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "0.0.0",
-  "description": "TypeScript + Prisma + MySQL + Express API Server",
+  "description": "TypeScript + Moongose + Express API Server",
   "author": "",
   "license": "ISC",
   "scripts": {
@@ -9,7 +9,7 @@
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "swc src -d dist --source-maps --copy-files",
     "build:tsc": "tsc && tsc-alias",
-    "test": "jest --forceExit --detectOpenHandles",
+    "test": "jest --forceExit --detectOpenHandles --silent",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/",
     "lint:fix": "npm run lint -- --fix",
     "deploy": "npm run build && pm2 start ecosystem.config.js --only SolarPower && docker-compose up -d "

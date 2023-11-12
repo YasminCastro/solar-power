@@ -13,7 +13,7 @@ import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import { dbConnection } from './database';
-import { connect, set } from 'mongoose';
+import { connect, set, disconnect } from 'mongoose';
 import Queue from './libs/queue';
 
 import { BullAdapter } from '@bull-board/api/bullAdapter';
@@ -36,7 +36,7 @@ export class App {
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
     this.initializeQueues();
-    this.initializeCronJob();
+    // this.initializeCronJob();
   }
 
   public listen() {
@@ -134,5 +134,13 @@ export class App {
 
     job.start();
     logger.info(`is cronjob running? ${job.running} `);
+  }
+
+  public async closeDatabaseConnection() {
+    await disconnect();
+  }
+
+  public async closeQueueConnections() {
+    await Promise.all(Queue.queues.map(queue => queue.bull.close()));
   }
 }
