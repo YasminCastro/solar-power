@@ -26,11 +26,11 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          routeBasePath: "/",
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/PaloAltoNetworks/docusaurus-openapi-docs/tree/main/demo",
+          docLayoutComponent: "@theme/DocPage",
+          docItemComponent: "@theme/ApiItem",
         },
+
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -49,7 +49,7 @@ const config = {
       navbar: {
         title: "Solar Power",
         logo: {
-          alt: "My Site Logo",
+          alt: "Solar Power Logo",
           src: "img/logo.svg",
         },
         items: [
@@ -57,25 +57,16 @@ const config = {
             type: "doc",
             docId: "intro",
             position: "left",
-            label: "Docs",
+            label: "Tutorial",
+          },
+
+          {
+            label: "Petstore API",
+            position: "left",
+            to: "/docs/category/petstore-api",
           },
           {
-            type: "dropdown",
-            label: "API",
-            position: "left",
-            items: [
-              {
-                label: "API Zoo",
-                to: "/category/petstore-api",
-              },
-              {
-                label: "Petstore (versioned)",
-                to: "/category/petstore-versioned-api",
-              },
-            ],
-          },
-          {
-            position: "left",
+            position: "right",
             label: "Sobre",
             href: "/about",
           },
@@ -117,67 +108,33 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ["ruby", "csharp", "php"],
       },
-      plugins: [
-        [
-          "docusaurus-plugin-openapi-docs",
-          {
-            id: "openapi",
-            docsPluginId: "classic",
-            config: {
-              petstore_versioned: {
-                specPath: "/examples/petstore.yaml",
-                outputDir: "docs/petstore_versioned", // No trailing slash
-                sidebarOptions: {
-                  groupPathsBy: "tag",
-                  categoryLinkSource: "tag",
-                },
-                version: "2.0.0", // Current version
-                label: "v2.0.0", // Current version label
-                baseUrl: "/petstore_versioned/swagger-petstore-yaml", // Leading slash is important
-                versions: {
-                  "1.0.0": {
-                    specPath: "examples/petstore-1.0.0.yaml",
-                    outputDir: "docs/petstore_versioned/1.0.0", // No trailing slash
-                    label: "v1.0.0",
-                    baseUrl: "/petstore_versioned/1.0.0/swagger-petstore-yaml", // Leading slash is important
-                  },
-                },
-              },
-              petstore: {
-                specPath: "examples/petstore.yaml",
-                proxy: "https://cors.pan.dev",
-                outputDir: "docs/petstore",
-                sidebarOptions: {
-                  groupPathsBy: "tag",
-                  categoryLinkSource: "tag",
-                },
-                template: "api.mustache", // Customize API MDX with mustache template
-                downloadUrl:
-                  "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-openapi-docs/main/demo/examples/petstore.yaml",
-                hideSendButton: false,
-              },
-              cos: {
-                specPath: "examples/openapi-cos.json",
-                outputDir: "docs/cos",
-                sidebarOptions: {
-                  groupPathsBy: "tag",
-                },
-              },
-              burgers: {
-                specPath: "examples/food/burgers/openapi.yaml",
-                outputDir: "docs/food/burgers",
-              },
-              yogurt: {
-                specPath: "examples/food/yogurtstore/openapi.yaml",
-                outputDir: "docs/food/yogurtstore",
-              },
+    }),
+
+  plugins: [
+    [
+      "docusaurus-plugin-openapi-docs",
+      {
+        id: "openapi",
+        docsPluginId: "classic",
+        config: {
+          petstore: {
+            specPath: "examples/petstore.yaml",
+            outputDir: "docs/petstore",
+            downloadUrl:
+              "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-template-openapi-docs/main/examples/petstore.yaml",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+              categoryLinkSource: "tag",
             },
           },
-        ],
-      ],
-      themes: ["docusaurus-theme-openapi-docs"],
-    }),
+        },
+      },
+    ],
+  ],
+
+  themes: ["docusaurus-theme-openapi-docs"],
 };
 
 module.exports = config;

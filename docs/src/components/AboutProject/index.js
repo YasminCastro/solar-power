@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./styles.module.css";
 import { useMediaQuery } from "react-responsive";
 
-export default function AboutProject(): JSX.Element {
+export default function AboutProject() {
   const isMobile = useMediaQuery({ query: "(max-width: 520px)" });
   return (
     <section className={styles.features}>

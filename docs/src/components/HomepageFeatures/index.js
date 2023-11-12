@@ -2,13 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import styles from "./styles.module.css";
 
-type FeatureItem = {
-  title: string;
-  img: string;
-  description: JSX.Element;
-};
-
-const FeatureList: FeatureItem[] = [
+const FeatureList = [
   {
     title: "Yasmin",
     img: require("@site/static/img/book.png").default,
@@ -61,7 +55,7 @@ const FeatureList: FeatureItem[] = [
   },
 ];
 
-function Feature({ title, img, description }: FeatureItem) {
+function Feature({ img, title, description }) {
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
@@ -75,7 +69,7 @@ function Feature({ title, img, description }: FeatureItem) {
   );
 }
 
-export default function HomepageFeatures(): JSX.Element {
+export default function HomepageFeatures() {
   return (
     <section className={styles.features}>
       <div className="container">
