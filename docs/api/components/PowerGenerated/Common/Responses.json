@@ -1,0 +1,66 @@
+{
+  "200": {
+    "description": "Lista de dados de geração de energia do inversor.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "ID único do registro de geração de energia."
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Data e hora da criação do registro."
+              },
+              "inverterId": {
+                "type": "string",
+                "description": "ID do inversor associado a este registro."
+              },
+              "powerInRealTime": {
+                "type": "string",
+                "description": "Potência gerada em tempo real (kW)."
+              },
+              "powerToday": {
+                "type": "string",
+                "description": "Energia total gerada hoje (kWh)."
+              },
+              "powerMonth": {
+                "type": "string",
+                "description": "Energia total gerada no mês (kWh)."
+              },
+              "powerYear": {
+                "type": "string",
+                "description": "Energia total gerada no ano (kWh)."
+              },
+              "allPower": {
+                "type": "string",
+                "description": "Energia total gerada até o momento (kWh)."
+              },
+              "co2": {
+                "type": "string",
+                "description": "Redução total de CO2 (em toneladas)."
+              },
+              "coal": {
+                "type": "string",
+                "description": "Equivalente em carvão (em toneladas)."
+              },
+              "tree": {
+                "type": "string",
+                "description": "Equivalente em número de árvores salvas."
+              },
+              "__v": {
+                "type": "integer",
+                "description": "Versão do documento no banco de dados."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

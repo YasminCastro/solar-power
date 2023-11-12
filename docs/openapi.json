@@ -321,6 +321,32 @@
           }
         ]
       }
+    },
+    "/power-generated/day/{inverterId}": {
+      "get": {
+        "summary": "Obter Dados de Geração de Energia Diária",
+        "operationId": "getDailyPowerGenerated",
+        "tags": ["Power Generated"],
+        "responses": {
+          "$ref": "/api/components/PowerGenerated/Common/Responses.json"
+        },
+        "parameters": [
+          {
+            "name": "inverterId",
+            "in": "path",
+            "required": true,
+            "description": "ID do inversor para o qual os dados de geração de energia são solicitados",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   }
 }
