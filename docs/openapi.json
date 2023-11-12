@@ -280,7 +280,7 @@
     },
     "/solar-data/elgin/{inverterId}": {
       "get": {
-        "summary": "Iniciar Web Scraping para Elgin Huawei",
+        "summary": "Iniciar Web Scraping para Elgin",
         "operationId": "scrapeElginInverter",
         "tags": ["SolarData"],
         "responses": {
