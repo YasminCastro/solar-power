@@ -256,7 +256,7 @@
       "get": {
         "summary": "Iniciar Web Scraping para Inversor Huawei",
         "operationId": "scrapeHuaweiInverter",
-        "tags": ["SolarData"],
+        "tags": ["Solar Data"],
         "responses": {
           "$ref": "/api/components/SolarData/Get/Responses.json"
         },
