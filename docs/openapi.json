@@ -38,7 +38,7 @@
         "operationId": "getUsers",
         "tags": ["Users"],
         "responses": {
-          "$ref": "/api/components/Users/GetUsers/Responses.json"
+          "$ref": "/api/components/Users/GetUsersResponses.json"
         }
       },
 
