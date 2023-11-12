@@ -17,20 +17,18 @@ const config = {
   organizationName: "ifg",
   projectName: "solar-power",
   i18n: {
-    defaultLocale: "pt-BR",
-    locales: ["pt-BR"],
+    defaultLocale: "en",
+    locales: ["en"],
   },
+
   presets: [
     [
-      "classic",
-      /** @type {import('@docusaurus/preset-classic').Options} */
+      "docusaurus-preset-openapi",
+      /** @type {import('docusaurus-preset-openapi').Options} */
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          docLayoutComponent: "@theme/DocPage",
-          docItemComponent: "@theme/ApiItem",
         },
-
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -39,13 +37,8 @@ const config = {
   ],
 
   themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    /** @type {import('docusaurus-preset-openapi').ThemeConfig} */
     ({
-      docs: {
-        sidebar: {
-          hideable: true,
-        },
-      },
       navbar: {
         title: "Solar Power",
         logo: {
@@ -59,18 +52,14 @@ const config = {
             position: "left",
             label: "Tutorial",
           },
-          {
-            label: "API",
-            position: "left",
-            to: "/docs/api",
-          },
+          { to: "/api", label: "API", position: "left" },
           {
             position: "right",
             label: "Sobre",
             href: "/about",
           },
           {
-            href: "https://github.com/YasminCastro/solar-power",
+            href: "https://github.com/facebook/docusaurus",
             label: "GitHub",
             position: "right",
           },
@@ -107,33 +96,8 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ["ruby", "csharp", "php"],
       },
     }),
-
-  plugins: [
-    [
-      "docusaurus-plugin-openapi-docs",
-      {
-        id: "openapi",
-        docsPluginId: "classic",
-        config: {
-          petstore: {
-            specPath: "examples/petstore.yaml",
-            outputDir: "docs/petstore",
-            downloadUrl:
-              "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-template-openapi-docs/main/examples/petstore.yaml",
-            sidebarOptions: {
-              groupPathsBy: "tag",
-              categoryLinkSource: "tag",
-            },
-          },
-        },
-      },
-    ],
-  ],
-
-  themes: ["docusaurus-theme-openapi-docs"],
 };
 
 module.exports = config;
