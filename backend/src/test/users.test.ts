@@ -4,7 +4,7 @@ import { UserRoute } from '@/routes/users.route';
 import { AuthRoute } from '@/routes/auth.route';
 import request from 'supertest';
 
-describe('Auth Router', () => {
+describe('Users Router', () => {
   let app: App;
   let usersRoute: UserRoute;
   let authRoute: AuthRoute;
