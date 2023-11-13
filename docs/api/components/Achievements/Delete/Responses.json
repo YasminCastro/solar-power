@@ -1,6 +1,6 @@
 {
   "200": {
-    "description": "Inversor excluído com sucesso.",
+    "description": "Conquista excluído com sucesso.",
     "content": {
       "application/json": {
         "schema": {
@@ -8,7 +8,7 @@
           "properties": {
             "message": {
               "type": "string",
-              "description": "Mensagem indicando a exclusão bem-sucedida do inversor."
+              "description": "Mensagem indicando a exclusão bem-sucedida da conquista."
             }
           }
         }
@@ -19,6 +19,6 @@
     "description": "Não autorizado. Token de autenticação está ausente, inválido ou expirado."
   },
   "404": {
-    "description": "Inversor não foi encontrado."
+    "description": "Conquista não foi encontrado."
   }
 }
