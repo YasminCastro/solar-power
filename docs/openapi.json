@@ -434,16 +434,16 @@
       }
     },
 
-    "/achivements": {
+    "/achievements": {
       "post": {
         "summary": "Criar Conquista",
-        "operationId": "createAchivements",
-        "tags": ["Achivements"],
+        "operationId": "createAchievements",
+        "tags": ["Achievements"],
         "requestBody": {
-          "$ref": "/api/components/Achivements/Create/RequestBody.json"
+          "$ref": "/api/components/Achievements/Create/RequestBody.json"
         },
         "responses": {
-          "$ref": "/api/components/Achivements/Create/Responses.json"
+          "$ref": "/api/components/Achievements/Create/Responses.json"
         },
         "security": [
           {
@@ -453,10 +453,10 @@
       },
       "get": {
         "summary": "Buscar Conquistas",
-        "operationId": "getAchivements",
-        "tags": ["Achivements"],
+        "operationId": "getAchievements",
+        "tags": ["Achievements"],
         "responses": {
-          "$ref": "/api/components/Achivements/Get/Responses.json"
+          "$ref": "/api/components/Achievements/Get/Responses.json"
         },
         "security": [
           {

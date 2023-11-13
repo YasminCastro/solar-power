@@ -1,10 +1,10 @@
 ---
 sidebar_position: 8
-id: achivements
+id: achievements
 title: Conquistas
 tags:
   - routes
-  - achivements
+  - achievements
 ---
 
 Os endpoints relacionados à energia gerada permitem acessar dados sobre a quantidade de energia gerada pelos inversores em diferentes intervalos de tempo.
