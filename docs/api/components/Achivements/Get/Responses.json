@@ -1,6 +1,6 @@
 {
   "200": {
-    "description": "Lista de achievements obtida com sucesso.",
+    "description": "Lista de conquistas obtida com sucesso.",
     "content": {
       "application/json": {
         "schema": {
@@ -10,24 +10,24 @@
             "properties": {
               "_id": {
                 "type": "string",
-                "description": "ID único do achievement."
+                "description": "ID único do conquistas."
               },
               "name": {
                 "type": "string",
-                "description": "Nome do achievement."
+                "description": "Nome do conquistas."
               },
               "description": {
                 "type": "string",
-                "description": "Descrição detalhada do achievement."
+                "description": "Descrição detalhada do conquistas."
               },
               "points": {
                 "type": "integer",
-                "description": "Pontos atribuídos ao conquistar o achievement."
+                "description": "Pontos atribuídos ao conquistar o conquistas."
               },
               "createdAt": {
                 "type": "string",
                 "format": "date-time",
-                "description": "Data e hora da criação do achievement."
+                "description": "Data e hora da criação do conquistas."
               }
             }
           }
