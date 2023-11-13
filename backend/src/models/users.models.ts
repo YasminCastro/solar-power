@@ -15,6 +15,9 @@ const UserSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  achievements: {
+    type: Array,
+  },
   createdAt: { default: Date.now(), type: Date },
 });
 

@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsNotEmpty, MinLength, MaxLength, IsOptional } from 'class-validator';
+import { IsEmail, IsString, IsNotEmpty, MinLength, MaxLength, IsOptional, IsArray } from 'class-validator';
 export class CreateUserDto {
   @IsEmail()
   public email: string;
@@ -39,4 +39,8 @@ export class UpdateUserDto {
   @IsEmail()
   @IsOptional()
   public email: string;
+
+  @IsArray()
+  @IsOptional()
+  public achievements: string;
 }

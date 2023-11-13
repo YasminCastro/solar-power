@@ -1,3 +1,4 @@
+import { Achievement } from './achievement.interface';
 import { Inverter } from './inverter.interface';
 
 export interface User {
@@ -7,4 +8,5 @@ export interface User {
   password: string;
   createdAt: Date;
   inverters?: Inverter[];
+  achievements: Array<Achievement>;
 }
