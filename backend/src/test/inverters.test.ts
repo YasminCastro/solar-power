@@ -40,6 +40,7 @@ describe('Inverters Router', () => {
   });
 
   afterAll(async () => {
+    await UserModel.deleteOne({ email });
     await app.closeDatabaseConnection();
     await app.closeQueueConnections();
   });

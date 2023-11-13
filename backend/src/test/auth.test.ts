@@ -9,17 +9,16 @@ describe('Auth Router', () => {
   const email = 'test@example.com';
   const password = '123456789';
 
-  beforeAll(() => {
-    // Inicializar o app e as rotas
+  beforeAll(async () => {
+    await UserModel.deleteOne({ email });
+
     authRoute = new AuthRoute();
     app = new App([authRoute]);
   });
 
   afterAll(async () => {
-    // Excluir o usuário criado durante o teste
     await UserModel.deleteOne({ email });
 
-    // Fechar conexões do banco de dados e das filas
     await app.closeDatabaseConnection();
     await app.closeQueueConnections();
   });
@@ -33,8 +32,8 @@ describe('Auth Router', () => {
       };
 
       const response = await request(app.getServer()).post('/signup').send(userData);
+
       expect(response.status).toBe(201);
-      // Verificar se o token e os dados do usuário estão presentes na resposta
       expect(response.body.token).toBeDefined();
       expect(response.body.user).toBeDefined();
       expect(response.body.user.email).toBe(userData.email);
@@ -44,7 +43,6 @@ describe('Auth Router', () => {
 
   describe('[POST] /login', () => {
     it('response should have the Set-Cookie header with the Authorization token', async () => {
-      // Substitua com credenciais de teste válidas
       const userData = {
         email,
         password,

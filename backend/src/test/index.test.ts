@@ -6,12 +6,10 @@ describe('App online', () => {
   let app: App;
 
   beforeAll(() => {
-    // Inicializar o app e as rotas
     app = new App([new AuthRoute()]);
   });
 
   afterAll(async () => {
-    // Fechar conexões do banco de dados e das filas
     await app.closeDatabaseConnection();
     await app.closeQueueConnections();
   });
