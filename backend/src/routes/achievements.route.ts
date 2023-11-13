@@ -6,7 +6,7 @@ import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { AchivementsController } from '@/controllers/achivements.controller';
 
 export class AchivementsRoute implements Routes {
-  public path = '/achivements';
+  public path = '/achievements';
   public router = Router();
   public user = new AchivementsController();
 
