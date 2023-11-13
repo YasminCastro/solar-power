@@ -19,6 +19,10 @@
                 "type": "string",
                 "description": "Senha do usuário"
               },
+              "achievements": {
+                "type": "array",
+                "description": "Array de conquistas do usuário."
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time",

@@ -27,6 +27,10 @@
                   "type": "string",
                   "format": "date-time",
                   "description": "Data e hora da criação do usuário"
+                },
+                "achievements": {
+                  "type": "array",
+                  "description": "Array de conquistas do usuário."
                 }
               }
             },

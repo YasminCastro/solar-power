@@ -18,6 +18,10 @@
             "type": "string",
             "format": "password",
             "description": "Nova senha do usuário."
+          },
+          "achievements": {
+            "type": "array",
+            "description": "Array de conquistas do usuário."
           }
         }
       }
