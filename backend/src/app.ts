@@ -36,7 +36,7 @@ export class App {
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
     this.initializeQueues();
-    // this.initializeCronJob();
+    this.initializeCronJob();
   }
 
   public listen() {
@@ -107,7 +107,7 @@ export class App {
         logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
 
         try {
-          const allInverters = await InverterModel.find({});
+          const allInverters = await InverterModel.find();
           logger.info(`${allInverters.length} inverters found.`);
 
           for (const inverter of allInverters) {
