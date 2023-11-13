@@ -1,0 +1,24 @@
+{
+  "200": {
+    "description": "Inversor excluído com sucesso.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Mensagem indicando a exclusão bem-sucedida do inversor."
+            }
+          }
+        }
+      }
+    }
+  },
+  "401": {
+    "description": "Não autorizado. Token de autenticação está ausente, inválido ou expirado."
+  },
+  "404": {
+    "description": "Inversor não foi encontrado."
+  }
+}

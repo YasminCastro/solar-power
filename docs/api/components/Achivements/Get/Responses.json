@@ -1,0 +1,58 @@
+{
+  "200": {
+    "description": "Lista de todos os inversores.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "ID único do inversor."
+              },
+              "users": {
+                "type": "array",
+                "description": "Lista de IDs dos usuários associados ao inversor."
+              },
+              "name": { "type": "string", "description": "Nome do inversor." },
+              "model": {
+                "type": "string",
+                "description": "Modelo do inversor."
+              },
+              "username": {
+                "type": "string",
+                "description": "Nome de usuário para acesso ao inversor."
+              },
+              "password": {
+                "type": "string",
+                "description": "Senha do inversor."
+              },
+              "active": {
+                "type": "boolean",
+                "description": "Indica se o inversor está ativo."
+              },
+              "cep": {
+                "type": "string",
+                "description": "CEP onde o inversor está localizado."
+              },
+              "maxRealTimePower": {
+                "type": "integer",
+                "description": "Potência máxima em tempo real do inversor."
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Data e hora da criação do inversor."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "401": {
+    "description": "Não autorizado. Token de autenticação está ausente, inválido ou expirado."
+  }
+}

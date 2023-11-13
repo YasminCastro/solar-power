@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "content": {
+    "application/json": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do achievement."
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição do achievement."
+          },
+          "points": {
+            "type": "integer",
+            "description": "Pontos atribuídos ao conquistar o achievement."
+          }
+        },
+        "required": ["name", "description", "points"]
+      }
+    }
+  }
+}

@@ -432,6 +432,55 @@
           }
         ]
       }
+    },
+
+    "/achivements": {
+      "post": {
+        "summary": "Criar Conquista",
+        "operationId": "createAchivements",
+        "tags": ["Achivements"],
+        "requestBody": {
+          "$ref": "/api/components/Achivements/Create/RequestBody.json"
+        },
+        "responses": {
+          "$ref": "/api/components/Achivements/Create/Responses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "Buscar Inversores",
+        "operationId": "getInverters",
+        "tags": ["Inverters"],
+        "responses": {
+          "$ref": "/api/components/Inverter/Get/Responses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+
+      "put": {
+        "summary": "Atualizar Inversor",
+        "operationId": "updateInverter",
+        "tags": ["Inverters"],
+        "requestBody": {
+          "$ref": "/api/components/Inverter/Update/RequestBody.json"
+        },
+        "responses": {
+          "$ref": "/api/components/Inverter/Update/Responses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   }
 }
