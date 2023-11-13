@@ -17,11 +17,11 @@ export class PowerGeneratedController {
     try {
       const inverterId = req.params.id as string;
 
-      console.log(inverterId);
-
       if (!inverterId) {
-        throw new HttpException(409, 'inverterId is required');
+        throw new HttpException(400, 'inverterId is required');
       }
+
+      await this.inverters.getInverterById(inverterId);
 
       const powerGenerated = await this.powerGenerated.lastRegister(inverterId);
 
