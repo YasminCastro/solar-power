@@ -452,11 +452,11 @@
         ]
       },
       "get": {
-        "summary": "Buscar Inversores",
-        "operationId": "getInverters",
-        "tags": ["Inverters"],
+        "summary": "Buscar Conquistas",
+        "operationId": "getAchivements",
+        "tags": ["Achivements"],
         "responses": {
-          "$ref": "/api/components/Inverter/Get/Responses.json"
+          "$ref": "/api/components/Achivements/Get/Responses.json"
         },
         "security": [
           {
