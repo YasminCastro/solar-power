@@ -19,7 +19,7 @@ describe('achievements Router', () => {
 
   let token: string;
   let userId: string;
-  let inverterElginId: string;
+  let AchievementId: string;
   let inverterHauweiId: string;
   let achivementId: string;
 
@@ -89,33 +89,24 @@ describe('achievements Router', () => {
     });
   });
 
-  // describe('[GET] /inverters/user/:id', () => {
-  //   it('response should return status 200 and all user inverter', async () => {
-  //     const response = await request(app.getServer()).get(`/inverters/user/${userId}`).set('Authorization', `Bearer ${token}`);
+  describe('[PUT] /achievements/:id', () => {
+    it('response should return status 200 and the updated achievements data', async () => {
+      const updatedAchievementsData = {
+        name: 'Updated Name',
+      };
 
-  //     expect(response.status).toBe(200);
-  //     expect(Array.isArray(response.body)).toBeTruthy();
-  //   });
-  // });
+      const response = await request(app.getServer())
+        .put(`/achievements/${AchievementId}`)
+        .send(updatedAchievementsData)
+        .set('Authorization', `Bearer ${token}`);
 
-  // describe('[PUT] /inverters/:id', () => {
-  //   it('response should return status 200 and the updated user data', async () => {
-  //     const updatedInverterData = {
-  //       name: 'Updated Name',
-  //     };
-
-  //     const response = await request(app.getServer())
-  //       .put(`/inverters/${inverterElginId}`)
-  //       .send(updatedInverterData)
-  //       .set('Authorization', `Bearer ${token}`);
-
-  //     expect(response.status).toBe(200);
-  //     expect(response.body).toBeDefined();
-  //     expect(response.body.inverter._id).toBe(inverterElginId);
-  //     expect(response.body.inverter.name).toBe(updatedInverterData.name);
-  //     expect(response.body.message).toBe('Inverter successfully updated');
-  //   });
-  // });
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(response.body.achievement._id).toBe(AchievementId);
+      expect(response.body.achievement.name).toBe(updatedAchievementsData.name);
+      expect(response.body.message).toBe('Achievement successfully updated');
+    });
+  });
 
   // describe('[DELETE] /inverters/:id', () => {
   //   it('response should return status 200 and the success message', async () => {
