@@ -12,7 +12,7 @@ import { CreateAchivementsDto } from '@/dtos/achivements.dto';
 export class AchivementsService {
   public async createAchivement(achivementData: CreateAchivementsDto): Promise<Achivement> {
     const findAchivements: Achivement = await AchivementsModel.findOne({ name: achivementData.name });
-    if (findAchivements) throw new HttpException(409, `This achivement ${achivementData.name} already register`);
+    if (findAchivements) throw new HttpException(409, `This achivement '${achivementData.name}' already register`);
 
     const createAchivementData: Achivement = await AchivementsModel.create(achivementData);
     return createAchivementData;

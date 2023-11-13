@@ -16,7 +16,7 @@ export class AchivementsController {
 
       const achivement = await this.achivements.createAchivement(achivementData);
 
-      res.status(200).json(achivement);
+      res.status(201).json(achivement);
     } catch (error) {
       next(error);
     }
