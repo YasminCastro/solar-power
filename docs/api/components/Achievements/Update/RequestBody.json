@@ -7,35 +7,17 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Nome do inversor."
+            "description": "Nome atualizado da conquista."
           },
-          "model": {
+          "description": {
             "type": "string",
-            "enum": ["elgin", "hauwei"],
-            "description": "Modelo do inversor (pode ser 'elgin' ou 'hauwei')."
+            "description": "Descrição atualizada da conquista."
           },
-          "username": {
-            "type": "string",
-            "description": "Nome de usuário para acesso ao inversor Elgin."
-          },
-          "password": {
-            "type": "string",
-            "description": "Senha para acesso ao inversor Elgin."
-          },
-          "url": {
-            "type": "string",
-            "description": "URL para acesso ao inversor Hauwei."
-          },
-          "cep": {
-            "type": "string",
-            "description": "CEP onde o inversor está localizado."
-          },
-          "maxRealTimePower": {
+          "points": {
             "type": "integer",
-            "description": "Potência máxima em tempo real do inversor."
+            "description": "Pontuação atualizada atribuída ao alcançar a conquista."
           }
-        },
-        "required": ["name", "model", "cep", "maxRealTimePower"]
+        }
       }
     }
   }

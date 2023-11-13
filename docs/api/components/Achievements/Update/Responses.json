@@ -1,28 +1,40 @@
 {
   "200": {
-    "description": "Inversor atualizado com sucesso.",
+    "description": "Conquista atualizada com sucesso.",
     "content": {
       "application/json": {
         "schema": {
           "type": "object",
           "properties": {
-            "message": {
-              "type": "string",
-              "description": "Mensagem indicando a atualização bem-sucedida do inversor."
-            },
-            "inverter": {
+            "achievement": {
               "type": "object",
               "properties": {
                 "_id": {
                   "type": "string",
-                  "description": "ID único do inversor."
+                  "description": "ID único da conquista."
                 },
-                "users": {
-                  "type": "array",
-                  "items": { "type": "string" },
-                  "description": "IDs dos usuários associados ao inversor."
+                "name": {
+                  "type": "string",
+                  "description": "Nome da conquista."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Descrição detalhada da conquista."
+                },
+                "points": {
+                  "type": "integer",
+                  "description": "Pontos atribuídos ao alcançar a conquista."
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Data e hora da criação da conquista."
                 }
               }
+            },
+            "message": {
+              "type": "string",
+              "description": "Mensagem indicando o sucesso da atualização."
             }
           }
         }
@@ -33,7 +45,7 @@
     "description": "Não autorizado. Token de autenticação está ausente, inválido ou expirado."
   },
   "404": {
-    "description": "Usuário não foi encontrado."
+    "description": "Conquista não foi encontrado."
   },
   "400": {
     "description": "Erro de requisição inválida, problemas com os campos de entrada."
