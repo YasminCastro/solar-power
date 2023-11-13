@@ -282,7 +282,7 @@
       "get": {
         "summary": "Iniciar Web Scraping para Elgin",
         "operationId": "scrapeElginInverter",
-        "tags": ["SolarData"],
+        "tags": ["Solar Data"],
         "responses": {
           "$ref": "/api/components/SolarData/Get/Responses.json"
         },
