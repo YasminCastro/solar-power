@@ -500,10 +500,10 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "achievementId",
             "in": "path",
             "required": true,
-            "description": "ID único do usuário.",
+            "description": "ID único da conquista.",
             "schema": {
               "type": "string"
             }
