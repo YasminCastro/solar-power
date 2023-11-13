@@ -38,7 +38,7 @@ export class AuthService {
     };
 
     const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
-    if (!isPasswordMatching) throw new HttpException(409, 'Password is not matching');
+    if (!isPasswordMatching) throw new HttpException(401, 'Password is not matching');
 
     const token = this.createToken(user);
 
