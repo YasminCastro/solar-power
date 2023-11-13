@@ -60,5 +60,11 @@
         }
       }
     }
+  },
+  "409": {
+    "description": "Erro de conflito, como nome já existente ou validação de campos falhada."
+  },
+  "400": {
+    "description": "Erro de requisição inválida, problemas com os campos de entrada."
   }
 }

@@ -28,5 +28,14 @@
         }
       }
     }
+  },
+  "401": {
+    "description": "Não autorizado. Token de autenticação está ausente, inválido ou expirado."
+  },
+  "404": {
+    "description": "Usuário não foi encontrado."
+  },
+  "400": {
+    "description": "Erro de requisição inválida, problemas com os campos de entrada."
   }
 }
