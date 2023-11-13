@@ -28,10 +28,6 @@
                 "type": "string",
                 "format": "date-time",
                 "description": "Data e hora da criação da conquista."
-              },
-              "__v": {
-                "type": "integer",
-                "description": "Versão do documento no banco de dados."
               }
             }
           }
