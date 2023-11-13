@@ -14,7 +14,6 @@ export const {
   DB_HOST,
   DB_PORT,
   DB_DATABASE,
-  CEP_ABERTO_TOKEN,
   REDIS_HOST,
   REDIS_PORT,
   DB_USER,
