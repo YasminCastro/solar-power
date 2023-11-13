@@ -39,6 +39,6 @@
     "description": "Erro de conflito, como email já existente ou validação de campos falhada."
   },
   "400": {
-    "description": "Requisição inválida. Este erro indica que a solicitação enviada pelo cliente contém dados incorretos ou malformados, impedindo o servidor de processá-la."
+    "description": "Erro de requisição inválida, problemas com os campos de entrada."
   }
 }

@@ -35,8 +35,11 @@
       }
     }
   },
-  "409": {
-    "description": "Erro de conflito, email não encontrado ou senha não corresponde."
+  "404": {
+    "description": "Email não encontrado."
+  },
+  "401": {
+    "description": "Senha incorreta."
   },
   "400": {
     "description": "Erro de requisição inválida, problemas com os campos de entrada."
