@@ -9,7 +9,7 @@ import { AchivementsModel } from '@/models/achievements.models';
 import { CreateAchivementsDto } from '@/dtos/achievements.dto';
 
 @Service()
-export class AchivementsService {
+export class AchievementsService {
   public async createAchivement(achivementData: CreateAchivementsDto): Promise<Achivement> {
     const findAchivements: Achivement = await AchivementsModel.findOne({ name: achivementData.name });
     if (findAchivements) throw new HttpException(409, `This achivement '${achivementData.name}' already register`);

@@ -3,12 +3,12 @@ import { Container } from 'typedi';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import { User } from '@/interfaces/users.interface';
 import { UpdateUserDto } from '@/dtos/users.dto';
-import { AchivementsService } from '@/services/achievements.service';
 import { CreateAchivementsDto } from '@/dtos/achievements.dto';
 import { Achivement } from '@/interfaces/achievements.interface';
+import { AchievementsService } from '@/services/achievements.service';
 
 export class AchivementsController {
-  public achievements = Container.get(AchivementsService);
+  public achievements = Container.get(AchievementsService);
 
   public createAchivement = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
