@@ -13,14 +13,10 @@ describe('achievements Router', () => {
   let achivementsRoute: AchivementsRoute;
   const email = 'test@example.com';
   const password = '123456789';
-  const inverterNameElgin = `Elgin Test Jest`;
-  const inverterHauweiElgin = `Hauwei Test Jest`;
   const achivementName = 'Test Jest';
 
   let token: string;
   let userId: string;
-  let AchievementId: string;
-  let inverterHauweiId: string;
   let achivementId: string;
 
   beforeAll(async () => {
@@ -96,13 +92,13 @@ describe('achievements Router', () => {
       };
 
       const response = await request(app.getServer())
-        .put(`/achievements/${AchievementId}`)
+        .put(`/achievements/${achivementId}`)
         .send(updatedAchievementsData)
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
-      expect(response.body.achievement._id).toBe(AchievementId);
+      expect(response.body.achievement._id).toBe(achivementId);
       expect(response.body.achievement.name).toBe(updatedAchievementsData.name);
       expect(response.body.message).toBe('Achievement successfully updated');
     });
