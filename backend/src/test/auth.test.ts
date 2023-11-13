@@ -42,7 +42,7 @@ describe('Auth Router', () => {
   });
 
   describe('[POST] /login', () => {
-    it('response should have the Set-Cookie header with the Authorization token', async () => {
+    it('response should return status 200 with token and user data', async () => {
       const userData = {
         email,
         password,
