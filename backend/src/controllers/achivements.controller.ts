@@ -3,7 +3,7 @@ import { Container } from 'typedi';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import { User } from '@/interfaces/users.interface';
 import { UpdateUserDto } from '@/dtos/users.dto';
-import { CreateAchivementsDto } from '@/dtos/achievements.dto';
+import { CreateAchivementsDto, UpdateAchivementsDto } from '@/dtos/achievements.dto';
 import { Achievement } from '@/interfaces/achievement.interface';
 import { AchievementsService } from '@/services/achievements.service';
 
@@ -43,13 +43,13 @@ export class AchivementsController {
     }
   };
 
-  public updateUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public updateAchievement = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = String(req.user._id);
-      const userData: UpdateUserDto = req.body;
-      const user = await this.achievements.updateUser(userId, userData);
+      const achievementId = String(req.params.id);
+      const achievementData: UpdateAchivementsDto = req.body;
+      const achievement = await this.achievements.updateAchievement(achievementId, achievementData);
 
-      res.status(200).json({ user, message: 'User successfully updated' });
+      res.status(200).json({ achievement, message: 'Achievement successfully updated' });
     } catch (error) {
       next(error);
     }

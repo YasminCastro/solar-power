@@ -6,7 +6,7 @@ import { User } from '@/interfaces/users.interface';
 import { UserModel } from '@/models/users.models';
 import { Achievement } from '@/interfaces/achievement.interface';
 import { AchivementsModel } from '@/models/achievements.models';
-import { CreateAchivementsDto } from '@/dtos/achievements.dto';
+import { CreateAchivementsDto, UpdateAchivementsDto } from '@/dtos/achievements.dto';
 
 @Service()
 export class AchievementsService {
@@ -30,23 +30,26 @@ export class AchievementsService {
     return findUser;
   }
 
-  public async updateUser(userId: string, userData: UpdateUserDto): Promise<User> {
-    const findUser: User = await UserModel.findOne({ _id: userId });
-    if (!findUser) throw new HttpException(404, "User doesn't exist");
+  public async updateAchievement(achievementId: string, achivementsData: UpdateAchivementsDto): Promise<Achievement> {
+    const findAchivement: Achievement = await AchivementsModel.findOne({ _id: achievementId });
+    if (!findAchivement) throw new HttpException(404, "Achivements doesn't exist");
 
-    let data = findUser;
+    let data = findAchivement;
 
-    if (userData.password) {
-      const hashedPassword = await hash(userData.password, 10);
-      data.password = hashedPassword;
+    if (achivementsData.name) {
+      data.name = achivementsData.name;
     }
 
-    if (userData.name) {
-      data.name = userData.name;
+    if (achivementsData.description) {
+      data.description = achivementsData.description;
     }
 
-    const updateUserById: User = await UserModel.findByIdAndUpdate(userId, { userData });
-    return updateUserById;
+    if (achivementsData.points) {
+      data.points = achivementsData.points;
+    }
+
+    const updateAchievementById: Achievement = await AchivementsModel.findByIdAndUpdate(achievementId, achivementsData, { new: true });
+    return updateAchievementById;
   }
 
   public async deleteUser(userId: string): Promise<User> {
