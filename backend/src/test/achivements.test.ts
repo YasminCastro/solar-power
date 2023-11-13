@@ -16,7 +16,6 @@ describe('achievements Router', () => {
   const achivementName = 'Test Jest';
 
   let token: string;
-  let userId: string;
   let achivementId: string;
 
   beforeAll(async () => {
@@ -37,7 +36,6 @@ describe('achievements Router', () => {
 
     const response = await request(app.getServer()).post('/signup').send(userData);
     token = response.body.token;
-    userId = response.body.user._id;
   });
 
   afterAll(async () => {
@@ -104,19 +102,13 @@ describe('achievements Router', () => {
     });
   });
 
-  // describe('[DELETE] /inverters/:id', () => {
-  //   it('response should return status 200 and the success message', async () => {
-  //     const responseElgin = await request(app.getServer()).delete(`/inverters/${inverterElginId}`).set('Authorization', `Bearer ${token}`);
+  describe('[DELETE] /achievements/:id', () => {
+    it('response should return status 200 and the success message', async () => {
+      const response = await request(app.getServer()).delete(`/achievements/${achivementId}`).set('Authorization', `Bearer ${token}`);
 
-  //     expect(responseElgin.status).toBe(200);
-  //     expect(responseElgin.body).toBeDefined();
-  //     expect(responseElgin.body.message).toBe('Inverter successfully deleted');
-
-  //     const responseHauwei = await request(app.getServer()).delete(`/inverters/${inverterHauweiId}`).set('Authorization', `Bearer ${token}`);
-
-  //     expect(responseHauwei.status).toBe(200);
-  //     expect(responseHauwei.body).toBeDefined();
-  //     expect(responseHauwei.body.message).toBe('Inverter successfully deleted');
-  //   });
-  // });
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(response.body.message).toBe('Achievement successfully deleted');
+    });
+  });
 });

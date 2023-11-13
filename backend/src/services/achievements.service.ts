@@ -52,10 +52,10 @@ export class AchievementsService {
     return updateAchievementById;
   }
 
-  public async deleteUser(userId: string): Promise<User> {
-    const deleteUserById: User = await UserModel.findByIdAndDelete(userId);
-    if (!deleteUserById) throw new HttpException(404, "User doesn't exist");
+  public async achievementUser(achievementId: string): Promise<User> {
+    const achievementUserById: User = await AchivementsModel.findByIdAndDelete(achievementId);
+    if (!achievementUserById) throw new HttpException(404, "Achievement doesn't exist");
 
-    return deleteUserById;
+    return achievementUserById;
   }
 }
