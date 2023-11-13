@@ -13,9 +13,9 @@
             "inverter": {
               "type": "object",
               "properties": {
-                "userId": {
-                  "type": "string",
-                  "description": "ID do usuário associado ao inversor."
+                "users": {
+                  "type": "array",
+                  "description": "Lista de IDs dos usuários associados ao inversor."
                 },
                 "name": {
                   "type": "string",

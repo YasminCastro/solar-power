@@ -12,9 +12,9 @@
                 "type": "string",
                 "description": "ID único do inversor."
               },
-              "userId": {
-                "type": "string",
-                "description": "IDs do usuário associado ao inversor."
+              "users": {
+                "type": "array",
+                "description": "Lista de IDs dos usuários associados ao inversor."
               },
               "name": { "type": "string", "description": "Nome do inversor." },
               "model": {
