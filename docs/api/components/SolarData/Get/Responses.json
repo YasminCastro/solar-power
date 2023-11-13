@@ -1,5 +1,11 @@
 {
   "204": {
     "description": "Web scraping do inversor colocado na fila."
+  },
+  "401": {
+    "description": "Não autorizado. Token de autenticação está ausente, inválido ou expirado."
+  },
+  "404": {
+    "description": "Inversor não foi encontrado."
   }
 }
