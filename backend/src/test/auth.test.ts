@@ -10,10 +10,10 @@ describe('Auth Router', () => {
   const password = '123456789';
 
   beforeAll(async () => {
-    await UserModel.deleteOne({ email });
-
     authRoute = new AuthRoute();
     app = new App([authRoute]);
+
+    await UserModel.deleteOne({ email });
   });
 
   afterAll(async () => {
