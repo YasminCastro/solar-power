@@ -4,7 +4,7 @@ import { RequestWithUser } from '@/interfaces/auth.interface';
 import { User } from '@/interfaces/users.interface';
 import { UpdateUserDto } from '@/dtos/users.dto';
 import { CreateAchivementsDto } from '@/dtos/achievements.dto';
-import { Achivement } from '@/interfaces/achievements.interface';
+import { Achievement } from '@/interfaces/achievement.interface';
 import { AchievementsService } from '@/services/achievements.service';
 
 export class AchivementsController {
@@ -24,7 +24,7 @@ export class AchivementsController {
 
   public getAchivements = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const findAllAchivementsData: Achivement[] = await this.achievements.findAllAchivement();
+      const findAllAchivementsData: Achievement[] = await this.achievements.findAllAchivement();
 
       res.status(200).json(findAllAchivementsData);
     } catch (error) {
@@ -32,12 +32,12 @@ export class AchivementsController {
     }
   };
 
-  public getUserById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  public getAchievementById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = String(req.params.id);
-      const findOneUserData: User = await this.achievements.findUserById(userId);
+      const achievementId = String(req.params.id);
+      const findOneAchievementData: Achievement = await this.achievements.findAchievementById(achievementId);
 
-      res.status(200).json(findOneUserData);
+      res.status(200).json(findOneAchievementData);
     } catch (error) {
       next(error);
     }

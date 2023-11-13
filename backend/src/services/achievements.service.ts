@@ -4,28 +4,28 @@ import { UpdateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@/exceptions/httpException';
 import { User } from '@/interfaces/users.interface';
 import { UserModel } from '@/models/users.models';
-import { Achivement } from '@/interfaces/achievements.interface';
+import { Achievement } from '@/interfaces/achievement.interface';
 import { AchivementsModel } from '@/models/achievements.models';
 import { CreateAchivementsDto } from '@/dtos/achievements.dto';
 
 @Service()
 export class AchievementsService {
-  public async createAchivement(achivementData: CreateAchivementsDto): Promise<Achivement> {
-    const findAchivements: Achivement = await AchivementsModel.findOne({ name: achivementData.name });
+  public async createAchivement(achivementData: CreateAchivementsDto): Promise<Achievement> {
+    const findAchivements: Achievement = await AchivementsModel.findOne({ name: achivementData.name });
     if (findAchivements) throw new HttpException(409, `This achivement '${achivementData.name}' already register`);
 
-    const createAchivementData: Achivement = await AchivementsModel.create(achivementData);
+    const createAchivementData: Achievement = await AchivementsModel.create(achivementData);
     return createAchivementData;
   }
-  public async findAllAchivement(): Promise<Achivement[]> {
-    const users: Achivement[] = await AchivementsModel.find();
+  public async findAllAchivement(): Promise<Achievement[]> {
+    const users: Achievement[] = await AchivementsModel.find();
     return users;
   }
 
-  public async findUserById(userId: string): Promise<User> {
-    const findUser: User = await UserModel.findOne({ _id: userId });
+  public async findAchievementById(userId: string): Promise<Achievement> {
+    const findUser: Achievement = await AchivementsModel.findOne({ _id: userId });
 
-    if (!findUser) throw new HttpException(404, "User doesn't exist");
+    if (!findUser) throw new HttpException(404, "Achievement doesn't exist");
 
     return findUser;
   }
