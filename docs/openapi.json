@@ -348,6 +348,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "selectDate",
+            "in": "query",
+            "description": "Data específica para consulta, no formato DD-MM-YYYY.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "security": [
@@ -374,6 +382,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "selectDate",
+            "in": "query",
+            "description": "Data específica para consulta, no formato MM-YYYY.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "security": [
@@ -397,6 +413,14 @@
             "in": "path",
             "required": true,
             "description": "ID do inversor para o qual os dados de geração de energia são solicitados",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "selectDate",
+            "in": "query",
+            "description": "Data específica para consulta, no formato YYYY.",
             "schema": {
               "type": "string"
             }
