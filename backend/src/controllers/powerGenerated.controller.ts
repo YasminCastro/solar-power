@@ -37,12 +37,14 @@ export class PowerGeneratedController {
       const selectDate = (req.query.date as string) || moment().format('DD-MM-YYYY');
 
       if (!inverterId) {
-        throw new HttpException(409, 'inverterId is required');
+        throw new HttpException(400, 'inverterId is required');
       }
 
       if (selectDate && !isValidDateDay(selectDate)) {
-        throw new HttpException(409, 'date must follow the format DD-MM-YYYY');
+        throw new HttpException(400, 'date must follow the format DD-MM-YYYY');
       }
+
+      await this.inverters.getInverterById(inverterId);
 
       const powerGenerated = await this.powerGenerated.allDay(inverterId, selectDate);
 
@@ -58,12 +60,14 @@ export class PowerGeneratedController {
       const selectDate = (req.query.date as string) || moment().format('MM-YYYY');
 
       if (!inverterId) {
-        throw new HttpException(409, 'inverterId is required');
+        throw new HttpException(400, 'inverterId is required');
       }
 
       if (selectDate && !isValidDateMonth(selectDate)) {
-        throw new HttpException(409, 'date must follow the format MM-YYYY');
+        throw new HttpException(400, 'date must follow the format MM-YYYY');
       }
+
+      await this.inverters.getInverterById(inverterId);
 
       const powerGenerated = await this.powerGenerated.allMonth(inverterId, selectDate);
 
@@ -79,12 +83,14 @@ export class PowerGeneratedController {
       const selectDate = (req.query.date as string) || moment().format('YYYY');
 
       if (!inverterId) {
-        throw new HttpException(409, 'inverterId is required');
+        throw new HttpException(400, 'inverterId is required');
       }
 
       if (selectDate && !isValidDateYear(selectDate)) {
-        throw new HttpException(409, 'date must follow the format YYYY');
+        throw new HttpException(400, 'date must follow the format YYYY');
       }
+
+      await this.inverters.getInverterById(inverterId);
 
       const powerGenerated = await this.powerGenerated.lastRecordOfEachMonth(inverterId, selectDate);
 
