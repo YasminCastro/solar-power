@@ -5,7 +5,7 @@ import { ValidateEnv } from '@utils/validateEnv';
 import { InvertersRoute } from './routes/inverters.route';
 import { PowerGeneratedRoute } from './routes/powerGenerated.route';
 import { SolarDataRoute } from './routes/solarData';
-import { AchivementsRoute } from './routes/achivements.route';
+import { AchivementsRoute } from './routes/achievements.route';
 
 ValidateEnv();
 

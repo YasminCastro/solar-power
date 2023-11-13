@@ -15,8 +15,8 @@ export class AchivementsRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, this.user.createAchivement);
-    this.router.get(`${this.path}`, this.user.getAchivements);
+    this.router.post(`${this.path}`, AuthMiddleware, this.user.createAchivement);
+    this.router.get(`${this.path}`, AuthMiddleware, this.user.getAchivements);
     this.router.get(`${this.path}/:id`, AuthMiddleware, this.user.getUserById);
     this.router.put(`${this.path}`, AuthMiddleware, ValidationMiddleware(UpdateUserDto), this.user.updateUser);
     this.router.delete(`${this.path}/:id`, AuthMiddleware, this.user.deleteUser);

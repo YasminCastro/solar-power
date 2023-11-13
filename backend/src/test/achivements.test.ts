@@ -1,12 +1,12 @@
 import { App } from '@/app';
 import { UserModel } from '@/models/users.models';
-import { InverterModel } from '@/models/inverters.models';
+import { AchivementsModel } from '@/models/achievements.models';
 import { AuthRoute } from '@/routes/auth.route';
 import { InvertersRoute } from '@/routes/inverters.route';
-import { AchivementsRoute } from '@/routes/achivements.route';
+import { AchivementsRoute } from '@/routes/achievements.route';
 import request from 'supertest';
 
-describe('Achivements Router', () => {
+describe('achievements Router', () => {
   let app: App;
   let authRoute: AuthRoute;
   let invertersRoute: InvertersRoute;
@@ -37,8 +37,7 @@ describe('Achivements Router', () => {
     };
 
     await UserModel.deleteOne({ email });
-    await InverterModel.deleteOne({ name: inverterNameElgin });
-    await InverterModel.deleteOne({ name: inverterHauweiElgin });
+    await AchivementsModel.deleteOne({ name: achivementName });
 
     const response = await request(app.getServer()).post('/signup').send(userData);
     token = response.body.token;
@@ -47,11 +46,13 @@ describe('Achivements Router', () => {
 
   afterAll(async () => {
     await UserModel.deleteOne({ email });
+    await AchivementsModel.deleteOne({ name: achivementName });
+
     await app.closeDatabaseConnection();
     await app.closeQueueConnections();
   });
 
-  describe('[POST] /achivements', () => {
+  describe('[POST] /achievements', () => {
     it('should create an achivement and return the achivement data', async () => {
       const achivementData = {
         name: achivementName,
@@ -59,7 +60,7 @@ describe('Achivements Router', () => {
         points: 50,
       };
 
-      const response = await request(app.getServer()).post('/achivements').send(achivementData).set('Authorization', `Bearer ${token}`);
+      const response = await request(app.getServer()).post('/achievements').send(achivementData).set('Authorization', `Bearer ${token}`);
 
       achivementId = response.body._id;
 
@@ -69,14 +70,14 @@ describe('Achivements Router', () => {
     });
   });
 
-  // describe('[GET] /inverters', () => {
-  //   it('response should return status 200 and an array of inverters', async () => {
-  //     const response = await request(app.getServer()).get('/inverters').set('Authorization', `Bearer ${token}`);
+  describe('[GET] /achievements', () => {
+    it('response should return status 200 and an array of achievements', async () => {
+      const response = await request(app.getServer()).get('/achievements').set('Authorization', `Bearer ${token}`);
 
-  //     expect(response.status).toBe(200);
-  //     expect(Array.isArray(response.body)).toBeTruthy();
-  //   });
-  // });
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBeTruthy();
+    });
+  });
 
   // describe('[GET] /inverters/inverter/:id', () => {
   //   it('response should return status 200 and the inverter data', async () => {

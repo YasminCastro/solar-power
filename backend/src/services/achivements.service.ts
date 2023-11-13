@@ -4,9 +4,9 @@ import { UpdateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@/exceptions/httpException';
 import { User } from '@/interfaces/users.interface';
 import { UserModel } from '@/models/users.models';
-import { Achivement } from '@/interfaces/achivements.interface';
-import { AchivementsModel } from '@/models/achivements.models';
-import { CreateAchivementsDto } from '@/dtos/achivements.dto';
+import { Achivement } from '@/interfaces/achievements.interface';
+import { AchivementsModel } from '@/models/achievements.models';
+import { CreateAchivementsDto } from '@/dtos/achievements.dto';
 
 @Service()
 export class AchivementsService {

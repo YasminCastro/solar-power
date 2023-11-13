@@ -1,5 +1,5 @@
 import { model, Schema, Document } from 'mongoose';
-import { Achivement } from '@/interfaces/achivements.interface';
+import { Achivement } from '@/interfaces/achievements.interface';
 
 const AchivementsSchema: Schema = new Schema({
   name: {
@@ -16,4 +16,4 @@ const AchivementsSchema: Schema = new Schema({
   createdAt: { default: Date.now(), type: Date },
 });
 
-export const AchivementsModel = model<Achivement & Document>('Achivements', AchivementsSchema);
+export const AchivementsModel = model<Achivement & Document>('Achievements', AchivementsSchema);
