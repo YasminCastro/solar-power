@@ -102,7 +102,7 @@ export class App {
 
   private initializeCronJob() {
     let job = new CronJob(
-      '0 */5 6-18 * * *',
+      '*/10 5-19 * * *',
       async function () {
         logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
 
