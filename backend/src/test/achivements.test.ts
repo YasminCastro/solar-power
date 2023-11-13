@@ -53,7 +53,7 @@ describe('achievements Router', () => {
   });
 
   describe('[POST] /achievements', () => {
-    it('should create an achivement and return the achivement data', async () => {
+    it('should create an achievement and return the achivement data', async () => {
       const achivementData = {
         name: achivementName,
         description: 'Teste',
@@ -79,15 +79,15 @@ describe('achievements Router', () => {
     });
   });
 
-  // describe('[GET] /inverters/inverter/:id', () => {
-  //   it('response should return status 200 and the inverter data', async () => {
-  //     const response = await request(app.getServer()).get(`/inverters/inverter/${inverterElginId}`).set('Authorization', `Bearer ${token}`);
+  describe('[GET] /achievements/:id', () => {
+    it('response should return status 200 and the achievement data', async () => {
+      const response = await request(app.getServer()).get(`/achievements/${achivementId}`).set('Authorization', `Bearer ${token}`);
 
-  //     expect(response.status).toBe(200);
-  //     expect(response.body).toBeDefined();
-  //     expect(response.body._id).toBe(inverterElginId);
-  //   });
-  // });
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(response.body._id).toBe(achivementId);
+    });
+  });
 
   // describe('[GET] /inverters/user/:id', () => {
   //   it('response should return status 200 and all user inverter', async () => {
