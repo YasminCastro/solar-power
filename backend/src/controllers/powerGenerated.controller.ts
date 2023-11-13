@@ -46,7 +46,7 @@ export class PowerGeneratedController {
 
       const powerGenerated = await this.powerGenerated.allDay(inverterId, selectDate);
 
-      res.status(201).json(powerGenerated);
+      res.status(200).json(powerGenerated);
     } catch (error) {
       next(error);
     }
@@ -67,7 +67,7 @@ export class PowerGeneratedController {
 
       const powerGenerated = await this.powerGenerated.allMonth(inverterId, selectDate);
 
-      res.status(201).json(powerGenerated);
+      res.status(200).json(powerGenerated);
     } catch (error) {
       next(error);
     }
@@ -88,7 +88,7 @@ export class PowerGeneratedController {
 
       const powerGenerated = await this.powerGenerated.lastRecordOfEachMonth(inverterId, selectDate);
 
-      res.status(201).json(powerGenerated);
+      res.status(200).json(powerGenerated);
     } catch (error) {
       next(error);
     }
