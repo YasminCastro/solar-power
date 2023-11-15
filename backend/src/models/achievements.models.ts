@@ -1,7 +1,11 @@
 import { model, Schema, Document } from 'mongoose';
-import { Achivements } from '@/interfaces/achivements.interface';
+import { Achievement } from '@/interfaces/achievement.interface';
 
 const AchivementsSchema: Schema = new Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -13,7 +17,8 @@ const AchivementsSchema: Schema = new Schema({
     type: Number,
     required: true,
   },
+  achivementImage: { type: String },
   createdAt: { default: Date.now(), type: Date },
 });
 
-export const AchivementsModel = model<Achivements & Document>('Achivements', AchivementsSchema);
+export const AchivementsModel = model<Achievement & Document>('Achievements', AchivementsSchema);

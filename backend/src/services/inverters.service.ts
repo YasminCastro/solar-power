@@ -1,16 +1,13 @@
-import Container, { Service } from 'typedi';
+import { Service } from 'typedi';
 import { CreateInvertersDto, UpdateInvertersDto } from '@/dtos/inverters.dto';
 import * as Crypto from 'crypto-js';
 import { CRYPTO_KEY } from '@/config';
-import { UtilsService } from './utils.service';
 import { Inverter } from '@/interfaces/inverter.interface';
 import { InverterModel } from '@/models/inverters.models';
 import { HttpException } from '@/exceptions/httpException';
 
 @Service()
 export class InvertersService {
-  public utils = Container.get(UtilsService);
-
   public async createInverter(inverterData: CreateInvertersDto, userId: string): Promise<any> {
     let password = null;
     if (inverterData.password) {
@@ -45,14 +42,14 @@ export class InvertersService {
     return invertersFound;
   }
 
-  public async updateInverter(inverterData: UpdateInvertersDto): Promise<any> {
+  public async updateInverter(inverterData: UpdateInvertersDto, inverterId: string): Promise<any> {
     let password = null;
     if (inverterData.password) {
       password = Crypto.AES.encrypt(inverterData.password, CRYPTO_KEY).toString();
       inverterData.password = password;
     }
 
-    const updateInverterData = await InverterModel.findOneAndUpdate({ _id: inverterData.inverterId }, { $set: inverterData }, { new: true });
+    const updateInverterData = await InverterModel.findOneAndUpdate({ _id: inverterId }, { $set: inverterData }, { new: true });
 
     return updateInverterData;
   }

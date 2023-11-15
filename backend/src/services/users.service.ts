@@ -15,14 +15,14 @@ export class UserService {
   public async findUserById(userId: string): Promise<User> {
     const findUser: User = await UserModel.findOne({ _id: userId });
 
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    if (!findUser) throw new HttpException(404, "User doesn't exist");
 
     return findUser;
   }
 
   public async updateUser(userId: string, userData: UpdateUserDto): Promise<User> {
     const findUser: User = await UserModel.findOne({ _id: userId });
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    if (!findUser) throw new HttpException(404, "User doesn't exist");
 
     let data = findUser;
 
@@ -35,13 +35,21 @@ export class UserService {
       data.name = userData.name;
     }
 
-    const updateUserById: User = await UserModel.findByIdAndUpdate(userId, { userData });
+    if (userData.email) {
+      data.email = userData.email;
+    }
+
+    if (userData.level) {
+      data.level = userData.level;
+    }
+
+    const updateUserById: User = await UserModel.findByIdAndUpdate(userId, userData, { new: true });
     return updateUserById;
   }
 
   public async deleteUser(userId: string): Promise<User> {
     const deleteUserById: User = await UserModel.findByIdAndDelete(userId);
-    if (!deleteUserById) throw new HttpException(409, "User doesn't exist");
+    if (!deleteUserById) throw new HttpException(404, "User doesn't exist");
 
     return deleteUserById;
   }

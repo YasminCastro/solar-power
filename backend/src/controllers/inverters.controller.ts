@@ -23,7 +23,7 @@ export class InvertersController {
     try {
       const inverters = await this.inverter.getInverters();
 
-      res.status(201).json(inverters);
+      res.status(200).json(inverters);
     } catch (error) {
       next(error);
     }
@@ -35,7 +35,7 @@ export class InvertersController {
 
       const inverter = await this.inverter.getInverterById(inverterId);
 
-      res.status(201).json(inverter);
+      res.status(200).json(inverter);
     } catch (error) {
       next(error);
     }
@@ -47,7 +47,7 @@ export class InvertersController {
 
       const inverter = await this.inverter.getInverterByUser(userId);
 
-      res.status(201).json(inverter);
+      res.status(200).json(inverter);
     } catch (error) {
       next(error);
     }
@@ -56,14 +56,15 @@ export class InvertersController {
   public updateInverter = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const inverterData: UpdateInvertersDto = req.body;
+      const inverterId = String(req.params.id);
 
-      const inverter = await this.inverter.updateInverter(inverterData);
+      const inverter = await this.inverter.updateInverter(inverterData, inverterId);
 
       if (!inverter) {
         throw new Error('Error to update inverter.');
       }
 
-      res.status(201).json({ inverter, message: 'Inverter successfully updated' });
+      res.status(200).json({ inverter, message: 'Inverter successfully updated' });
     } catch (error) {
       next(error);
     }
@@ -77,7 +78,7 @@ export class InvertersController {
 
       await this.inverter.deleteInverter(inverterId, userId, deleteForAll);
 
-      res.status(201).json({ message: 'Inverter successfully deleted' });
+      res.status(200).json({ message: 'Inverter successfully deleted' });
     } catch (error) {
       next(error);
     }

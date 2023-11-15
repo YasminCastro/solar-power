@@ -36,9 +36,6 @@ export class CreateInvertersDto {
 
 export class UpdateInvertersDto {
   @IsString()
-  public inverterId: string;
-
-  @IsString()
   @IsOptional()
   public name: string;
 

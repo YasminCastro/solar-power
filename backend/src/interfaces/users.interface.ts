@@ -1,10 +1,8 @@
-import { Inverter } from './inverter.interface';
-
 export interface User {
-  _id: number;
+  _id: string;
   email: string;
   name: string;
   password: string;
+  level: number;
   createdAt: Date;
-  inverters?: Inverter[];
 }

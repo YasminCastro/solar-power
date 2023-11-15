@@ -31,7 +31,7 @@ export class UserController {
 
   public updateUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = String(req.user._id);
+      const userId = String(req.params.id);
       const userData: UpdateUserDto = req.body;
       const user = await this.user.updateUser(userId, userData);
 

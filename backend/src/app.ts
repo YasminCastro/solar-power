@@ -13,7 +13,7 @@ import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import { dbConnection } from './database';
-import { connect, set } from 'mongoose';
+import { connect, set, disconnect } from 'mongoose';
 import Queue from './libs/queue';
 
 import { BullAdapter } from '@bull-board/api/bullAdapter';
@@ -35,8 +35,8 @@ export class App {
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
-    this.initializeQueues();
-    this.initializeCronJob();
+    // this.initializeQueues();
+    // this.initializeCronJob();
   }
 
   public listen() {
@@ -102,12 +102,12 @@ export class App {
 
   private initializeCronJob() {
     let job = new CronJob(
-      '0 */5 6-18 * * *',
+      '*/10 5-19 * * *',
       async function () {
         logger.info('Runing cronjob:' + moment().format('DD-MM-YYYY HH:mm:ss'));
 
         try {
-          const allInverters = await InverterModel.find({});
+          const allInverters = await InverterModel.find();
           logger.info(`${allInverters.length} inverters found.`);
 
           for (const inverter of allInverters) {
@@ -134,5 +134,13 @@ export class App {
 
     job.start();
     logger.info(`is cronjob running? ${job.running} `);
+  }
+
+  public async closeDatabaseConnection() {
+    await disconnect();
+  }
+
+  public async closeQueueConnections() {
+    await Promise.all(Queue.queues.map(queue => queue.bull.close()));
   }
 }

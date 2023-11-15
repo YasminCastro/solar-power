@@ -1,14 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 import { InvertersService } from '@/services/inverters.service';
-import { UtilsService } from '@/services/utils.service';
 import { SolarDataService } from '@/services/solarData.service';
 import Queue from '../libs/queue';
 
 export class SolarDataController {
   public solarData = Container.get(SolarDataService);
   public inverters = Container.get(InvertersService);
-  public utils = Container.get(UtilsService);
 
   public saveHauweiData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
