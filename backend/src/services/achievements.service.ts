@@ -11,8 +11,8 @@ import { CreateAchivementsDto, UpdateAchivementsDto } from '@/dtos/achievements.
 @Service()
 export class AchievementsService {
   public async createAchivement(achivementData: CreateAchivementsDto): Promise<Achievement> {
-    const findAchivements: Achievement = await AchivementsModel.findOne({ name: achivementData.name });
-    if (findAchivements) throw new HttpException(409, `This achivement '${achivementData.name}' already register`);
+    const findAchivements: Achievement = await AchivementsModel.findOne({ name: achivementData.name, userId: achivementData.userId });
+    if (findAchivements) throw new HttpException(409, `UserId: ${achivementData.userId} already have this achivement ${achivementData.name}`);
 
     const createAchivementData: Achievement = await AchivementsModel.create(achivementData);
     return createAchivementData;
@@ -46,6 +46,10 @@ export class AchievementsService {
 
     if (achivementsData.points) {
       data.points = achivementsData.points;
+    }
+
+    if (achivementsData.achivementImage) {
+      data.achivementImage = achivementsData.achivementImage;
     }
 
     const updateAchievementById: Achievement = await AchivementsModel.findByIdAndUpdate(achievementId, achivementsData, { new: true });

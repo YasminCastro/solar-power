@@ -35,8 +35,8 @@ export class App {
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
     this.initializeErrorHandling();
-    this.initializeQueues();
-    this.initializeCronJob();
+    // this.initializeQueues();
+    // this.initializeCronJob();
   }
 
   public listen() {

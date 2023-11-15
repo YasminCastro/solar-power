@@ -14,6 +14,7 @@ describe('achievements Router', () => {
   const email = 'test@example.com';
   const password = '123456789';
   const achivementName = 'Test Jest';
+  let userId = '';
 
   let token: string;
   let achivementId: string;
@@ -36,6 +37,7 @@ describe('achievements Router', () => {
 
     const response = await request(app.getServer()).post('/signup').send(userData);
     token = response.body.token;
+    userId = response.body.user._id;
   });
 
   afterAll(async () => {
@@ -49,6 +51,7 @@ describe('achievements Router', () => {
   describe('[POST] /achievements', () => {
     it('should create an achievement and return the achivement data', async () => {
       const achivementData = {
+        userId,
         name: achivementName,
         description: 'Teste',
         points: 50,
@@ -61,6 +64,7 @@ describe('achievements Router', () => {
       expect(response.status).toBe(201);
       expect(response.body).toBeDefined();
       expect(response.body.name).toBe(achivementData.name);
+      expect(response.body.userId).toBe(achivementData.userId);
     });
   });
 

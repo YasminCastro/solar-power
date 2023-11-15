@@ -39,6 +39,10 @@ export class UserService {
       data.email = userData.email;
     }
 
+    if (userData.level) {
+      data.level = userData.level;
+    }
+
     const updateUserById: User = await UserModel.findByIdAndUpdate(userId, userData, { new: true });
     return updateUserById;
   }
