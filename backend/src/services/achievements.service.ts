@@ -3,18 +3,23 @@ import { Service } from 'typedi';
 import { UpdateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@/exceptions/httpException';
 import { User } from '@/interfaces/users.interface';
-import { UserModel } from '@/models/users.models';
 import { Achievement } from '@/interfaces/achievement.interface';
 import { AchivementsModel } from '@/models/achievements.models';
 import { CreateAchivementsDto, UpdateAchivementsDto } from '@/dtos/achievements.dto';
+import { logger } from '@/utils/logger';
 
 @Service()
 export class AchievementsService {
   public async createAchivement(achivementData: CreateAchivementsDto): Promise<Achievement> {
     const findAchivements: Achievement = await AchivementsModel.findOne({ name: achivementData.name, userId: achivementData.userId });
-    if (findAchivements) throw new HttpException(409, `UserId: ${achivementData.userId} already have this achivement ${achivementData.name}`);
+    if (findAchivements) {
+      logger.info(`UserId: ${achivementData.userId} already have this achivement ${achivementData.name}`);
+      return findAchivements;
+    }
 
     const createAchivementData: Achievement = await AchivementsModel.create(achivementData);
+
+    //update user points
     return createAchivementData;
   }
   public async findAllAchivement(): Promise<Achievement[]> {
@@ -22,12 +27,17 @@ export class AchievementsService {
     return users;
   }
 
-  public async findAchievementById(userId: string): Promise<Achievement> {
-    const findUser: Achievement = await AchivementsModel.findOne({ _id: userId });
+  public async findAchievementById(achievementId: string): Promise<Achievement> {
+    const findAchievement: Achievement = await AchivementsModel.findOne({ _id: achievementId });
 
-    if (!findUser) throw new HttpException(404, "Achievement doesn't exist");
+    if (!findAchievement) throw new HttpException(404, "Achievement doesn't exist");
 
-    return findUser;
+    return findAchievement;
+  }
+  public async findAchievementByUser(userId: string): Promise<Achievement[]> {
+    const findUserAchievements: Achievement[] = await AchivementsModel.find({ userId: userId });
+
+    return findUserAchievements || [];
   }
 
   public async updateAchievement(achievementId: string, achivementsData: UpdateAchivementsDto): Promise<Achievement> {
@@ -56,7 +66,7 @@ export class AchievementsService {
     return updateAchievementById;
   }
 
-  public async achievementUser(achievementId: string): Promise<User> {
+  public async deleteAchievement(achievementId: string): Promise<User> {
     const achievementUserById: User = await AchivementsModel.findByIdAndDelete(achievementId);
     if (!achievementUserById) throw new HttpException(404, "Achievement doesn't exist");
 

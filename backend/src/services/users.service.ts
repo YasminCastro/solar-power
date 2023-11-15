@@ -43,6 +43,18 @@ export class UserService {
       data.level = userData.level;
     }
 
+    if (userData.level) {
+      data.level = userData.level;
+    }
+
+    if (userData.lastLoginDate) {
+      data.lastLoginDate = userData.lastLoginDate;
+    }
+
+    if (userData.loginStreak) {
+      data.loginStreak = userData.loginStreak;
+    }
+
     const updateUserById: User = await UserModel.findByIdAndUpdate(userId, userData, { new: true });
     return updateUserById;
   }

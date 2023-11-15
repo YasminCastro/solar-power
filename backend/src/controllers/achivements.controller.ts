@@ -58,7 +58,7 @@ export class AchivementsController {
   public deleteAchievement = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const achievementId = String(req.params.id);
-      await this.achievements.achievementUser(achievementId);
+      await this.achievements.deleteAchievement(achievementId);
 
       res.status(200).json({ message: 'Achievement successfully deleted' });
     } catch (error) {

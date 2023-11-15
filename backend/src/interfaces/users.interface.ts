@@ -5,4 +5,6 @@ export interface User {
   password: string;
   level: number;
   createdAt: Date;
+  lastLoginDate: Date;
+  loginStreak: number;
 }

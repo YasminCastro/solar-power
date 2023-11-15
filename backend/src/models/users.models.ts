@@ -16,6 +16,8 @@ const UserSchema: Schema = new Schema({
     required: true,
   },
   level: { type: Number, default: 0 },
+  lastLoginDate: { default: Date.now(), type: Date },
+  loginStreak: { default: 0, type: Number },
   createdAt: { default: Date.now(), type: Date },
 });
 
