@@ -9,6 +9,10 @@
             "type": "string",
             "description": "Nome do achievement."
           },
+          "userId": {
+            "type": "string",
+            "description": "Id do usuário que recebeu a conquista."
+          },
           "description": {
             "type": "string",
             "description": "Descrição do achievement."

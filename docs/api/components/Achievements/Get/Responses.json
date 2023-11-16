@@ -20,6 +20,10 @@
                 "type": "string",
                 "description": "Descrição detalhada do conquistas."
               },
+              "userId": {
+                "type": "string",
+                "description": "Id do usuário que recebeu a conquista."
+              },
               "points": {
                 "type": "integer",
                 "description": "Pontos atribuídos ao conquistar o conquistas."
