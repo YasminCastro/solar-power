@@ -53,12 +53,7 @@ export class PowerGeneratedController {
       const achievementName = 'Energizador Diário';
       const userAchievements = await this.achievements.findAchievementByUser(userId);
 
-      if (
-        powerGenerated[0].powerToday &&
-        !userAchievements.find(achievement => {
-          achievement.name === achievementName;
-        })
-      ) {
+      if (powerGenerated[0].powerToday && !userAchievements.find(achievement => achievement.name === achievementName)) {
         await this.achievements.createAchivement({
           userId,
           achivementImage: '',
@@ -96,12 +91,7 @@ export class PowerGeneratedController {
       const achievementName = 'Produtor Mensal de Alta Voltagem';
       const userAchievements = await this.achievements.findAchievementByUser(userId);
 
-      if (
-        powerGenerated[0].powerToday &&
-        !userAchievements.find(achievement => {
-          achievement.name === achievementName;
-        })
-      ) {
+      if (powerGenerated[0].powerToday && !userAchievements.find(achievement => achievement.name === achievementName)) {
         await this.achievements.createAchivement({
           userId,
           achivementImage: '',
@@ -139,12 +129,7 @@ export class PowerGeneratedController {
       const achievementName = 'Campeão Anual de Energia';
       const userAchievements = await this.achievements.findAchievementByUser(userId);
 
-      if (
-        powerGenerated[0].powerToday &&
-        !userAchievements.find(achievement => {
-          achievement.name === achievementName;
-        })
-      ) {
+      if (powerGenerated[0].powerToday && !userAchievements.find(achievement => achievement.name === achievementName)) {
         await this.achievements.createAchivement({
           userId,
           achivementImage: '',
