@@ -18,6 +18,10 @@
               "type": "integer",
               "description": "Pontos atribuídos ao conquistar a conquista."
             },
+            "userId": {
+              "type": "string",
+              "description": "Id do usuário que recebeu a conquista."
+            },
             "createdAt": {
               "type": "string",
               "format": "date-time",

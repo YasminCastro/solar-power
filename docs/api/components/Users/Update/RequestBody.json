@@ -19,9 +19,18 @@
             "format": "password",
             "description": "Nova senha do usuário."
           },
-          "achievements": {
-            "type": "array",
-            "description": "Array de conquistas do usuário."
+          "level": {
+            "type": "number",
+            "description": "Novo nível do usuário"
+          },
+          "loginStreak": {
+            "type": "number",
+            "description": "Quantos dias seguidos que o usuário entrou no app."
+          },
+          "lastLoginDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Último login do usuário"
           }
         }
       }
