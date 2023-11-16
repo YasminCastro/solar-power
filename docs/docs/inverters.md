@@ -23,7 +23,7 @@ Antes de prosseguir, lembre-se de que todos esses endpoints requerem autenticaç
 - [`GET /inverters`](/api/buscar-inversores): Obtém uma lista de todos os inversores cadastrados.
 - [`GET /inverters/inverter/:inverterId`](/api/buscar-inversor-por-id): Retorna detalhes de um inversor específico, usando seu ID.
 - [`GET /inverters/user/:userId`](/api/buscar-inversores-por-usuario): Lista inversores associados a um usuário específico.
-- [`PUT /inverters/:id`](/api/atualizar-inversors): Atualiza as informações de um inversor específico.
+- [`PUT /inverters/:id`](/api/atualizar-inversor): Atualiza as informações de um inversor específico.
 - [`DELETE /inverters/:id`](/api/excluir-inversor): Remove um inversor do sistema.
 
 Para informações mais detalhadas, como parâmetros de requisição e exemplos de respostas, consulte nossa [Documentação das APIs](/api).

@@ -11,8 +11,6 @@ const config = {
     "Um aplicativo móvel  para incentivar a otimização e  economia de energia em sistemas  de energia solar.",
   url: "https://your-docusaurus-test-site.com",
   baseUrl: "/",
-  onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
   favicon: "img/logo.svg",
   organizationName: "ifg",
   projectName: "solar-power",
