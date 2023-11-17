@@ -57,6 +57,8 @@ export class App {
       set('debug', true);
     }
 
+    logger.info(`DATABASE: ${dbConnection.url}`);
+
     await connect(dbConnection.url);
   }
 

@@ -6,8 +6,6 @@ if (NODE_ENV !== 'production') {
   url = `mongodb://${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
 }
 
-console.log(url);
-
 export const dbConnection = {
   url,
   options: {
