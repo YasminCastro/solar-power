@@ -42,7 +42,7 @@ export default function RealTimeView() {
         <View className="mt-8 flex flex-row justify-around">
           <View className="flex flex-row">
             <SemiCircleText
-              number={`${powerGenerated.powerToday}kWh`}
+              number={powerGenerated.powerToday}
               text="Produção hoje"
             />
             <TouchableOpacity onPress={() => console.log("Info produção")}>
@@ -52,7 +52,7 @@ export default function RealTimeView() {
 
           <View className="flex flex-row">
             <SemiCircleText
-              number={`${powerGenerated.powerMonth}kWh`}
+              number={powerGenerated.powerMonth}
               text="Produção mensal"
             />
             <TouchableOpacity onPress={() => console.log("Info produção")}>
