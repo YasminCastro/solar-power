@@ -7,6 +7,11 @@ import { PowerGeneratedModel } from '@/models/powerGenerated.models';
 import { convertToKWh } from '@/utils/convertPower';
 import chalk from 'chalk';
 
+interface Time {
+  hours: number;
+  minutes: number;
+}
+
 @Service()
 export class SolarDataService {
   //COMUM
@@ -17,6 +22,7 @@ export class SolarDataService {
       headless: 'new',
       args: ['--disable-setuid-sandbox', '--no-sandbox'],
       ignoreHTTPSErrors: true,
+      defaultViewport: { width: 1800, height: 800 },
     });
 
     let page = (await browser.pages())[0];
@@ -60,30 +66,6 @@ export class SolarDataService {
       return createPowerGenerated;
     } catch (error) {
       console.log(error);
-      throw new HttpException(400, error.message);
-    }
-  }
-
-  public async calculateRealTimePower(inverterId: string, nowEnergy: number): Promise<number> {
-    console.log(chalk.yellow('Calculating real time power...'));
-    try {
-      const previousEnergyFound = await PowerGeneratedModel.findOne({
-        inverterId: inverterId,
-      }).sort({ _id: -1 });
-
-      if (!previousEnergyFound) return 0;
-
-      const previousEnergy = previousEnergyFound.powerInRealTime;
-
-      const TIME_INTERVAL_IN_HOURS = 1 / 12;
-
-      const power = (nowEnergy - previousEnergy) / TIME_INTERVAL_IN_HOURS;
-
-      console.log(chalk.yellow('Real time calculation: ' + parseFloat(power.toFixed(1))));
-
-      return parseFloat(power.toFixed(1));
-    } catch (error: any) {
-      logger.error(`Not able to calculate power: ${error.message}`);
       throw new HttpException(400, error.message);
     }
   }
@@ -217,11 +199,13 @@ export class SolarDataService {
       let coalValueElement = await page.$(COAL_SELECTOR);
       let coalValue = await page.evaluate(el => el.textContent, coalValueElement);
 
+      const powerInRealTime = await this.selectCanvasDate(page);
+
+      console.log('Generation:', powerInRealTime, todayPerformance, monthPerformace, yearPerformace, allPerformace);
       console.log(chalk.green(`Power generation data OK...`));
 
-      console.log('Generation:', todayPerformance, monthPerformace, yearPerformace, allPerformace);
-
       return {
+        powerInRealTime: powerInRealTime || 0,
         powerToday: convertToKWh(todayPerformance),
         powerMonth: convertToKWh(monthPerformace),
         powerYear: convertToKWh(yearPerformace),
@@ -233,5 +217,110 @@ export class SolarDataService {
     } finally {
       browser.close();
     }
+  }
+
+  private async selectCanvasDate(page: Page): Promise<any> {
+    try {
+      // 1° Procurar o canvas pelo selector e pegar o tamanho do gráfico
+      const CANVAS_SELECTOR = 'canvas[data-zr-dom-id="1"]';
+      const canvas = await page.$(CANVAS_SELECTOR);
+      const boundingBox = await canvas.boundingBox();
+      const graphWidth = boundingBox.width;
+      let currentPositionX = boundingBox.x + graphWidth / 2;
+
+      // 2° Passar o mouse no meio do canvas, pegar o dado trazido no tooltip
+      await page.mouse.move(currentPositionX, boundingBox.y + boundingBox.height / 2);
+      await page.waitForSelector('.echarts-tooltip', { visible: true });
+      const tooltipElement = await page.$('.echarts-tooltip');
+      const tooltipText = await page.evaluate(el => el.textContent, tooltipElement);
+      let timeFound: Time = this.extractTimeFromTooltip(tooltipText);
+
+      // 3° Pegar o horário de agora, arredondando para baixo
+      const now = new Date();
+      const targetTime: Time = { hours: now.getHours(), minutes: Math.floor(now.getMinutes() / 10) * 10 };
+
+      console.log(chalk.blue(`targetTime: ${targetTime.hours}:${targetTime.minutes}`));
+
+      // Inicializa as variáveis para o loop
+      let newTooltipText = '';
+      const maxAttempts = 5;
+      let attempt = 0;
+
+      while (attempt < maxAttempts) {
+        // Calcula a nova posição do mouse com base na posição anterior
+        const adjustedPositionX = this.adjustMousePosition(currentPositionX, timeFound, targetTime, graphWidth, 20);
+
+        // Mover o mouse para a nova posição ajustada
+        await page.mouse.move(adjustedPositionX, boundingBox.y + boundingBox.height / 2);
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Atraso
+
+        // Aguarda e verifica o tooltip
+        await page.waitForSelector('.echarts-tooltip', { visible: true });
+        const newTooltipElement = await page.$('.echarts-tooltip');
+        newTooltipText = await page.evaluate(el => el.textContent, newTooltipElement);
+
+        console.log(`Attempt ${attempt + 1}, Tooltip Text:`, newTooltipText);
+
+        // Extrai o tempo do novo tooltip
+        timeFound = this.extractTimeFromTooltip(newTooltipText);
+
+        // Atualiza currentPositionX para a próxima iteração
+        currentPositionX = adjustedPositionX;
+
+        // Verifica se alcançou o horário desejado
+        if (timeFound.hours === targetTime.hours && timeFound.minutes === targetTime.minutes) {
+          break;
+        }
+
+        attempt++;
+      }
+
+      return this.extractPowerFromTooltip(newTooltipText);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  private adjustMousePosition(currentPositionX: number, timeFound: Time, targetTime: Time, graphWidth: number, margin: number): number {
+    // Converte os tempos em slots de 10 minutos
+    const currentSlot = timeFound.hours * 6 + Math.floor(timeFound.minutes / 10);
+    const targetSlot = targetTime.hours * 6 + Math.floor(targetTime.minutes / 10);
+
+    // Calcula a diferença em slots
+    const slotDifference = targetSlot - currentSlot;
+
+    // Ajusta a largura do gráfico para excluir as margens
+    const adjustedGraphWidth = graphWidth - 2 * margin;
+
+    // Calcula a diferença em pixels
+    const pixelDifference = (slotDifference / (24 * 6)) * adjustedGraphWidth;
+
+    // Ajusta a posição X atual com base na diferença calculada
+    return currentPositionX + pixelDifference;
+  }
+
+  private extractTimeFromTooltip(tooltipText: string): Time {
+    const timePattern = /(\d{2}):(\d{2})/;
+    const match = tooltipText.match(timePattern);
+
+    if (match && match.length >= 3) {
+      const hours = parseInt(match[1], 10);
+      const minutes = parseInt(match[2], 10);
+
+      return { hours, minutes };
+    }
+
+    return { hours: 0, minutes: 0 };
+  }
+
+  private extractPowerFromTooltip(tooltipText: string): number {
+    const powerPattern = /Power:(\d\.\d)/;
+    const match = tooltipText.match(powerPattern);
+
+    if (match && match.length >= 2) {
+      return parseFloat(match[1]);
+    }
+
+    return 0.0;
   }
 }
