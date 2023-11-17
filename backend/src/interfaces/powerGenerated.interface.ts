@@ -1,20 +1,20 @@
 export interface HauweiDataInterface {
-  powerInRealTime: string;
-  powerToday: string;
-  powerMonth: string;
-  powerYear: string;
-  allPower: string;
+  powerInRealTime: number;
+  powerToday: number;
+  powerMonth: number;
+  powerYear: number;
+  allPower: number;
   co2: string;
   coal: string;
   tree: string;
 }
 
 export interface ElginDataInterface {
-  powerInRealTime?: string;
-  powerToday: string;
-  powerMonth: string;
-  powerYear: string;
-  allPower: string;
+  powerInRealTime?: number;
+  powerToday: number;
+  powerMonth: number;
+  powerYear: number;
+  allPower: number;
   co2: string;
 }
 
@@ -34,11 +34,11 @@ export interface PowerGenerated {
   createdAt?: Date;
   inverterId: string;
   userId: string;
-  powerInRealTime: string;
-  powerToday: string;
-  powerMonth: string;
-  powerYear: string;
-  allPower: string;
+  powerInRealTime: number;
+  powerToday: number;
+  powerMonth: number;
+  powerYear: number;
+  allPower: number;
   co2?: string;
   coal?: string;
   tree?: string;
@@ -66,4 +66,3 @@ export interface PowerGeneratedJoined {
   coal?: string;
   tree?: string;
 }
-

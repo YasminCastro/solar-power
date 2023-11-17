@@ -8,19 +8,19 @@ const PowerGeneratedSchema: Schema = new Schema({
     required: true,
   },
   powerInRealTime: {
-    type: String,
+    type: Number,
   },
   powerToday: {
-    type: String,
+    type: Number,
   },
   powerMonth: {
-    type: String,
+    type: Number,
   },
   powerYear: {
-    type: String,
+    type: Number,
   },
   allPower: {
-    type: String,
+    type: Number,
   },
   co2: {
     type: String,

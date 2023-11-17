@@ -64,22 +64,22 @@ export class SolarDataService {
     }
   }
 
-  public async calculateRealTimePower(inverterId: string, nowEnergy: number): Promise<string | null> {
-    console.log(chalk.yellow('Calculanting real time power...'));
+  public async calculateRealTimePower(inverterId: string, nowEnergy: number): Promise<number> {
+    console.log(chalk.yellow('Calculating real time power...'));
     try {
       const previousEnergyFound = await PowerGeneratedModel.findOne({
         inverterId: inverterId,
       }).sort({ _id: -1 });
 
-      if (!previousEnergyFound) return null;
+      if (!previousEnergyFound) return 0;
 
-      const previousEnergy = parseFloat(previousEnergyFound.powerToday);
+      const previousEnergy = 8.7;
 
       const TIME_INTERVAL_IN_HOURS = 1 / 12;
 
       const power = (nowEnergy - previousEnergy) / TIME_INTERVAL_IN_HOURS;
 
-      return power.toFixed(1);
+      return parseFloat(power.toFixed(1));
     } catch (error: any) {
       logger.error(`Not able to calculate power: ${error.message}`);
       throw new HttpException(400, error.message);
@@ -147,10 +147,10 @@ export class SolarDataService {
 
       return {
         powerInRealTime: powerGenerationData[0],
-        powerToday: convertToKWh(powerGenerationData[1]).toString(),
-        powerMonth: convertToKWh(powerGenerationData[2]).toString(),
-        powerYear: convertToKWh(powerGenerationData[3]).toString(),
-        allPower: convertToKWh(powerGenerationData[4]).toString(),
+        powerToday: convertToKWh(powerGenerationData[1]),
+        powerMonth: convertToKWh(powerGenerationData[2]),
+        powerYear: convertToKWh(powerGenerationData[3]),
+        allPower: convertToKWh(powerGenerationData[4]),
         co2,
         coal,
         tree,
@@ -197,19 +197,19 @@ export class SolarDataService {
 
       await page.waitForSelector(TODAY_ENERGY, { timeout: 10000 });
       let todayPerformanceElement = await page.$(TODAY_ENERGY);
-      let todayPerformance = await page.evaluate(el => el.textContent, todayPerformanceElement);
+      let todayPerformance: string = await page.evaluate(el => el.textContent, todayPerformanceElement);
 
       await page.waitForSelector(MONTH_ENERGY);
       let monthPerformaceElement = await page.$(MONTH_ENERGY);
-      let monthPerformace = await page.evaluate(el => el.textContent, monthPerformaceElement);
+      let monthPerformace: string = await page.evaluate(el => el.textContent, monthPerformaceElement);
 
       await page.waitForSelector(YEAR_ENERGY);
       let yearPerformaceElement = await page.$(YEAR_ENERGY);
-      let yearPerformace = await page.evaluate(el => el.textContent, yearPerformaceElement);
+      let yearPerformace: string = await page.evaluate(el => el.textContent, yearPerformaceElement);
 
       await page.waitForSelector(TOTAL_ENERGY);
       let allPerformaceElement = await page.$(TOTAL_ENERGY);
-      let allPerformace = await page.evaluate(el => el.textContent, allPerformaceElement);
+      let allPerformace: string = await page.evaluate(el => el.textContent, allPerformaceElement);
 
       await page.waitForSelector(COAL_SELECTOR);
       let coalValueElement = await page.$(COAL_SELECTOR);
@@ -217,11 +217,13 @@ export class SolarDataService {
 
       console.log(chalk.green(`Power generation data OK...`));
 
+      console.log(todayPerformance, monthPerformace, yearPerformace, allPerformace);
+
       return {
-        powerToday: convertToKWh(todayPerformance).toString(),
-        powerMonth: convertToKWh(monthPerformace).toString(),
-        powerYear: convertToKWh(yearPerformace).toString(),
-        allPower: convertToKWh(allPerformace).toString(),
+        powerToday: convertToKWh(todayPerformance),
+        powerMonth: convertToKWh(monthPerformace),
+        powerYear: convertToKWh(yearPerformace),
+        allPower: convertToKWh(allPerformace),
         co2: coalValue,
       };
     } catch (error) {
