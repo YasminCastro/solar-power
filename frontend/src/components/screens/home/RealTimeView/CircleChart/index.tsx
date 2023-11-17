@@ -3,25 +3,22 @@ import CircularProgress from "react-native-circular-progress-indicator";
 import { Entypo } from "@expo/vector-icons";
 
 interface IProps {
-  realTimePower: string;
+  realTimePower: number;
   maxValue: number;
 }
 
 export default function CircleChart({ realTimePower, maxValue }: IProps) {
-  const title = realTimePower.slice(-2);
-  const value = parseFloat(realTimePower);
-
   return (
     <View className="items-center">
       <View className="flex flex-row">
         <CircularProgress
-          value={value}
+          value={realTimePower}
           radius={100}
           delay={5}
           duration={2000}
           progressValueColor="#FFFFFF"
           maxValue={maxValue}
-          title={title}
+          title={"kW"}
           titleColor={"white"}
           titleStyle={{ fontWeight: "bold" }}
           activeStrokeColor="#FBCF24"
