@@ -73,11 +73,13 @@ export class SolarDataService {
 
       if (!previousEnergyFound) return 0;
 
-      const previousEnergy = 8.7;
+      const previousEnergy = previousEnergyFound.powerInRealTime;
 
       const TIME_INTERVAL_IN_HOURS = 1 / 12;
 
       const power = (nowEnergy - previousEnergy) / TIME_INTERVAL_IN_HOURS;
+
+      console.log(chalk.yellow('Real time calculation: ' + power));
 
       return parseFloat(power.toFixed(1));
     } catch (error: any) {
@@ -217,7 +219,7 @@ export class SolarDataService {
 
       console.log(chalk.green(`Power generation data OK...`));
 
-      console.log(todayPerformance, monthPerformace, yearPerformace, allPerformace);
+      console.log('Generation:', todayPerformance, monthPerformace, yearPerformace, allPerformace);
 
       return {
         powerToday: convertToKWh(todayPerformance),
