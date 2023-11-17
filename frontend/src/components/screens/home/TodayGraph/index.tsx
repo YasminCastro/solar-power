@@ -24,7 +24,7 @@ export default function TodayGraph() {
 
       dataFilterd.forEach((element: IPowerGenerated) => {
         const parsedDate = moment(element.createdAt).format("HH");
-        const parseData = parseFloat(element.powerInRealTime);
+        const parseData = element.powerInRealTime;
 
         setLabel((prev) => [...prev, parsedDate]);
 
