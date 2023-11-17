@@ -79,7 +79,7 @@ export class SolarDataService {
 
       const power = (nowEnergy - previousEnergy) / TIME_INTERVAL_IN_HOURS;
 
-      console.log(chalk.yellow('Real time calculation: ' + power));
+      console.log(chalk.yellow('Real time calculation: ' + parseFloat(power.toFixed(1))));
 
       return parseFloat(power.toFixed(1));
     } catch (error: any) {
