@@ -30,10 +30,6 @@ export default {
 
       // const weather = await solarData.utils.getWeatherData(lat, long);
 
-      const powerInRealTime = await solarData.calculateRealTimePower(_id, elginData.powerToday);
-
-      elginData.powerInRealTime = powerInRealTime;
-
       const result = await solarData.saveInverterData(elginData, _id);
 
       return Promise.resolve(result);
