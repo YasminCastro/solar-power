@@ -41,12 +41,29 @@ export class PowerGeneratedService {
       const startOfMonth = moment(selectDate, 'MM-YYYY').startOf('month').toDate();
       const endOfMonth = moment(selectDate, 'MM-YYYY').endOf('month').toDate();
 
-      const month = await PowerGeneratedModel.find({
-        inverterId,
-        createdAt: { $gte: startOfMonth, $lte: endOfMonth },
-      }).sort({ createdAt: -1 });
+      const month = await PowerGeneratedModel.aggregate([
+        {
+          $match: {
+            inverterId,
+            createdAt: { $gte: startOfMonth, $lte: endOfMonth },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              year: { $year: '$createdAt' },
+              month: { $month: '$createdAt' },
+              day: { $dayOfMonth: '$createdAt' },
+            },
+            lastRecord: { $last: '$$ROOT' },
+          },
+        },
+        {
+          $sort: { '_id.year': 1, '_id.month': 1, '_id.day': 1 },
+        },
+      ]);
 
-      return month;
+      return month.map(record => record.lastRecord);
     } catch (error) {
       console.log(error);
     }
