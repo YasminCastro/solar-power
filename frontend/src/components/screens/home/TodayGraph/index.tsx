@@ -68,7 +68,6 @@ export default function TodayGraph() {
           height={280}
           yAxisInterval={1}
           formatYLabel={(yLabel) => `${yLabel}kWh`}
-          onDataPointClick={(data) => console.log(data)}
           chartConfig={{
             backgroundColor: "#7179A5",
             backgroundGradientFrom: `rgba(113, 121, 165, 100)`,
