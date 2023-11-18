@@ -45,9 +45,7 @@ export default function CircleChart({ realTimePower, maxValue }: IProps) {
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
         title={"Energia em Tempo Real"}
-        text={
-          "Este número mostra a quantidade de energia que seu sistema está gerando neste exato momento, medida em quilowatts (kW). É uma ótima maneira de acompanhar o desempenho instantâneo do seu sistema de energia solar."
-        }
+        text={`Este número representa a energia aproximada que seu sistema está gerando no momento, arredondada para o quilowatt (kW) mais próxima. É uma forma prática de monitorar o desempenho instantâneo do seu sistema de energia solar. \n\nPara informações detalhadas, o valor exato no momento é de ${realTimePower} kW.`}
       />
     </View>
   );
