@@ -17,11 +17,11 @@ const Data: React.FC = () => {
       <StatusBar style="light" />
       <ScrollView>
         <View className="m-4">
-            <Text className="font-title text-2xl text-yellow-300">
-              Previsão de geração
-            </Text>
+          <Text className="font-title text-2xl text-yellow-300">
+            Visão Energética
+          </Text>
           <Text className="font-body text-base/3 text-gray-200">
-              Previsão de geração para os próximos dias.
+            Seu panorama de produção e economia solar
           </Text>
         </View>
         <View>
@@ -31,10 +31,7 @@ const Data: React.FC = () => {
           </Text> */}
         </View>
         <MonthGraph />
-        {/* <Stripes /> */}
         <YearGraph />
-        {/* <Stripes /> */}
-        {/* <Prediction /> */}
       </ScrollView>
     </SafeAreaView>
   );
