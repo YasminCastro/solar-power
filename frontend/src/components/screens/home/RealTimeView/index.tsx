@@ -45,7 +45,7 @@ export default function RealTimeView() {
               number={powerGenerated.powerToday}
               text="Produção hoje"
             />
-            <TouchableOpacity onPress={() => console.log("Info produção")}>
+            <TouchableOpacity onPress={() => console.log("Info hoje")}>
               <Entypo name="info-with-circle" size={16} color="white" />
             </TouchableOpacity>
           </View>
@@ -55,7 +55,7 @@ export default function RealTimeView() {
               number={powerGenerated.powerMonth}
               text="Produção mensal"
             />
-            <TouchableOpacity onPress={() => console.log("Info produção")}>
+            <TouchableOpacity onPress={() => console.log("Info mes")}>
               <Entypo name="info-with-circle" size={16} color="white" />
             </TouchableOpacity>
           </View>

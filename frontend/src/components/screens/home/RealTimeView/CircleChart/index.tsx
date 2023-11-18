@@ -28,7 +28,7 @@ export default function CircleChart({ realTimePower, maxValue }: IProps) {
           activeStrokeWidth={30}
           activeStrokeSecondaryColor="#FDA933"
         />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => console.log("Info tempo")}>
           <Entypo name="info-with-circle" size={18} color="white" />
         </TouchableOpacity>
       </View>
