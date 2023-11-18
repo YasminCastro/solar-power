@@ -98,5 +98,5 @@ export default function TodayGraph() {
     );
   }
 
-  return <Text className="text-white">Nenhum dado encontrado.</Text>;
+  return <View></View>;
 }
