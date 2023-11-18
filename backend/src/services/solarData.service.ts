@@ -62,6 +62,7 @@ export class SolarDataService {
 
       const createPowerGenerated: PowerGenerated = await PowerGeneratedModel.create(data);
       console.log(chalk.green('Solar data saved!'));
+      console.log(createPowerGenerated);
 
       return createPowerGenerated;
     } catch (error) {
