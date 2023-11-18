@@ -7,6 +7,7 @@ import { getPowerGeneratedRealTime } from "../../../../services/powerGenerated";
 import CircleChart from "./CircleChart";
 import SemiCircleText from "./SemiCircleText";
 import { Entypo } from "@expo/vector-icons";
+import SimpleModal from "../../../global/SimpleModal";
 
 export default function RealTimeView() {
   const { activeInverters } = useInverter();
@@ -14,6 +15,8 @@ export default function RealTimeView() {
     null
   );
   const [maxValue, setMaxValue] = useState<number>(100);
+  const [isTodayModalVisible, setTodayModalVisible] = useState(false);
+  const [isMonthModalVisible, setMonthModalVisible] = useState(false);
 
   async function loadPowerGenerated() {
     if (activeInverters[0]) {
@@ -42,24 +45,50 @@ export default function RealTimeView() {
         <View className="mt-8 flex flex-row justify-around">
           <View className="flex flex-row">
             <SemiCircleText
-              number={`${powerGenerated.powerToday}kWh`}
+              number={powerGenerated.powerToday}
               text="Produção hoje"
             />
-            <TouchableOpacity onPress={() => console.log("Info produção")}>
+            <TouchableOpacity
+              onPress={() => {
+                setTodayModalVisible(true);
+              }}
+            >
               <Entypo name="info-with-circle" size={16} color="white" />
             </TouchableOpacity>
           </View>
 
           <View className="flex flex-row">
             <SemiCircleText
-              number={`${powerGenerated.powerMonth}kWh`}
+              number={powerGenerated.powerMonth}
               text="Produção mensal"
             />
-            <TouchableOpacity onPress={() => console.log("Info produção")}>
+            <TouchableOpacity
+              onPress={() => {
+                setMonthModalVisible(true);
+              }}
+            >
               <Entypo name="info-with-circle" size={16} color="white" />
             </TouchableOpacity>
           </View>
         </View>
+
+        <SimpleModal
+          isModalVisible={isTodayModalVisible}
+          setModalVisible={setTodayModalVisible}
+          title={"Produção Diária de Energia"}
+          text={
+            "Aqui você encontra a quantidade total de energia produzida pelo seu sistema solar hoje, até o momento atual. O valor está em quilowatt-hora (kWh), que representa a energia gerada ao longo do dia."
+          }
+        />
+
+        <SimpleModal
+          isModalVisible={isMonthModalVisible}
+          setModalVisible={setMonthModalVisible}
+          title={"Produção Mensal de Energia"}
+          text={
+            "Este número mostra a quantidade de energia que seu sistema está gerando neste exato momento, medida em quilowatts (kW). É uma ótima maneira de acompanhar o desempenho instantâneo do seu sistema de energia solar."
+          }
+        />
       </View>
     );
   }

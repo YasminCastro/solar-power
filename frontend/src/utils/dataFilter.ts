@@ -14,6 +14,10 @@ export function filterByHour(data: IPowerGenerated[]): IPowerGenerated[] {
     }
   });
 
+  result.sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
+
   return result;
 }
 

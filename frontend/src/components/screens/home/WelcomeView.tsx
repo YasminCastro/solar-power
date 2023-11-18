@@ -1,5 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Text } from "react-native";
 import Logo from "../../../assets/logos/solar-power-logo.svg";
 import moment from "moment";
 
@@ -22,13 +21,6 @@ export default function WelcomeView() {
         <Text className="font-title text-3xl text-white">
           {welcomeMessage}!
         </Text>
-      </View>
-      <View>
-        <TouchableOpacity
-          onPress={() => console.log("ativar ou desativar notificação")}
-        >
-          <Ionicons name="notifications" size={24} color="#FEBE3D" />
-        </TouchableOpacity>
       </View>
     </View>
   );

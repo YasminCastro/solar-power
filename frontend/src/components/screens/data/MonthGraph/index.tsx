@@ -19,7 +19,7 @@ export default function MonthGraph() {
   const { activeInverters } = useInverter();
   const [label, setLabel] = useState<string[]>([]);
   const [dataset, setDataset] = useState<number[]>([]);
-  const [allMonth, setAllMonth] = useState<string>("");
+  const [allMonth, setAllMonth] = useState<number>(0);
   const [month, setMonth] = useState<string>(moment().format("MMMM"));
 
   async function loadPowerGenerated() {
@@ -32,7 +32,7 @@ export default function MonthGraph() {
 
       dataFilterd.forEach((element: IPowerGenerated) => {
         const parsedDate = moment(element.createdAt).format("HH");
-        const parseData = parseFloat(element.powerInRealTime);
+        const parseData = element.powerInRealTime;
         setAllMonth(element.powerMonth);
 
         setLabel((prev) => [...prev, parsedDate]);

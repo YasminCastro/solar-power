@@ -8,11 +8,13 @@ import { Entypo } from "@expo/vector-icons";
 import { filterByHour } from "../../../../utils/dataFilter";
 import moment from "moment";
 import { LineChart } from "react-native-chart-kit";
+import SimpleModal from "../../../global/SimpleModal";
 
 export default function TodayGraph() {
   const { activeInverters } = useInverter();
   const [label, setLabel] = useState<string[]>([]);
   const [dataset, setDataset] = useState<number[]>([]);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   async function loadPowerGenerated() {
     if (activeInverters[0]) {
@@ -23,8 +25,8 @@ export default function TodayGraph() {
       const dataFilterd = filterByHour(data);
 
       dataFilterd.forEach((element: IPowerGenerated) => {
-        const parsedDate = moment(element.createdAt).format("HH");
-        const parseData = parseFloat(element.powerInRealTime);
+        const parsedDate = moment(element.createdAt).format("H[h]");
+        const parseData = element.powerInRealTime;
 
         setLabel((prev) => [...prev, parsedDate]);
 
@@ -45,7 +47,11 @@ export default function TodayGraph() {
             Rendimento hoje
           </Text>
 
-          <TouchableOpacity onPress={() => console.log("Info produção")}>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(true);
+            }}
+          >
             <Entypo name="info-with-circle" size={16} color="white" />
           </TouchableOpacity>
         </View>
@@ -61,8 +67,7 @@ export default function TodayGraph() {
           width={Dimensions.get("window").width - 40}
           height={280}
           yAxisInterval={1}
-          formatYLabel={(yLabel) => `${yLabel}kW`}
-          onDataPointClick={(data) => console.log(data)}
+          formatYLabel={(yLabel) => `${yLabel}kWh`}
           chartConfig={{
             backgroundColor: "#7179A5",
             backgroundGradientFrom: `rgba(113, 121, 165, 100)`,
@@ -81,6 +86,13 @@ export default function TodayGraph() {
             marginVertical: 8,
             borderRadius: 16,
           }}
+        />
+
+        <SimpleModal
+          isModalVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+          title={"Rendimento Hoje"}
+          text={`Este gráfico ilustra a quantidade de energia que seu sistema solar gerou em cada hora do dia. Os valores são apresentados em quilowatts-hora (kWh), permitindo que você visualize como a eficiência do sistema varia com as condições de luz solar ao longo do dia.`}
         />
       </View>
     );
