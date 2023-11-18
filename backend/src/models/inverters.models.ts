@@ -39,7 +39,7 @@ const InverterSchema: Schema = new Schema({
     type: Number,
     required: true,
   },
-  createdAt: { default: Date.now(), type: Date },
+  createdAt: { default: new Date(), type: Date },
 });
 
 export const InverterModel = model<Inverter & Document>('Inverter', InverterSchema);
