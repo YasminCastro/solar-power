@@ -4,7 +4,6 @@ import { useInverter } from "../../../../contexts/inverter";
 import { useState } from "react";
 import { IPowerGenerated } from "../../../../interfaces/powerGenerated";
 import * as powerGeneratedApi from "../../../../services/powerGenerated";
-import { filterByDay } from "../../../../utils/dataFilter";
 import moment from "moment";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -12,6 +11,7 @@ import { LineChart } from "react-native-chart-kit";
 import CircleData from "../CircleData";
 
 import { MaterialIcons } from "@expo/vector-icons";
+import calculateEnergySavings from "../../../../utils/calculateEnergySavings";
 
 // TODO: css
 
@@ -96,19 +96,19 @@ export default function MonthGraph() {
             Rendimento {month}
           </Text>
         </View>
-        <View className="mt-10 flex flex-row justify-around">
+        <View className="mt-10 flex w-full flex-row justify-around ">
           <CircleData
             text="Rendimento do mês"
             data={`${allMonth} kWh`}
-            icon={<MaterialIcons name="highlight" size={50} color="#0F1E44" />}
+            icon={<MaterialIcons name="highlight" size={45} color="#0F1E44" />}
           />
-          {/* <CircleData
+          <CircleData
             text="Economias"
-            data="R$300"
+            data={`R$ ${calculateEnergySavings(allMonth).toString()}`}
             icon={
-              <MaterialIcons name="attach-money" size={50} color="#0F1E44" />
+              <MaterialIcons name="attach-money" size={45} color="#0F1E44" />
             }
-          /> */}
+          />
         </View>
       </View>
     );
