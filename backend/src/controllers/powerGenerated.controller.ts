@@ -53,7 +53,7 @@ export class PowerGeneratedController {
       const achievementName = 'Energizador Diário';
       const userAchievements = await this.achievements.findAchievementByUser(userId);
 
-      if (powerGenerated[0].powerToday && !userAchievements.find(achievement => achievement.name === achievementName)) {
+      if (powerGenerated[0] && powerGenerated[0].powerToday && !userAchievements.find(achievement => achievement.name === achievementName)) {
         await this.achievements.createAchivement({
           userId,
           achivementImage: '',
