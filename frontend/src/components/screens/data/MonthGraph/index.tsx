@@ -28,12 +28,13 @@ export default function MonthGraph() {
       setLabel([]);
       setDataset([]);
 
-      const dataFilterd = filterByDay(data);
+      data.forEach((element: IPowerGenerated) => {
+        const parsedDate = moment(element.createdAt).format("DD");
+        const parseData = element.powerToday;
 
-      dataFilterd.forEach((element: IPowerGenerated) => {
-        const parsedDate = moment(element.createdAt).format("HH");
-        const parseData = element.powerInRealTime;
         setAllMonth(element.powerMonth);
+
+        if (typeof parseData === "string") return; // remove this later
 
         setLabel((prev) => [...prev, parsedDate]);
 
@@ -49,7 +50,7 @@ export default function MonthGraph() {
   if (label.length > 0 && dataset.length > 0) {
     return (
       <View className="mt-4 items-center">
-        <View className="m-4 flex flex-row justify-between">
+        <View className="m-4 flex flex-row gap-3">
           <Text className="font-title text-2xl text-yellow-300">
             Produção mensal
           </Text>
