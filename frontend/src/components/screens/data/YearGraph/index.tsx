@@ -20,7 +20,7 @@ export default function YearGraph() {
   const { activeInverters } = useInverter();
   const [label, setLabel] = useState<string[]>([]);
   const [dataset, setDataset] = useState<number[]>([]);
-  const [allYear, setAllYear] = useState<string>("");
+  const [allYear, setAllYear] = useState<number>(0);
 
   async function loadPowerGenerated() {
     if (activeInverters[0]) {
@@ -28,11 +28,11 @@ export default function YearGraph() {
       setLabel([]);
       setDataset([]);
 
-      const dataFilterd = filterByHour(data);
+      // const dataFilterd = filterByHour(data);
 
-      dataFilterd.forEach((element: IPowerGenerated) => {
+      data.forEach((element: IPowerGenerated) => {
         const parsedDate = moment(element.createdAt).format("MM");
-        const parseData = parseFloat(element.powerMonth);
+        const parseData = element.powerMonth;
         setAllYear(element.powerYear);
 
         setLabel((prev) => [...prev, parsedDate]);

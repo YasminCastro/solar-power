@@ -12,8 +12,7 @@ import CircleData from "../CircleData";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import calculateEnergySavings from "../../../../utils/calculateEnergySavings";
-
-// TODO: css
+import SimpleModal from "../../../global/SimpleModal";
 
 export default function MonthGraph() {
   const { activeInverters } = useInverter();
@@ -21,6 +20,8 @@ export default function MonthGraph() {
   const [dataset, setDataset] = useState<number[]>([]);
   const [allMonth, setAllMonth] = useState<number>(0);
   const [month, setMonth] = useState<string>(moment().format("MMMM"));
+  const [isMonthModalVisible, setMonthModalVisible] = useState(false);
+  const [isEconomyModalVisible, setEconomyModalVisible] = useState(false);
 
   async function loadPowerGenerated() {
     if (activeInverters[0]) {
@@ -97,19 +98,50 @@ export default function MonthGraph() {
           </Text>
         </View>
         <View className="mt-10 flex w-full flex-row justify-around ">
-          <CircleData
-            text="Rendimento do mês"
-            data={`${allMonth} kWh`}
-            icon={<MaterialIcons name="highlight" size={45} color="#0F1E44" />}
-          />
-          <CircleData
-            text="Economias"
-            data={`R$ ${calculateEnergySavings(allMonth).toString()}`}
-            icon={
-              <MaterialIcons name="attach-money" size={45} color="#0F1E44" />
-            }
-          />
+          <TouchableOpacity
+            onPress={() => {
+              setMonthModalVisible(true);
+            }}
+          >
+            <CircleData
+              text="Rendimento do mês"
+              data={`${allMonth} kWh`}
+              icon={
+                <MaterialIcons name="highlight" size={45} color="#0F1E44" />
+              }
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setEconomyModalVisible(true);
+            }}
+          >
+            <CircleData
+              text="Economias"
+              data={`R$ ${calculateEnergySavings(allMonth).toString()}`}
+              icon={
+                <MaterialIcons name="attach-money" size={45} color="#0F1E44" />
+              }
+            />
+          </TouchableOpacity>
         </View>
+
+        <SimpleModal
+          isModalVisible={isMonthModalVisible}
+          setModalVisible={setMonthModalVisible}
+          title={"Produção Mensal de Energia"}
+          text={
+            "Este número mostra a quantidade de energia que seu sistema está gerando neste exato momento, medida em quilowatts (kW). É uma ótima maneira de acompanhar o desempenho instantâneo do seu sistema de energia solar."
+          }
+        />
+        <SimpleModal
+          isModalVisible={isEconomyModalVisible}
+          setModalVisible={setEconomyModalVisible}
+          title={"Economia Mensal Acumulada"}
+          text={
+            "Este valor indica uma estimativa aproximada de quanto você pode ter economizado este mês com a energia produzida pelo seu sistema solar. A economia é calculada multiplicando a energia gerada (em kWh) pelo custo unitário de R$0,67 por kWh.  \n\nLembre-se de que este é um valor estimado, e pequenas variações podem ocorrer devido a mudanças na tarifação ou no padrão de consumo. \n\nEste número é um reflexo direto do impacto positivo que seu investimento em energia solar está trazendo para o seu bolso e para o planeta."
+          }
+        />
       </View>
     );
   }
