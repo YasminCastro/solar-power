@@ -2,11 +2,9 @@ import { ScrollView, Text, View } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import Logo from "../../assets/logos/solar-power-logo.svg";
 import MonthGraph from "../../components/screens/data/MonthGraph";
-import Stripes from "../../components/global/Stripes";
+import ComponenteDivision from "../../components/global/ComponenteDivision";
 import YearGraph from "../../components/screens/data/YearGraph";
-import Prediction from "../../components/screens/data/Prediction";
 
 //TODO: botões no começo para ir direto para a região que quer
 //TODO: botoão fluante que volta pro inicio da scroll view
@@ -31,7 +29,9 @@ const Data: React.FC = () => {
           </Text> */}
         </View>
         <MonthGraph />
+        <ComponenteDivision />
         <YearGraph />
+        <ComponenteDivision />
       </ScrollView>
     </SafeAreaView>
   );

@@ -12,6 +12,7 @@ module.exports = {
       },
 
       colors: {
+        customLineColor: "#7078b7",
         gray: {
           50: "#eaeaea",
           100: "#bebebf",
