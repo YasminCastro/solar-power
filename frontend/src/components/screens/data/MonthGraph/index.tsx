@@ -53,7 +53,7 @@ export default function MonthGraph() {
       <View className="mt-4 items-center">
         <View className="m-4 flex flex-row gap-3">
           <Text className="font-title text-2xl text-yellow-300">
-            Produção mensal
+            Produção Mensal
           </Text>
           <TouchableOpacity>
             <AntDesign name="calendar" size={24} color="grey" />
@@ -72,7 +72,7 @@ export default function MonthGraph() {
             width={Dimensions.get("window").width - 40}
             height={280}
             fromZero
-            formatYLabel={(yLabel) => `${yLabel}kW`}
+            formatYLabel={(yLabel) => `${yLabel}kWh`}
             onDataPointClick={(data) => console.log(data)}
             chartConfig={{
               backgroundColor: "#7179A5",
