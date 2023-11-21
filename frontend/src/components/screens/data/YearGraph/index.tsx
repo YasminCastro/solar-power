@@ -34,11 +34,10 @@ export default function YearGraph() {
         setAllYear(element.powerYear);
 
         if (typeof element.powerMonth === "string") {
-          powerMonth = parseFloat(element.powerMonth); //remove this later
+          powerMonth = parseInt(element.powerMonth); //remove this later
         }
 
         setLabel((prev) => [...prev, parsedDate]);
-
         setDataset((prev) => [...prev, powerMonth]);
       });
     }
@@ -71,8 +70,7 @@ export default function YearGraph() {
             }}
             width={Dimensions.get("window").width - 40}
             height={280}
-            fromZero
-            formatYLabel={(yLabel) => `${yLabel}kW`}
+            formatYLabel={(yLabel) => `${parseInt(yLabel)}kWh`}
             onDataPointClick={(data) => console.log(data)}
             chartConfig={{
               backgroundColor: "#7179A5",
