@@ -146,5 +146,9 @@ export default function MonthGraph() {
     );
   }
 
-  return <Text className="text-white">Nenhum dado encontrado.</Text>;
+  return (
+    <Text className="text-center text-lg text-white">
+      Nenhum dado encontrado.
+    </Text>
+  );
 }

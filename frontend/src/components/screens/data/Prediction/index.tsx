@@ -19,7 +19,7 @@ export default function Prediction() {
   const { activeInverters } = useInverter();
   const [label, setLabel] = useState<string[]>([]);
   const [dataset, setDataset] = useState<number[]>([]);
-  const [allMonth, setAllMonth] = useState<string>("");
+  const [allMonth, setAllMonth] = useState<number>(0);
   const [month, setMonth] = useState<string>(moment().format("MMMM"));
 
   async function loadPowerGenerated() {
@@ -31,10 +31,10 @@ export default function Prediction() {
       const dataFilterd = filterByHour(data);
 
       dataFilterd.forEach((element: IPowerGenerated) => {
-        const parsedDate = moment(element.localtime, "YYYY-MM-DD HH:mm").format(
+        const parsedDate = moment(element.createdAt, "YYYY-MM-DD HH:mm").format(
           "HH"
         );
-        const parseData = parseFloat(element.powerInRealTime);
+        const parseData = element.powerInRealTime;
         setAllMonth(element.powerMonth);
 
         setLabel((prev) => [...prev, parsedDate]);
@@ -100,7 +100,7 @@ export default function Prediction() {
         <View className="mt-10 flex flex-row justify-around">
           <CircleData
             text="Rendimento do mês"
-            data={allMonth}
+            data={allMonth.toString()}
             icon={<MaterialIcons name="highlight" size={50} color="#0F1E44" />}
           />
           <CircleData
@@ -115,5 +115,9 @@ export default function Prediction() {
     );
   }
 
-  return <Text className="text-white">Nenhum dado encontrado.</Text>;
+  return (
+    <Text className="text-center text-lg text-white">
+      Nenhum dado encontrado.
+    </Text>
+  );
 }
