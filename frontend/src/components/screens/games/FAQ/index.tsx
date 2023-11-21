@@ -8,8 +8,6 @@ interface ContentType {
   content: string;
 }
 
-const BACON_IPSUM = "Bacon ipsum dolor amet chuck turducken landjaeger...";
-
 const CONTENT: ContentType[] = [
   {
     title: "É normal uma variação na produção de energia durante o ano?",
