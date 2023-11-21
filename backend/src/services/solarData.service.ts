@@ -223,6 +223,7 @@ export class SolarDataService {
   private async selectCanvasDate(page: Page): Promise<any> {
     try {
       // 1° Procurar o canvas pelo selector e pegar o tamanho do gráfico
+      console.log(chalk.yellow(`SEARCHING FOR CANVAS SELECTOR...`));
       const CANVAS_SELECTOR = 'canvas[data-zr-dom-id="1"]';
       const canvas = await page.$(CANVAS_SELECTOR);
       const boundingBox = await canvas.boundingBox();
@@ -230,17 +231,19 @@ export class SolarDataService {
       let currentPositionX = boundingBox.x + graphWidth / 2;
 
       // 2° Passar o mouse no meio do canvas, pegar o dado trazido no tooltip
+      console.log(chalk.yellow(`MOVING MOUSE TO CANVAS...`));
       await page.mouse.move(currentPositionX, boundingBox.y + boundingBox.height / 2);
       await page.waitForSelector('.echarts-tooltip', { visible: true });
       const tooltipElement = await page.$('.echarts-tooltip');
       const tooltipText = await page.evaluate(el => el.textContent, tooltipElement);
       let timeFound: Time = this.extractTimeFromTooltip(tooltipText);
+      console.log(chalk.yellow(`FIRST TIME FOUND: ${timeFound}`));
 
       // 3° Pegar o horário de agora, arredondando para baixo
       const now = new Date();
       const targetTime: Time = { hours: now.getHours(), minutes: Math.floor(now.getMinutes() / 10) * 10 };
 
-      console.log(chalk.blue(`targetTime: ${targetTime.hours}:${targetTime.minutes}`));
+      console.log(chalk.blue(`Target time: ${targetTime.hours}:${targetTime.minutes}`));
 
       // Inicializa as variáveis para o loop
       let newTooltipText = '';
@@ -249,14 +252,16 @@ export class SolarDataService {
 
       while (attempt < maxAttempts) {
         // Calcula a nova posição do mouse com base na posição anterior
-        const adjustedPositionX = this.adjustMousePosition(currentPositionX, timeFound, targetTime, graphWidth, 20);
+        console.log(chalk.yellow(`AJUSTING MOUSE POSITION...`));
+        const adjustedPositionX = this.adjustMousePosition(currentPositionX, timeFound, targetTime, graphWidth, 100);
 
         // Mover o mouse para a nova posição ajustada
         await page.mouse.move(adjustedPositionX, boundingBox.y + boundingBox.height / 2);
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Atraso
+        await new Promise(resolve => setTimeout(resolve, 4000)); // Atraso
 
         // Aguarda e verifica o tooltip
-        await page.waitForSelector('.echarts-tooltip', { visible: true });
+        console.log(chalk.yellow(`WAITING FOR TOOLTIP...`));
+        await page.waitForSelector('.echarts-tooltip', { timeout: 50000 });
         const newTooltipElement = await page.$('.echarts-tooltip');
         newTooltipText = await page.evaluate(el => el.textContent, newTooltipElement);
 
@@ -270,13 +275,18 @@ export class SolarDataService {
 
         // Verifica se alcançou o horário desejado
         if (timeFound.hours === targetTime.hours && timeFound.minutes === targetTime.minutes) {
+          console.log(chalk.blue(`Target time found!`));
           break;
         }
 
         attempt++;
       }
 
-      return this.extractPowerFromTooltip(newTooltipText);
+      const powerFound = this.extractPowerFromTooltip(newTooltipText);
+
+      console.log(chalk.blue(`Power Found: ${powerFound}`));
+
+      return powerFound;
     } catch (error) {
       console.log(error);
     }
