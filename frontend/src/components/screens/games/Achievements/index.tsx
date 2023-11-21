@@ -1,17 +1,28 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useEffect } from "react";
 import { useState } from "react";
 import * as achievementsApi from "../../../../services/achievements";
+import {
+  FontAwesome5,
+  Feather,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 import { IAchievement } from "../../../../interfaces/achievement";
 
 import Trophy from "../../../../assets/achievements/trophy.svg";
+import AchievementsModal from "../../../global/AchievementsModal";
 
 export default function Achievements() {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedName, setSelectedName] = useState("");
+  const [selectedDescription, setSelectedDescription] = useState("");
+
   const [achievements, setAchievements] = useState<IAchievement[]>([]);
 
   async function loadAchievements() {
     const data = await achievementsApi.getAchievements();
+
     setAchievements(data || []);
   }
 
@@ -32,11 +43,21 @@ export default function Achievements() {
           numColumns={3}
           contentContainerStyle={{ padding: 4, alignItems: "center" }}
           renderItem={({ item }) => (
-            <View className="m-2 flex items-center justify-center rounded-full bg-blueDark-400 p-2">
-              <Trophy width={40} height={40} />
-              <Text className="mt-1 w-24 text-center text-sm text-white">
-                {item.name}
-              </Text>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedName(item.name);
+                  setSelectedDescription(item.description);
+                  setModalVisible(true);
+                }}
+              >
+                <View className="m-2 flex items-center justify-center rounded-full bg-blueDark-400 p-2">
+                  <AchievementsIcon icon={achievementsIcon(item.name, 36)} />
+                  <Text className="mt-1 w-24 text-center text-sm text-white">
+                    {item.name}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -45,6 +66,36 @@ export default function Achievements() {
           Nenhuma conquista encontrada.
         </Text>
       )}
+      <AchievementsModal
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+        title={selectedName}
+        text={selectedDescription}
+        icon={achievementsIcon(selectedName, 100)}
+      />
     </View>
   );
 }
+
+const achievementsIcon = (name: string, size: number) => {
+  switch (name) {
+    case "Energizador Diário":
+      return <Feather name="sunrise" size={size} color="#FFA35A" />;
+    case "Produtor Mensal de Alta Voltagem":
+      return (
+        <MaterialCommunityIcons
+          name="solar-power"
+          size={size}
+          color="#FFA35A"
+        />
+      );
+    case "Campeão Anual de Energia":
+      return <FontAwesome5 name="trophy" size={size} color="#FFA35A" />;
+    default:
+      return <FontAwesome5 name="medal" size={size} color="#FFA35A" />;
+  }
+};
+
+const AchievementsIcon: React.FC<{ icon: any }> = ({ icon }) => {
+  return <View>{icon}</View>;
+};
