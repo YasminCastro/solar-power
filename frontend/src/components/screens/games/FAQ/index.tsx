@@ -49,10 +49,10 @@ const FAQ: React.FC = () => {
     return (
       <Animatable.View
         duration={400}
-        className={`bg-white p-4 ${isActive ? "bg-white" : "bg-gray-200"}`}
+        className={` p-4 ${isActive ? "" : "bg-black/25"} `}
         transition="backgroundColor"
       >
-        <Text className="text-center text-lg font-semibold">
+        <Text className="text-center text-lg font-semibold text-white">
           {section.title}
         </Text>
       </Animatable.View>
@@ -67,20 +67,18 @@ const FAQ: React.FC = () => {
     return (
       <Animatable.View
         duration={400}
-        className={`bg-white p-5 ${isActive ? "bg-white" : "bg-gray-200"}`}
+        className={`p-5 ${isActive ? "bg-black/25" : "bg-black/25"}`}
         transition="backgroundColor"
       >
-        <Text>{section.content}</Text>
+        <Text className="text-white">{section.content}</Text>
       </Animatable.View>
     );
   };
 
   return (
-    <View className={`flex-1 bg-blue-100 pt-[${Constants.statusBarHeight}px]`}>
-      <View className="mt-8 items-center">
-        <Text className="text-lg font-bold">FAQ</Text>
-      </View>
-      <ScrollView className="pt-8">
+    <View className="m-3 rounded-xl bg-black/25">
+      <Text className="px-5 py-2 font-title text-2xl text-gray-100">FAQ</Text>
+      <ScrollView>
         <Accordion
           activeSections={activeSections}
           sections={CONTENT}
