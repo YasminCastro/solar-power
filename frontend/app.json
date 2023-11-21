@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "SolarPower",
+    "slug": "solarpower",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,7 +29,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "fa1126cb-5133-4436-a593-7023ac4f3432"
+        "projectId": "cf38850d-cbe8-4263-80a6-3186e20ae1f3"
       }
     }
   }
