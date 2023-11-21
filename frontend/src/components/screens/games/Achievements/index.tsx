@@ -10,7 +10,6 @@ import {
 
 import { IAchievement } from "../../../../interfaces/achievement";
 
-import Trophy from "../../../../assets/achievements/trophy.svg";
 import AchievementsModal from "../../../global/AchievementsModal";
 
 export default function Achievements() {
