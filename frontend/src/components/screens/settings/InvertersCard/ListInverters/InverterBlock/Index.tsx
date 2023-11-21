@@ -36,8 +36,8 @@ const InverterBlock: React.FC<IProps> = ({
   };
 
   return (
-    <View className="items-center">
-      <View className=" mx-8 my-4 h-24 w-80 rounded-md bg-white">
+    <View className="w-full items-center">
+      <View className=" mx-8 my-4 h-24 w-full rounded-md bg-white">
         <View className="flex flex-row justify-between p-4">
           <View>
             <Text className="font-title text-2xl text-blueDark-300">

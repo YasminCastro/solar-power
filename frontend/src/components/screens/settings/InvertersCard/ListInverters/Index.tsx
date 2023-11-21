@@ -2,7 +2,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import { FontAwesome5 } from "@expo/vector-icons";
-import { TextInput } from "react-native-gesture-handler";
+import { FlatList, TextInput } from "react-native-gesture-handler";
 import { useState } from "react";
 import { IStepSettings } from "../../../../../screens/Settings";
 import InverterBlock from "./InverterBlock/Index";
@@ -42,14 +42,18 @@ const ListInverters: React.FC<IProps> = ({
       </TouchableOpacity>
       <View className="flex flex-row items-center justify-between">
         <View>
-          <Text className="font-title text-3xl text-yellow-300">
-            Inversores
-          </Text>
+          <View className="flex flex-row gap-3">
+            <FontAwesome5 name="solar-panel" size={30} color="#febe3d" />
+            <Text className="font-title text-3xl text-yellow-300">
+              Inversores
+            </Text>
+          </View>
+
           <Text className="font-regular text-gray-200">
             Inversores cadastrados no app
           </Text>
         </View>
-        <FontAwesome5 name="solar-panel" size={30} color="#febe3d" />
+
         <TouchableOpacity onPress={() => setInverterCardActive("create")}>
           <MaterialIcons name="my-library-add" size={30} color="#febe3d" />
         </TouchableOpacity>
@@ -64,15 +68,19 @@ const ListInverters: React.FC<IProps> = ({
             autoCapitalize="none"
             onChangeText={(text) => setSearch(text)}
           />
+
           {filteredInverters.length > 0 ? (
-            filteredInverters.map((inverter) => (
-              <InverterBlock
-                key={inverter.name}
-                inverter={inverter}
-                setInverterCardActive={setInverterCardActive}
-                setInverterId={setInverterId}
-              />
-            ))
+            <FlatList
+              data={filteredInverters}
+              renderItem={({ item }) => (
+                <InverterBlock
+                  key={item.name}
+                  inverter={item}
+                  setInverterCardActive={setInverterCardActive}
+                  setInverterId={setInverterId}
+                />
+              )}
+            ></FlatList>
           ) : (
             <Text className="mt-4 text-xl text-white">
               Nenhum inversor encontrado.
