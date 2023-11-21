@@ -8,8 +8,13 @@ import CircleChart from "./CircleChart";
 import SemiCircleText from "./SemiCircleText";
 import { Entypo } from "@expo/vector-icons";
 import SimpleModal from "../../../global/SimpleModal";
+import moment from "moment";
 
-export default function RealTimeView() {
+interface IProps {
+  refresh: boolean;
+}
+
+export default function RealTimeView({ refresh }: IProps) {
   const { activeInverters } = useInverter();
   const [powerGenerated, setPowerGenerated] = useState<IPowerGenerated | null>(
     null
@@ -33,7 +38,7 @@ export default function RealTimeView() {
 
   useEffect(() => {
     loadPowerGenerated();
-  }, [activeInverters]);
+  }, [activeInverters, refresh]);
 
   if (powerGenerated) {
     return (

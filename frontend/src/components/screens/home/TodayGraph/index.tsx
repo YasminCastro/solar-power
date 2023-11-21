@@ -10,7 +10,11 @@ import moment from "moment";
 import { LineChart } from "react-native-chart-kit";
 import SimpleModal from "../../../global/SimpleModal";
 
-export default function TodayGraph() {
+interface IProps {
+  refresh: boolean;
+}
+
+export default function TodayGraph({ refresh }: IProps) {
   const { activeInverters } = useInverter();
   const [label, setLabel] = useState<string[]>([]);
   const [dataset, setDataset] = useState<number[]>([]);
