@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import Achievements from "../../components/screens/games/Achievements";
 import ComponenteDivision from "../../components/global/ComponenteDivision";
+import FAQ from "../../components/screens/games/FAQ";
 
 const Games: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const Games: React.FC = () => {
 
         <Achievements />
         <ComponenteDivision />
+        <FAQ />
       </ScrollView>
     </SafeAreaView>
   );
