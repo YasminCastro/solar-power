@@ -49,7 +49,7 @@ const EditInverter = ({
     }
   };
 
-  const watchModel = watch("model", "");
+  const watchModel = watch("model", inverter.model);
 
   return (
     <View>
@@ -151,7 +151,7 @@ const EditInverter = ({
         />
 
         {/* Campos condicionais baseados no modelo escolhido */}
-        {(watchModel === "elgin" || inverter.model === "elgin") && (
+        {watchModel === "elgin" && (
           <>
             {watchModel === "elgin" && (errors.password || errors.username) && (
               <Text className="text-red-500">
@@ -191,7 +191,7 @@ const EditInverter = ({
             />
           </>
         )}
-        {(watchModel === "hawuei" || inverter.model === "hawuei") && (
+        {watchModel === "hawuei" && (
           <>
             {watchModel === "hawuei" && errors.url && (
               <Text className="text-red-500">Url é obrigatório.</Text>
