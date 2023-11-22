@@ -1,23 +1,24 @@
-import { Text, View, TextInput, Button, TouchableOpacity } from "react-native";
-import React, { useEffect } from "react";
+import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { IStepInverter } from "../Index";
 import { useForm, Controller } from "react-hook-form";
 import { IInverterCreateUpdate } from "../../../../../interfaces/inverter";
+import * as invertersApi from "../../../../../services/inverters";
 
 import { Picker } from "@react-native-picker/picker";
+
+import Toast from "react-native-toast-message";
 
 interface IProps {
   setInverterCardActive: React.Dispatch<React.SetStateAction<IStepInverter>>;
 }
 
-//TODO: implementar um form stepper pra criar o inversor
-
 const CreateInverter = ({ setInverterCardActive }: IProps) => {
+  const [loading, setLoading] = useState(false);
   const {
     control,
     register,
-    setValue,
     handleSubmit,
     watch,
     formState: { errors },
@@ -25,8 +26,25 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
 
   const watchModel = watch("model", "");
 
-  const onSubmit = (data: IInverterCreateUpdate) => {
-    console.log(data);
+  const onSubmit = async (data: IInverterCreateUpdate) => {
+    setLoading(true);
+    try {
+      const response = await invertersApi.createInverter(data);
+      if (response.message === "Inverter successfully created") {
+        Toast.show({
+          type: "success",
+          text1: "Inversor criado com sucesso.",
+        });
+        setInverterCardActive("list");
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Erro ao criar inversor, tente novamente mais tarde.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -48,6 +66,9 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
       </View>
 
       <View className="mt-8">
+        {errors.name && (
+          <Text className="text-red-500">Nome é obrigatório.</Text>
+        )}
         <Controller
           control={control}
           rules={{ required: true }}
@@ -62,10 +83,8 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
           )}
           name="name"
         />
-        {errors.name && (
-          <Text className="text-red-500">Nome é obrigatório.</Text>
-        )}
 
+        {errors.cep && <Text className="text-red-500">CEP é obrigatório.</Text>}
         <Controller
           control={control}
           rules={{ required: true }}
@@ -81,8 +100,10 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
           )}
           name="cep"
         />
-        {errors.cep && <Text className="text-red-500">CEP é obrigatório.</Text>}
 
+        {errors.maxRealTimePower && (
+          <Text className="text-red-500">Este campo é obrigatório.</Text>
+        )}
         <Controller
           control={control}
           rules={{ required: true }}
@@ -99,10 +120,9 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
           name="maxRealTimePower"
         />
 
-        {errors.maxRealTimePower && (
-          <Text className="text-red-500">Este campo é obrigatório.</Text>
+        {errors.model && (
+          <Text className="text-red-500">Modelo é obrigatório.</Text>
         )}
-
         <Controller
           control={control}
           rules={{ required: true }}
@@ -122,13 +142,15 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
           )}
           name="model"
         />
-        {errors.model && (
-          <Text className="text-red-500">Modelo é obrigatório.</Text>
-        )}
 
         {/* Campos condicionais baseados no modelo escolhido */}
         {watchModel === "elgin" && (
           <>
+            {watchModel === "elgin" && (errors.password || errors.username) && (
+              <Text className="text-red-500">
+                Usuário e senha é obrigatório.
+              </Text>
+            )}
             <Controller
               control={control}
               rules={{ required: true }}
@@ -162,6 +184,9 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
         )}
         {watchModel === "hawuei" && (
           <>
+            {watchModel === "hawuei" && errors.url && (
+              <Text className="text-red-500">Url é obrigatório.</Text>
+            )}
             <Controller
               control={control}
               rules={{ required: true }}
@@ -172,7 +197,6 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
                   onChangeText={onChange}
                   value={value}
                   placeholder="URL"
-                  secureTextEntry
                 />
               )}
               name="url"
@@ -183,14 +207,17 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
         <TouchableOpacity
           className="flex h-10 flex-row items-center justify-center rounded-full bg-solar-100 px-6"
           onPress={handleSubmit(onSubmit)}
+          disabled={loading}
         >
           <View className="flex flex-1 items-center">
             <Text className="font-body text-base text-solar-500">
-              Cadastrar Inversor
+              {loading ? "Cadastrando inversor..." : "Cadastrar Inversor"}
             </Text>
           </View>
         </TouchableOpacity>
       </View>
+
+      <Toast position="bottom" />
     </View>
   );
 };
