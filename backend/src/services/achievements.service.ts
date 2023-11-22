@@ -19,7 +19,6 @@ export class AchievementsService {
 
     const createAchivementData: Achievement = await AchivementsModel.create(achivementData);
 
-    //update user points
     return createAchivementData;
   }
   public async findAllAchivement(): Promise<Achievement[]> {

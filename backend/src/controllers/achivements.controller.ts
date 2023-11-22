@@ -1,20 +1,27 @@
 import { NextFunction, Request, Response } from 'express';
 import { Container } from 'typedi';
 import { RequestWithUser } from '@/interfaces/auth.interface';
-import { User } from '@/interfaces/users.interface';
-import { UpdateUserDto } from '@/dtos/users.dto';
 import { CreateAchivementsDto, UpdateAchivementsDto } from '@/dtos/achievements.dto';
 import { Achievement } from '@/interfaces/achievement.interface';
 import { AchievementsService } from '@/services/achievements.service';
+import { UserService } from '@/services/users.service';
 
 export class AchivementsController {
   public achievements = Container.get(AchievementsService);
+  public users = Container.get(UserService);
 
   public createAchivement = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const achivementData: CreateAchivementsDto = req.body;
 
       const achivement = await this.achievements.createAchivement(achivementData);
+
+      //update user points
+      const user = await this.users.findUserById(achivementData.userId);
+
+      const newLevel = user.level + achivementData.points;
+
+      await this.users.updateUser(achivementData.userId, { level: newLevel });
 
       res.status(201).json(achivement);
     } catch (error) {
