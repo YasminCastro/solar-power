@@ -30,3 +30,11 @@ export async function editInverter(
 
   return data;
 }
+
+export async function deleteInverter(inverterId: string) {
+  const { data } = await api.delete(
+    `/inverters/${inverterId}?deleteForAll=true`
+  );
+
+  return data;
+}

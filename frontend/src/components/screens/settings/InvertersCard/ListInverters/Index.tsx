@@ -9,6 +9,7 @@ import { IStepInverter } from "../Index";
 import { useInverter } from "../../../../../contexts/inverter";
 import { IInverter } from "../../../../../interfaces/inverter";
 import { Feather } from "@expo/vector-icons";
+import DeleteModal from "./DeleteModal";
 
 interface IProps {
   setCardActive: React.Dispatch<React.SetStateAction<IStepSettings>>;
@@ -28,6 +29,7 @@ const ListInverters: React.FC<IProps> = ({
 }) => {
   const { inverters } = useInverter();
   const [search, setSearch] = useState("");
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const filteredInverters = inverters?.filter((el) => {
     if (!search) {
@@ -114,6 +116,22 @@ const ListInverters: React.FC<IProps> = ({
                               />
                             )}
                           </TouchableOpacity> */}
+
+                          <TouchableOpacity
+                            onPress={() => setModalVisible(true)}
+                          >
+                            <Feather
+                              name={item.active ? "trash" : "eye-off"}
+                              size={24}
+                              color="black"
+                            />
+                          </TouchableOpacity>
+                          <DeleteModal
+                            isModalVisible={isModalVisible}
+                            setModalVisible={setModalVisible}
+                            title={`Deseja deletar o inversor: ${item.name}`}
+                            inverterId={item._id}
+                          />
                         </View>
                       </View>
                     </View>
