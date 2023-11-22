@@ -18,7 +18,7 @@ const AchivementsSchema: Schema = new Schema({
     required: true,
   },
   achivementImage: { type: String },
-  createdAt: { default: new Date(), type: Date },
+  createdAt: { default: () => new Date(), type: Date },
 });
 
 export const AchivementsModel = model<Achievement & Document>('Achievements', AchivementsSchema);

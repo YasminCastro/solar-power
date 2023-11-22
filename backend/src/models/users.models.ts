@@ -18,7 +18,7 @@ const UserSchema: Schema = new Schema({
   level: { type: Number, default: 0 },
   lastLoginDate: { default: new Date(), type: Date },
   loginStreak: { default: 0, type: Number },
-  createdAt: { default: new Date(), type: Date },
+  createdAt: { default: () => new Date(), type: Date },
 });
 
 export const UserModel = model<User & Document>('User', UserSchema);
