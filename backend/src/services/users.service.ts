@@ -12,6 +12,12 @@ export class UserService {
     return users;
   }
 
+  public async getUserRanking(): Promise<User[]> {
+    const users: User[] = await UserModel.find({}, '_id name level').sort({ level: -1 }).limit(30);
+
+    return users;
+  }
+
   public async findUserById(userId: string): Promise<User> {
     const findUser: User = await UserModel.findOne({ _id: userId });
 

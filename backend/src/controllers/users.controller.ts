@@ -18,6 +18,16 @@ export class UserController {
     }
   };
 
+  public getUsersRanking = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const findAllUsersData: User[] = await this.user.getUserRanking();
+
+      res.status(200).json(findAllUsersData);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public getUserById = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = String(req.params.id);
