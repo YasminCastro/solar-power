@@ -27,6 +27,7 @@ const InverterCard: React.FC<IProps> = ({ setCardActive }) => {
           setInverterCardActive={setInverterCardActive}
           setInverterId={setInverterId}
           setInverter={setInverter}
+          inverterCardActive={inverterCardActive}
         />
       )}
       {inverterCardActive === "edit" && inverter && (

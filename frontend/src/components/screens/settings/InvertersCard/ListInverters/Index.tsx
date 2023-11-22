@@ -3,7 +3,7 @@ import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { FlatList, TextInput } from "react-native-gesture-handler";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IStepSettings } from "../../../../../screens/Settings";
 import { IStepInverter } from "../Index";
 import { useInverter } from "../../../../../contexts/inverter";
@@ -16,6 +16,7 @@ interface IProps {
   setInverterCardActive: React.Dispatch<React.SetStateAction<IStepInverter>>;
   setInverterId: React.Dispatch<React.SetStateAction<string>>;
   setInverter: React.Dispatch<React.SetStateAction<IInverter | null>>;
+  inverterCardActive: string;
 }
 
 //TODO: arrumar css
@@ -26,10 +27,15 @@ const ListInverters: React.FC<IProps> = ({
   setCardActive,
   setInverterCardActive,
   setInverter,
+  inverterCardActive,
 }) => {
-  const { inverters } = useInverter();
+  const { inverters, getUserInvertes } = useInverter();
   const [search, setSearch] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    getUserInvertes();
+  }, [setInverterCardActive, inverterCardActive]);
 
   const filteredInverters = inverters?.filter((el) => {
     if (!search) {
