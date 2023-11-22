@@ -1,18 +1,20 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import { useState } from "react";
 import { IStepSettings } from "../../../../../screens/Settings";
-import InverterBlock from "./InverterBlock/Index";
 import { IStepInverter } from "../Index";
 import { useInverter } from "../../../../../contexts/inverter";
+import { IInverter } from "../../../../../interfaces/inverter";
+import { Feather } from "@expo/vector-icons";
 
 interface IProps {
   setCardActive: React.Dispatch<React.SetStateAction<IStepSettings>>;
   setInverterCardActive: React.Dispatch<React.SetStateAction<IStepInverter>>;
   setInverterId: React.Dispatch<React.SetStateAction<string>>;
+  setInverter: React.Dispatch<React.SetStateAction<IInverter | null>>;
 }
 
 //TODO: arrumar css
@@ -22,7 +24,7 @@ interface IProps {
 const ListInverters: React.FC<IProps> = ({
   setCardActive,
   setInverterCardActive,
-  setInverterId,
+  setInverter,
 }) => {
   const { inverters } = useInverter();
   const [search, setSearch] = useState("");
@@ -34,6 +36,11 @@ const ListInverters: React.FC<IProps> = ({
 
     return el.name.toLocaleLowerCase().includes(search.toLocaleLowerCase());
   });
+
+  const handleEditInverter = async (inverter: IInverter) => {
+    setInverter(inverter);
+    setInverterCardActive("edit");
+  };
 
   return (
     <View>
@@ -72,14 +79,47 @@ const ListInverters: React.FC<IProps> = ({
           {filteredInverters.length > 0 ? (
             <FlatList
               data={filteredInverters}
-              renderItem={({ item }) => (
-                <InverterBlock
-                  key={item.name}
-                  inverter={item}
-                  setInverterCardActive={setInverterCardActive}
-                  setInverterId={setInverterId}
-                />
-              )}
+              renderItem={({ item }) => {
+                return (
+                  <View className="w-full items-center" key={item._id}>
+                    <View className=" mx-8 my-4 h-24 w-full rounded-md bg-white">
+                      <View className="flex flex-row justify-between p-4">
+                        <View>
+                          <Text className="font-title text-2xl text-blueDark-300">
+                            {item.name}
+                          </Text>
+                          <Text className="text-base font-medium uppercase text-blueDark-300">
+                            {item.model}
+                          </Text>
+                        </View>
+                        <View className="flex flex-col justify-evenly gap-3">
+                          <TouchableOpacity>
+                            <Feather
+                              name="edit"
+                              size={24}
+                              color="black"
+                              onPress={() => handleEditInverter(item)}
+                            />
+                          </TouchableOpacity>
+                          {/* <TouchableOpacity
+                            onPress={() => handleEditInverter(item)}
+                          >
+                            {loading ? (
+                              <ActivityIndicator size="small" color="#FEBE3D" />
+                            ) : (
+                              <Feather
+                                name={item.active ? "eye" : "eye-off"}
+                                size={24}
+                                color="black"
+                              />
+                            )}
+                          </TouchableOpacity> */}
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                );
+              }}
             ></FlatList>
           ) : (
             <Text className="mt-4 text-xl text-white">

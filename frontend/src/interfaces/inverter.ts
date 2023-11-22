@@ -14,7 +14,20 @@ export interface IInverter {
   createdAt: Date;
 }
 
-export interface IInverterCreateUpdate {
+export interface ICreateInverter {
+  name: string;
+  model: string;
+  url?: string;
+  password?: string;
+  username?: string;
+  active: boolean;
+  cep: string;
+  lat: string;
+  long: string;
+  maxRealTimePower: string;
+}
+
+export interface IUpdateInverter {
   name: string;
   model: string;
   url?: string;

@@ -1,4 +1,4 @@
-import { IInverterCreateUpdate } from "../interfaces/inverter";
+import { ICreateInverter, IUpdateInverter } from "../interfaces/inverter";
 import api from "./api";
 
 export async function editInverterStatus(inverterId: string, active: boolean) {
@@ -13,11 +13,20 @@ export async function getUserInverters(userId: string) {
   return data;
 }
 
-export async function createInverter(inverterData: IInverterCreateUpdate) {
+export async function createInverter(inverterData: ICreateInverter) {
   const { data } = await api.post(`/inverters`, {
     ...inverterData,
     maxRealTimePower: parseInt(inverterData.maxRealTimePower),
   });
+
+  return data;
+}
+
+export async function editInverter(
+  inverterId: string,
+  inverterData: IUpdateInverter
+) {
+  const { data } = await api.put(`/inverters/${inverterId}`, inverterData);
 
   return data;
 }

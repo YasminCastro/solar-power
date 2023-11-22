@@ -1,9 +1,9 @@
 import { Text, View, TextInput, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { IStepInverter } from "../Index";
 import { useForm, Controller } from "react-hook-form";
-import { IInverterCreateUpdate } from "../../../../../interfaces/inverter";
+import { ICreateInverter } from "../../../../../interfaces/inverter";
 import * as invertersApi from "../../../../../services/inverters";
 
 import { Picker } from "@react-native-picker/picker";
@@ -18,15 +18,14 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
   const [loading, setLoading] = useState(false);
   const {
     control,
-    register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<IInverterCreateUpdate>();
+  } = useForm<ICreateInverter>();
 
   const watchModel = watch("model", "");
 
-  const onSubmit = async (data: IInverterCreateUpdate) => {
+  const onSubmit = async (data: ICreateInverter) => {
     setLoading(true);
     try {
       const response = await invertersApi.createInverter(data);
@@ -46,10 +45,6 @@ const CreateInverter = ({ setInverterCardActive }: IProps) => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    register("name");
-  }, [register]);
 
   return (
     <View>
