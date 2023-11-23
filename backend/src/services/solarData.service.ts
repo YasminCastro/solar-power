@@ -6,6 +6,7 @@ import { ElginDataInterface, HauweiDataInterface, WeatherInterface, PowerGenerat
 import { PowerGeneratedModel } from '@/models/powerGenerated.models';
 import { convertToKWh } from '@/utils/convertPower';
 import chalk from 'chalk';
+import moment from 'moment-timezone';
 
 interface Time {
   hours: number;
@@ -202,7 +203,7 @@ export class SolarDataService {
 
       const powerInRealTime = await this.selectCanvasDate(page);
 
-      console.log('Generation:', powerInRealTime, todayPerformance, monthPerformace, yearPerformace, allPerformace);
+      logger.info(`Generation: ${powerInRealTime} - ${todayPerformance} - ${monthPerformace} - ${yearPerformace} - ${allPerformace}`);
       console.log(chalk.green(`Power generation data OK...`));
 
       return {
@@ -223,7 +224,7 @@ export class SolarDataService {
   private async selectCanvasDate(page: Page): Promise<any> {
     try {
       // 1° Procurar o canvas pelo selector e pegar o tamanho do gráfico
-      console.log(chalk.yellow(`SEARCHING FOR CANVAS SELECTOR...`));
+      logger.info(chalk.yellow(`SEARCHING FOR CANVAS SELECTOR...`));
       const CANVAS_SELECTOR = 'canvas[data-zr-dom-id="1"]';
       const canvas = await page.$(CANVAS_SELECTOR);
       const boundingBox = await canvas.boundingBox();
@@ -240,10 +241,13 @@ export class SolarDataService {
       console.log(chalk.yellow(`FIRST TIME FOUND: ${timeFound.hours}:${timeFound.minutes}`));
 
       // 3° Pegar o horário de agora, arredondando para baixo
-      const now = new Date();
-      const targetTime: Time = { hours: now.getHours(), minutes: Math.floor(now.getMinutes() / 10) * 10 };
+      const now = moment.utc().tz('America/Sao_Paulo');
+      const targetTime = {
+        hours: now.hours(),
+        minutes: Math.floor(now.minutes() / 10) * 10,
+      };
 
-      console.log(chalk.blue(`Target time: ${targetTime.hours}:${targetTime.minutes}`));
+      logger.info(chalk.blue(`Target time: ${targetTime.hours}:${targetTime.minutes}`));
 
       // Inicializa as variáveis para o loop
       let newTooltipText = '';
@@ -265,7 +269,7 @@ export class SolarDataService {
         const newTooltipElement = await page.$('.echarts-tooltip');
         newTooltipText = await page.evaluate(el => el.textContent, newTooltipElement);
 
-        console.log(`Attempt ${attempt + 1}, Tooltip Text:`, newTooltipText);
+        console.log(`Attempt ${attempt + 1}, Tooltip Text: ${newTooltipText}`);
 
         // Extrai o tempo do novo tooltip
         timeFound = this.extractTimeFromTooltip(newTooltipText);
@@ -275,7 +279,7 @@ export class SolarDataService {
 
         // Verifica se alcançou o horário desejado
         if (timeFound.hours === targetTime.hours && timeFound.minutes === targetTime.minutes) {
-          console.log(chalk.blue(`Target time found!`));
+          console.log(chalk.blue(`Target time found! ${timeFound.hours}:${timeFound.minutes}`));
           break;
         }
 
@@ -284,7 +288,7 @@ export class SolarDataService {
 
       const powerFound = this.extractPowerFromTooltip(newTooltipText);
 
-      console.log(chalk.blue(`Power Found: ${powerFound}`));
+      logger.info(chalk.blue(`Power Found: ${powerFound} at ${timeFound.hours}:${timeFound.minutes}`));
 
       return powerFound;
     } catch (error) {
