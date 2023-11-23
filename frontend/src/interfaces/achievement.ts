@@ -7,3 +7,10 @@ export interface IAchievement {
   achivementImage?: string;
   points: number;
 }
+
+export interface IRanking {
+  _id: string;
+  userId: string;
+  name: string;
+  level: number;
+}

@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import Achievements from "../../components/screens/games/Achievements";
 import ComponenteDivision from "../../components/global/ComponenteDivision";
 import FAQ from "../../components/screens/games/FAQ";
+import UserLevel from "../../components/screens/games/UserLevel";
 
 const Games: React.FC = () => {
   return (
@@ -18,7 +19,7 @@ const Games: React.FC = () => {
             Explore, conecte-se e cresça no mundo da energia solar.
           </Text>
         </View>
-
+        <UserLevel />
         <Achievements />
         <ComponenteDivision />
         <FAQ />

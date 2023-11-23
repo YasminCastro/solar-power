@@ -1,4 +1,10 @@
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { useEffect } from "react";
 import { useState } from "react";
 import * as achievementsApi from "../../../../services/achievements";
@@ -16,18 +22,28 @@ export default function Achievements() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedName, setSelectedName] = useState("");
   const [selectedDescription, setSelectedDescription] = useState("");
-
+  const [loading, setLoading] = useState(true);
   const [achievements, setAchievements] = useState<IAchievement[]>([]);
 
   async function loadAchievements() {
-    const data = await achievementsApi.getAchievements();
+    try {
+      const data = await achievementsApi.getAchievements();
 
-    setAchievements(data || []);
+      setAchievements(data || []);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     loadAchievements();
   }, []);
+
+  if (loading) {
+    return <ActivityIndicator size="small" color="#FEBE3D" />;
+  }
 
   return (
     <View className="m-3 rounded-xl bg-black/25">
