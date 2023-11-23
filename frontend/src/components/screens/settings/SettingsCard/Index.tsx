@@ -40,12 +40,10 @@ const SettingsCard: React.FC<IProps> = ({ setCardActive }) => {
           />
         </View>
 
-        
-
       </View>
 
 
-      <TouchableOpacity className="mt-12 justify-center items-center flex flex-row space-x-4" onPress={() => signOut()}>
+      <TouchableOpacity className="mt-12 justify-center items-center flex flex-row space-x-4" onPress={() => setCardActive("moreSettings")} >
         <Feather name="settings" size={15} color="white" />
         <Text className="font-body text-base text-white ">Mais Configurações</Text>
       </TouchableOpacity>
