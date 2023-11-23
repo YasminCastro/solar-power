@@ -4,12 +4,16 @@ import SettingsCard from "../../components/screens/settings/SettingsCard/Index";
 import ProfileCard from "../../components/screens/settings/ProfileCard/Index";
 import InverterCard from "../../components/screens/settings/InvertersCard/Index";
 import NotificationsCard from "../../components/screens/settings/NotificationsCard/Index";
+import MoreSettingsCard from "../../components/screens/settings/SettingsCard/MoreSettings";
+import AboutScreen from "../../components/screens/settings/SettingsCard/AboutScreen";
 
 export type IStepSettings =
   | "settings"
   | "profile"
   | "inverter"
-  | "notifications";
+  | "notifications"
+  | "moreSettings"
+  | "about";
 
 const Settings: React.FC = () => {
   const [cardActive, setCardActive] = useState<IStepSettings>("settings");
@@ -20,6 +24,8 @@ const Settings: React.FC = () => {
       profile: () => <ProfileCard setCardActive={setCardActive} />,
       inverter: () => <InverterCard setCardActive={setCardActive} />,
       notifications: () => <NotificationsCard setCardActive={setCardActive} />,
+      moreSettings: () => <MoreSettingsCard setCardActive={setCardActive} />,
+      about: () => <AboutScreen setCardActive={setCardActive} />,
     }),
     []
   );

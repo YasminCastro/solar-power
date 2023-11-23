@@ -4,3 +4,9 @@ export interface IUser {
   password: string;
   name: string;
 }
+
+export interface IUpdateUser {
+  email: string;
+  password: string;
+  name: string;
+}
