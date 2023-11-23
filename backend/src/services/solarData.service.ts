@@ -237,7 +237,7 @@ export class SolarDataService {
       const tooltipElement = await page.$('.echarts-tooltip');
       const tooltipText = await page.evaluate(el => el.textContent, tooltipElement);
       let timeFound: Time = this.extractTimeFromTooltip(tooltipText);
-      console.log(chalk.yellow(`FIRST TIME FOUND: ${timeFound}`));
+      console.log(chalk.yellow(`FIRST TIME FOUND: ${timeFound.hours}:${timeFound.minutes}`));
 
       // 3° Pegar o horário de agora, arredondando para baixo
       const now = new Date();
