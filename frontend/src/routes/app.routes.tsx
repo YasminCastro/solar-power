@@ -9,8 +9,6 @@ import Settings from "../screens/Settings";
 
 const AppStack = createBottomTabNavigator();
 
-//todo: parece que não ficou muito bom as cores de quando está selecionado
-
 const AppRoutes: React.FC = () => (
   <AppStack.Navigator
     screenOptions={{
@@ -25,7 +23,11 @@ const AppRoutes: React.FC = () => (
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
-            return <Foundation name="home" size={30} color="#FFA35A" />;
+            return <Foundation name="home" size={30} color="#FFA35A" style={{
+              textShadowColor: 'black',
+              textShadowOffset: { width: 2, height: 2 },
+              textShadowRadius: 7,
+            }} />;
           }
           return <Foundation name="home" size={30} color="#FEBE3D" />;
         },
@@ -37,7 +39,11 @@ const AppRoutes: React.FC = () => (
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
-            return <Entypo name="bar-graph" size={30} color="#FFA35A" />;
+            return <Entypo name="bar-graph" size={30} color="#FFA35A" style={{
+              textShadowColor: 'black',
+              textShadowOffset: { width: 2, height: 2 },
+              textShadowRadius: 7,
+            }} />;
           }
           return <Entypo name="bar-graph" size={30} color="#FEBE3D" />;
         },
@@ -49,7 +55,11 @@ const AppRoutes: React.FC = () => (
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
-            return <Ionicons name="people" size={30} color="#FFA35A" />;
+            return <Ionicons name="people" size={30} style={{
+              textShadowColor: 'black',
+              textShadowOffset: { width: 2, height: 2 },
+              textShadowRadius: 7,
+            }} color="#FFA35A" />;
           }
           return <Ionicons name="people" size={30} color="#FEBE3D" />;
         },
@@ -61,7 +71,11 @@ const AppRoutes: React.FC = () => (
       options={{
         tabBarIcon: ({ focused }) => {
           if (focused) {
-            return <Ionicons name="person-circle" size={30} color="#FFA35A" />;
+            return <Ionicons name="person-circle" size={30} style={{
+              textShadowColor: 'black',
+              textShadowOffset: { width: 2, height: 2 },
+              textShadowRadius: 7,
+            }} color="#FFA35A" />;
           }
           return <Ionicons name="person-circle" size={30} color="#FEBE3D" />;
         },
