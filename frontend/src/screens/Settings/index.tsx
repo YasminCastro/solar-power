@@ -1,11 +1,13 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SettingsCard from "../../components/screens/settings/SettingsCard/Index";
 import ProfileCard from "../../components/screens/settings/ProfileCard/Index";
 import InverterCard from "../../components/screens/settings/InvertersCard/Index";
 import NotificationsCard from "../../components/screens/settings/NotificationsCard/Index";
 import MoreSettingsCard from "../../components/screens/settings/SettingsCard/MoreSettings";
 import AboutScreen from "../../components/screens/settings/SettingsCard/AboutScreen";
+import { Animated } from 'react-native';
+
 
 export type IStepSettings =
   | "settings"
@@ -17,6 +19,20 @@ export type IStepSettings =
 
 const Settings: React.FC = () => {
   const [cardActive, setCardActive] = useState<IStepSettings>("settings");
+
+  const [fadeAnim] = useState(new Animated.Value(0)); // Inicializa a opacidade em 0
+
+  useEffect(() => {
+    fadeAnim.setValue(0);
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      
+    ]).start();
+  }, [cardActive]);
 
   const Cards = useMemo(
     () => ({
@@ -32,7 +48,13 @@ const Settings: React.FC = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-blueDark-500 p-5">
-      {Cards[cardActive]()}
+      {cardActive === 'about' ? (
+        <AboutScreen setCardActive={setCardActive} />
+      ) : (
+        <Animated.View style={{ opacity: fadeAnim }}>
+          {Cards[cardActive]()}
+        </Animated.View>
+      )}
     </SafeAreaView>
   );
 };
