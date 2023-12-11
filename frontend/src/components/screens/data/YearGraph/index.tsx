@@ -130,7 +130,7 @@ export default function YearGraph() {
           setModalVisible={setMonthModalVisible}
           title={"Produção Anual de Energia"}
           text={
-            "O valor exibido reflete a energia total gerada pelo seu sistema solar ao longo do ano, em quilowatt-hora (kWh). Esta métrica é crucial para entender a eficiência e o impacto a longo prazo do seu investimento em energia renovável. Além de proporcionar uma visão geral do desempenho anual, permite-lhe avaliar a contribuição do seu sistema para a sustentabilidade e a independência energética ao longo das estações do ano."
+            "O valor exibido reflete a energia total gerada pelo seu sistema de energia solar ao longo do ano, em quilowatt-hora (kWh). Esta métrica é crucial para entender a eficiência e o impacto a longo prazo do seu investimento em energia renovável. Além de proporcionar uma visão geral do desempenho anual, permite-lhe avaliar a contribuição do seu sistema para a sustentabilidade e a independência energética ao longo das estações do ano."
           }
         />
         <SimpleModal
@@ -138,7 +138,7 @@ export default function YearGraph() {
           setModalVisible={setEconomyModalVisible}
           title={"Economia Anual Acumulada"}
           text={
-            "Este valor indica uma estimativa aproximada de quanto você pode ter economizado este mês com a energia produzida pelo seu sistema solar. A economia é calculada multiplicando a energia gerada (em kWh) pelo custo unitário de R$0,67 por kWh.  \n\nLembre-se de que este é um valor estimado, e pequenas variações podem ocorrer devido a mudanças na tarifação ou no padrão de consumo. \n\nEste número é um reflexo direto do impacto positivo que seu investimento em energia solar está trazendo para o seu bolso e para o planeta."
+            "Este valor indica uma estimativa aproximada de quanto você pode ter economizado este mês com a energia produzida pelo seu sistema de energia solar. A economia é calculada multiplicando a energia gerada (em kWh) pelo custo unitário de R$0,67 por kWh.  \n\nLembre-se de que este é um valor estimado, e pequenas variações podem ocorrer devido a mudanças na tarifação ou no padrão de consumo. \n\nEste número é um reflexo direto do impacto positivo que seu investimento em energia solar está trazendo para o seu bolso e para o planeta."
           }
         />
       </View>

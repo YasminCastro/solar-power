@@ -139,7 +139,7 @@ export default function MonthGraph() {
           setModalVisible={setEconomyModalVisible}
           title={"Economia Mensal Acumulada"}
           text={
-            "Este valor indica uma estimativa aproximada de quanto você pode ter economizado este mês com a energia produzida pelo seu sistema solar. A economia é calculada multiplicando a energia gerada (em kWh) pelo custo unitário de R$0,67 por kWh.  \n\nLembre-se de que este é um valor estimado, e pequenas variações podem ocorrer devido a mudanças na tarifação ou no padrão de consumo. \n\nEste número é um reflexo direto do impacto positivo que seu investimento em energia solar está trazendo para o seu bolso e para o planeta."
+            "Este valor indica uma estimativa aproximada de quanto você pode ter economizado este mês com a energia produzida pelo seu sistema de energia solar. A economia é calculada multiplicando a energia gerada (em kWh) pelo custo unitário de R$0,67 por kWh.  \n\nLembre-se de que este é um valor estimado, e pequenas variações podem ocorrer devido a mudanças na tarifação ou no padrão de consumo. \n\nEste número é um reflexo direto do impacto positivo que seu investimento em energia solar está trazendo para o seu bolso e para o planeta."
           }
         />
       </View>

@@ -94,7 +94,7 @@ export default function TodayGraph({ refresh }: IProps) {
           isModalVisible={isModalVisible}
           setModalVisible={setModalVisible}
           title={"Produção Hoje"}
-          text={`Este gráfico ilustra a quantidade de energia que seu sistema solar gerou em cada hora do dia. Os valores são apresentados em quilowatts-hora (kWh), permitindo que você visualize como a eficiência do sistema varia com as condições de luz solar ao longo do dia.`}
+          text={`Este gráfico ilustra a quantidade de energia que seu sistema de energia solar gerou em cada hora do dia. Os valores são apresentados em quilowatts-hora (kWh), permitindo que você visualize como a eficiência do sistema varia com as condições de luz solar ao longo do dia.`}
         />
       </View>
     );

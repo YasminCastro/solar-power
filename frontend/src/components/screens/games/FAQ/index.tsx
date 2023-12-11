@@ -23,7 +23,7 @@ const CONTENT: ContentType[] = [
     title:
       "O sistema de energia solar requer alguma mudança no meu consumo diário de energia?",
     content:
-      "Não é necessário mudar drasticamente seu consumo de energia com um sistema solar, mas pode ser benéfico. Usar aparelhos que consomem mais energia durante o dia, quando os painéis produzem mais, ajuda a aproveitar melhor a energia solar. Além disso, adotar medidas para aumentar a eficiência energética, como usar lâmpadas de LED e termostatos inteligentes, pode maximizar os benefícios do sistema solar e diminuir a dependência de energia convencional.",
+      "Não é necessário mudar drasticamente seu consumo de energia com um sistema de energia solar, mas pode ser benéfico. Usar aparelhos que consomem mais energia durante o dia, quando os painéis produzem mais, ajuda a aproveitar melhor a energia solar. Além disso, adotar medidas para aumentar a eficiência energética, como usar lâmpadas de LED e termostatos inteligentes, pode maximizar os benefícios do sistema de energia solar e diminuir a dependência de energia convencional.",
   },
   {
     title: "Há incentivos ou benefícios fiscais para quem usa energia solar?",
@@ -33,7 +33,7 @@ const CONTENT: ContentType[] = [
   {
     title: "Como a companhia de energia calcula a energia que produzo?",
     content:
-      "Em sistemas solares que se conectam diretamente à rede elétrica, a companhia de energia utiliza dois medidores distintos: um para medir a energia consumida da rede e outro para medir a energia produzida pelo seu sistema solar. O medidor de consumo registra a quantidade de energia que você utiliza da rede elétrica, enquanto o medidor de produção acompanha a quantidade de energia que seu sistema solar gera e envia de volta para a rede. Ao final do período de faturamento, a companhia de energia compara esses dois valores. Se você produziu mais energia do que consumiu, o excedente é creditado na sua conta, reduzindo o valor da sua fatura. Esse processo garante que você seja cobrado apenas pelo seu consumo líquido de energia e receba créditos pela energia que seu sistema solar contribuiu para a rede.",
+      "Em sistemas solares que se conectam diretamente à rede elétrica, a companhia de energia utiliza dois medidores distintos: um para medir a energia consumida da rede e outro para medir a energia produzida pelo seu sistema de energia solar. O medidor de consumo registra a quantidade de energia que você utiliza da rede elétrica, enquanto o medidor de produção acompanha a quantidade de energia que seu sistema de energia solar gera e envia de volta para a rede. Ao final do período de faturamento, a companhia de energia compara esses dois valores. Se você produziu mais energia do que consumiu, o excedente é creditado na sua conta, reduzindo o valor da sua fatura. Esse processo garante que você seja cobrado apenas pelo seu consumo líquido de energia e receba créditos pela energia que seu sistema de energia solar contribuiu para a rede.",
   },
 ];
 

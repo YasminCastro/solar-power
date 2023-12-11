@@ -82,7 +82,7 @@ export default function RealTimeView({ refresh }: IProps) {
           setModalVisible={setTodayModalVisible}
           title={"Produção Diária de Energia"}
           text={
-            "Aqui você encontra a quantidade total de energia produzida pelo seu sistema solar hoje, até o momento atual. O valor está em quilowatt-hora (kWh), que representa a energia gerada ao longo do dia."
+            "Aqui você encontra a quantidade total de energia produzida pelo seu sistema de energia solar hoje, até o momento atual. O valor está em quilowatt-hora (kWh), que representa a energia gerada ao longo do dia."
           }
         />
 
