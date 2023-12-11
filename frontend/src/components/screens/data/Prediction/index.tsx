@@ -94,12 +94,12 @@ export default function Prediction() {
             }}
           />
           <Text className="font-body text-sm text-gray-50">
-            Rendimento {month}
+            Produção de {month}
           </Text>
         </View>
         <View className="mt-10 flex flex-row justify-around">
           <CircleData
-            text="Rendimento do mês"
+            text="Produção do mês"
             data={allMonth.toString()}
             icon={<MaterialIcons name="highlight" size={50} color="#0F1E44" />}
           />

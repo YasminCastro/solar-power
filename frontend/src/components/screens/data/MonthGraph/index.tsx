@@ -94,7 +94,7 @@ export default function MonthGraph() {
             }}
           />
           <Text className="font-body text-sm text-gray-50">
-            Rendimento {month}
+            Produção de {month}
           </Text>
         </View>
         <View className="mt-10 flex w-full flex-row justify-around ">
@@ -104,7 +104,7 @@ export default function MonthGraph() {
             }}
           >
             <CircleData
-              text="Rendimento do mês"
+              text="Produção do mês"
               data={`${allMonth} kWh`}
               icon={
                 <MaterialIcons name="highlight" size={45} color="#0F1E44" />

@@ -92,7 +92,7 @@ export default function YearGraph() {
             }}
           />
           <Text className="font-body text-sm text-gray-50">
-            Rendimento {moment().format("YYYY")}
+            Produção de {moment().format("YYYY")}
           </Text>
         </View>
         <View className="mt-10 flex w-full flex-row justify-around">
@@ -102,7 +102,7 @@ export default function YearGraph() {
             }}
           >
             <CircleData
-              text="Rendimento do ano"
+              text="Produção do ano"
               data={`${allYear} kWh`}
               icon={
                 <MaterialIcons name="highlight" size={50} color="#0F1E44" />

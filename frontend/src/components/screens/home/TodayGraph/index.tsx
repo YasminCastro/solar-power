@@ -47,9 +47,7 @@ export default function TodayGraph({ refresh }: IProps) {
     return (
       <View className="mt-4 items-center">
         <View className="flex flex-row gap-4">
-          <Text className="font-body text-sm text-gray-50">
-            Rendimento hoje
-          </Text>
+          <Text className="font-body text-sm text-gray-50">Produção hoje</Text>
 
           <TouchableOpacity
             onPress={() => {
@@ -95,7 +93,7 @@ export default function TodayGraph({ refresh }: IProps) {
         <SimpleModal
           isModalVisible={isModalVisible}
           setModalVisible={setModalVisible}
-          title={"Rendimento Hoje"}
+          title={"Produção Hoje"}
           text={`Este gráfico ilustra a quantidade de energia que seu sistema solar gerou em cada hora do dia. Os valores são apresentados em quilowatts-hora (kWh), permitindo que você visualize como a eficiência do sistema varia com as condições de luz solar ao longo do dia.`}
         />
       </View>
