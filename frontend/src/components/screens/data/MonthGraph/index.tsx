@@ -139,7 +139,7 @@ export default function MonthGraph() {
           setModalVisible={setEconomyModalVisible}
           title={"Economia Mensal Acumulada"}
           text={
-            "Este valor indica uma estimativa aproximada de quanto você pode ter economizado este mês com a energia produzida pelo seu sistema de energia solar. A economia é calculada multiplicando a energia gerada (em kWh) pelo custo unitário de R$0,67 por kWh.  \n\nLembre-se de que este é um valor estimado, e pequenas variações podem ocorrer devido a mudanças na tarifação ou no padrão de consumo. \n\nEste número é um reflexo direto do impacto positivo que seu investimento em energia solar está trazendo para o seu bolso e para o planeta."
+            "Este valor oferece uma estimativa de quanto você pode ter economizado este mês com a energia produzida pelo seu sistema fotovoltaico. A economia é estimada multiplicando a energia gerada (em kWh) pela tarifa convencional de energia elétrica em Goiás, que é de R$0,71 por kWh, conforme estabelecido pela ANEEL em 2023.\n\nLembre-se de que esta é uma estimativa, e pequenas variações podem ocorrer devido a mudanças na tarifação ou no seu padrão de consumo. \n\nEste número reflete o impacto positivo do seu investimento em energia solar, tanto financeiramente quanto para o meio ambiente."
           }
         />
       </View>
