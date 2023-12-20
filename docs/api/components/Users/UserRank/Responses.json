@@ -1,0 +1,23 @@
+{
+  "200": {
+    "description": "Um array dos 5 usuários próximos do usuário escolhido.",
+    "content": {
+      "application/json": {
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": { "type": "string", "description": "ID único do usuário" },
+              "name": { "type": "string", "description": "Nome do usuário" },
+              "level": { "type": "number", "description": "Nível do usuário" }
+            }
+          }
+        }
+      }
+    },
+    "401": {
+      "description": "Não autorizado. Token de autenticação está ausente, inválido ou expirado."
+    }
+  }
+}

@@ -124,6 +124,48 @@
         ]
       }
     },
+    "/users/ranking": {
+      "get": {
+        "summary": "Ranking de usuários",
+        "operationId": "userRanking",
+        "tags": ["Users"],
+        "responses": {
+          "$ref": "/api/components/Users/Ranking/Responses.json"
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+
+    "/users/ranking/{userId}": {
+      "get": {
+        "summary": "Buscar Ranking do usuário por ID",
+        "operationId": "getUserRanking",
+        "tags": ["Users"],
+        "responses": {
+          "$ref": "/api/components/Users/UserRank/Responses.json"
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID único do usuário.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
 
     "/inverter": {
       "post": {

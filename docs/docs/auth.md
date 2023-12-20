@@ -25,7 +25,7 @@ Usamos o Bcrypt para fazer o hash das senhas dos usuários antes de armazená-la
 
 ## Endpoints
 
-[Documentação das APIs](/api)
-
 - [`POST /auth/signup`](/api/cadastro): Registrar um novo usuário.
 - [`POST /auth/login`](/api): Autenticar usuários.
+
+Para informações mais detalhadas, como parâmetros de requisição e exemplos de respostas, consulte nossa [Documentação das APIs](/api).
