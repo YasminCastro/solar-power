@@ -8,7 +8,6 @@
   <p>
     Aplicativo móvel para monitoramento e incentivo à adoção de sistemas fotovoltaicos.
   </p>
-  <br/>
   <p>Confira a <a href="https://optimalbits.github.io/bull/"><strong>documentação  oficial! </strong></p>
   <br/>
 </div>
