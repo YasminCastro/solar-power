@@ -19,11 +19,11 @@ Antes de prosseguir, lembre-se de que todos esses endpoints requerem autenticaç
 
 :::
 
-- [`POST /inverters`](/api/criar-inversor): Cria um novo inversor no sistema.
-- [`GET /inverters`](/api/buscar-inversores): Obtém uma lista de todos os inversores cadastrados.
-- [`GET /inverters/inverter/:inverterId`](/api/buscar-inversor-por-id): Retorna detalhes de um inversor específico, usando seu ID.
-- [`GET /inverters/user/:userId`](/api/buscar-inversores-por-usuario): Lista inversores associados a um usuário específico.
-- [`PUT /inverters/:id`](/api/atualizar-inversor): Atualiza as informações de um inversor específico.
-- [`DELETE /inverters/:id`](/api/excluir-inversor): Remove um inversor do sistema.
+- [`POST /inverters`](/api/criar-inversor): Cria um inversor.
+- [`GET /inverters`](/api/buscar-inversores): Lista todos os inversores cadastrados.
+- [`GET /inverters/inverter/:inverterId`](/api/buscar-inversor-por-id): Busca um inversor pelo ID.
+- [`GET /inverters/user/:userId`](/api/buscar-inversores-por-usuario): Lista inversores de um usuário específico.
+- [`PUT /inverters/:id`](/api/atualizar-inversor): Atualiza um inversor específico.
+- [`DELETE /inverters/:id`](/api/excluir-inversor): Remove um inversor.
 
 Para informações mais detalhadas, como parâmetros de requisição e exemplos de respostas, consulte nossa [Documentação das APIs](/api).
