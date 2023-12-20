@@ -8,15 +8,15 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "Solar Power",
   tagline:
-    "Um aplicativo móvel  para incentivar a otimização e  economia de energia em sistemas  de energia solar.",
-  url: "https://your-docusaurus-test-site.com",
+    " Um aplicativo móvel para monitoramento e incentivo à adoção de sistemas fotovoltaicos",
+  url: "https://solar-power.vercel.app",
   baseUrl: "/",
   favicon: "img/logo.svg",
   organizationName: "ifg",
   projectName: "solar-power",
   i18n: {
-    defaultLocale: "en",
-    locales: ["en"],
+    defaultLocale: "pt-BR",
+    locales: ["pt-BR"],
   },
 
   presets: [
