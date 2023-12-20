@@ -1,8 +1,17 @@
 # SolarPower
 
-<p align="center">
-  <img src="docs/static/img/logo.png" alt="Logo do SolarPower" width="200"/>
-</p>
+<div align="center">
+  <br/>
+  <img src="docs/static/img/logo.png" width="200" />
+  <br/>
+  <br/>
+  <p>
+    Aplicativo móvel para monitoramento e incentivo à adoção de sistemas fotovoltaicos.
+  </p>
+  <br/>
+  <p>Confira a <a href="https://optimalbits.github.io/bull/"><strong>documentação  oficial! </strong></p>
+  <br/>
+</div>
 
 ## Visão Geral
 
