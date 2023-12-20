@@ -9,7 +9,7 @@ tags:
 
 # Usuários
 
-Nossa aplicação permite a gestão de usuários. Fornecemos vários endpoints para facilitar operações como busca, atualização e exclusão de usuários.
+A aplicação permite a gestão de usuários. Fornecemos vários endpoints para facilitar operações como busca, atualização e exclusão de usuários.
 
 ## Endpoints
 
@@ -19,9 +19,11 @@ Antes de prosseguir, lembre-se de que todos esses endpoints requerem autenticaç
 
 :::
 
-- [`GET /users`](/api/buscar-usuarios): Retorna uma lista de todos os usuários cadastrados na plataforma.
-- [`GET /users/:id`](/api/buscar-usuario-por-id): Permite a busca de informações de um usuário específico, usando seu ID como parâmetro.
-- [`PUT /users/:id`](/api/atualizar-usuario): Este endpoint é usado para atualizar os dados de um usuário específico.
-- [`DELETE /users/:id`](/api/excluir-usuario): Remove um usuário específico da base de dados.
+- [`GET /users`](/api/buscar-usuarios): Busca todos os usuários cadastrados.
+- [`GET /users/:id`](/api/buscar-usuario-por-id): Busca um usuário pelo ID.
+- [`PUT /users/:id`](/api/atualizar-usuario): Atualiza dados de um usuário específico.
+- [`DELETE /users/:id`](/api/excluir-usuario): Exclui um usuário pelo ID.
+- [`GET /users/ranking`](/api/ranking-de-usuarios): Exibe o ranking de todos os usuários.
+- [`GET /users/ranking/:id`](/api/buscar-ranking-do-usuario-por-id): Mostra o ranking em torno de um usuário específico.
 
 Para informações mais detalhadas, como parâmetros de requisição e exemplos de respostas, consulte nossa [Documentação das APIs](/api).
