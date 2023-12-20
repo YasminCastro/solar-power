@@ -14,7 +14,7 @@
 
 ## Visão Geral
 
-O SolarPower é um aplicativo móvel destinado a monitorar sistemas fotovoltaicos. Ele permite aos usuários acompanhar a geração de energia solar em tempo real e gerenciar a eficiência de seus sistemas de energia. Desenvolvido por [Yasmin](https://github.com/YasminCastro) e [Gabriel](https://github.com/gabrielmarqso) como parte do seu Trabalho de Conclusão de Curso (TCC) em Sistemas de Informação.
+O SolarPower é um aplicativo móvel destinado a monitorar sistemas fotovoltaicos. Ele permite aos usuários acompanhar a geração de energia solar em tempo real e gerenciar a eficiência de seus sistemas de energia. Desenvolvido por [Yasmin](https://github.com/YasminCastro) e [Gabriel](https://github.com/gabrielmarqso) como parte do Trabalho de Conclusão de Curso (TCC) em Sistemas de Informação.
 
 ## Características
 
