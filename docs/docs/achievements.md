@@ -7,9 +7,9 @@ tags:
   - achievements
 ---
 
-Os endpoints relacionados à energia gerada permitem acessar dados sobre a quantidade de energia gerada pelos inversores em diferentes intervalos de tempo.
+Os endpoints de conquistas permitem aos usuários acompanhar e gerenciar suas conquistas pessoais relacionadas ao uso eficiente de energia solar.
 
-## Endpoints Geração de Energia
+## Endpoints de Conquistas
 
 :::info
 
@@ -17,9 +17,10 @@ Antes de prosseguir, lembre-se de que todos esses endpoints requerem autenticaç
 
 :::
 
-- [`GET /power-generated/real-time/:inverterId`](/api/obter-dados-de-geracao-de-energia-em-tempo-real): Retorna dados em tempo real de um inversor específico.
-- [`GET /power-generated/day/:inverterId`](/api/obter-dados-de-geracao-de-energia-diaria): Retorna dados diários de um inversor específico.
-- [`GET /power-generated/month/:inverterId`](/api/obter-dados-de-geracao-de-energia-mensal): Retorna dados mensais de um inversor específico.
-- [`GET /power-generated/year/:inverterId`](/api/obter-dados-de-geracao-de-energia-anual): Retorna dados em anuais de um inversor específico.
+- [`GET /achievements`](/api/buscar-conquistas): Lista todas as conquistas disponíveis.
+- [`GET /achievements/:userId`](/api/buscar-conquista-por-id): Lista as conquistas alcançadas por um usuário específico.
+- [`POST /achievements`](/api/criar-conquista): Cria uma nova conquista no sistema.
+- [`PUT  /achievements/:id`](/api/atualizar-conquistas): Atualiza informações de uma conquista específica.
+- [`DELETE  /achievements/:id`](/api/excluir-conquista): Remove uma conquista do sistema.
 
 Para informações mais detalhadas, como parâmetros de requisição e exemplos de respostas, consulte nossa [Documentação das APIs](/api).
