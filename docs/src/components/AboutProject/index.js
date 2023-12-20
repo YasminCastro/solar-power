@@ -13,10 +13,9 @@ export default function AboutProject() {
             <br />
             <p>
               {" "}
-              O Solar Power é um projeto que está sendo desenvolvido por dois
-              estudantes de Sistemas de informação,{" "}
+              O Solar Power foi um projeto desenvolvido por{" "}
               <a
-                href="https://www.linkedin.com/in/yasmin-castro-b579451b8/"
+                href="https://www.linkedin.com/in/yasmin-sdcastro/"
                 target="_blank"
               >
                 Yasmin
@@ -28,13 +27,18 @@ export default function AboutProject() {
               >
                 Gabriel
               </a>
-              , como parte do seu TCC. A escolha desse tema foi feita porque a
-              energia solar é uma tecnologia que está em grande ascensão e
-              oferece uma solução sustentável para nossos problemas de geração
-              de energia. A ideia do Solar Power, é que seja criado um
-              aplicativo móvel que conecta os inversores de energia solar à
-              nuvem, permitindo que os usuários monitorem sua produção de
-              energia e economizem dinheiro em suas contas de luz.
+              , como parte do seu Trabalho de Conclusão de Curso (TCC) em
+              Sistemas de Informação no Instituto Federal de Goiás (IFG). A
+              motivação para escolha desse tema foi abordar um desafio na área
+              de energia renovável, especificamente na geração e monitoramento
+              de energia solar. A equipe identificou a necessidade de um sistema
+              de monitoramento mais intuitivo e acessível para usuários não
+              especializados, uma vez que muitos sistemas existentes eram
+              complexos e pouco amigáveis. O projeto do SolarPower surgiu como
+              uma solução prática, visando desenvolver um aplicativo móvel que
+              simplificasse o monitoramento da geração de energia solar e
+              incentivasse práticas sustentáveis, combinando facilidade de uso
+              com uma interface intuitiva e elementos lúdicos.
             </p>
           </div>
           <img
@@ -53,15 +57,15 @@ export default function AboutProject() {
             <h2>Aplicativo</h2>
             <br />
             <p>
-              O aplicativo irá incluir recursos inovadores, como gráficos de
-              projeção de energia futura com base na previsão do tempo e
-              notificações para limpeza de painéis solares, tornando a energia
-              solar ainda mais acessível e fácil de usar. Além disso, o
-              aplicativo é desenvolvido com as melhores práticas de engenharia
-              de software, garantindo sua eficiência e confiabilidade. O Solar
-              Power é mais do que apenas um aplicativo, é uma solução completa
-              para aqueles que querem economizar dinheiro e ajudar o planeta ao
-              mesmo tempo.
+              O aplicativo permite monitoramento eficiente de sistemas
+              fotovoltaicos. Com ele, os usuários podem visualizar dados de
+              geração de energia solar em tempo real, incluindo informações
+              detalhadas diárias, mensais e anuais. O aplicativo foi construído
+              utilizando tecnologias como Node.js, React Native, Tailwind e
+              MongoDB, garantindo uma experiência de usuário suave e confiável.
+              Ideal para quem busca uma solução simples e eficaz para acompanhar
+              a performance de sistemas de energia solar, o SolarPower torna o
+              gerenciamento de energia solar mais acessível e informativo.
             </p>
           </div>
 
@@ -70,22 +74,6 @@ export default function AboutProject() {
               src={require("@site/static/img/about/bio-energy.png").default}
             />
           )}
-        </div>
-
-        <div className={styles.modulo}>
-          <div>
-            <h2>Equipe</h2>
-            <br />
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti
-              iste cum incidunt maiores quam? Eum, omnis aliquid nam, incidunt,
-              ullam consectetur sint voluptatibus voluptatem enim minus quasi
-              veritatis et eveniet.
-            </p>
-          </div>
-          <img
-            src={require("@site/static/img/about/save-the-planet.png").default}
-          />
         </div>
       </div>
     </section>
